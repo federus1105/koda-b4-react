@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
+import useAuth from "../../hooks/UseAuth";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -7,6 +8,21 @@ function Login() {
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
+  };
+
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    errorem,
+    errorpass,
+    Validate,
+  } = useAuth();
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    if (!Validate()) return;
   };
   return (
     <>
@@ -36,7 +52,7 @@ function Login() {
                 </header>
 
                 {/* input user email and pass */}
-                <form>
+                <form onSubmit={submitHandler}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium">
                       Email
@@ -48,10 +64,12 @@ function Login() {
                         id="email"
                         placeholder="Enter Your Email"
                         className="w-full outline-none"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorem} */}
+                      {errorem}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -69,6 +87,8 @@ function Login() {
                         id="password"
                         placeholder="Enter Your Password"
                         className="w-full outline-none"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
                       />
                       <img
                         src={
@@ -82,20 +102,20 @@ function Login() {
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorpass} */}
+                      {errorpass}
                     </span>
                   </div>
-                  <p className="text-right mb-5 text-orange-400">
-                    Lupa Password?
-                  </p>
-                  <Link to={"/"}>
-                    <button
-                      type="submit"
-                      className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
-                    >
-                      Login
-                    </button>
+                  <Link to={"../forgot"}>
+                    <p className="text-right mb-5 text-orange-400">
+                      Lupa Password?
+                    </p>
                   </Link>
+                  <button
+                    type="submit"
+                    className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
+                  >
+                    Login
+                  </button>
                   <p className="text-center mt-8 text-gray-500">
                     Have An Account ?{" "}
                     <Link to="../register">

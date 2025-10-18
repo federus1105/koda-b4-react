@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router";
+import useAuth from "../../hooks/UseAuth";
 
 function Register() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -13,6 +14,26 @@ function Register() {
   // toogle confirm password visibiliy
   const toggleConfirmPasswordVisibility = () => {
     setConfirmIsPasswordVisible(!isConfirmPasswordVisible);
+  };
+  const {
+    email,
+    setEmail,
+    password,
+    setPassword,
+    fullname,
+    setFullname,
+    confirmPassword,
+    setConfirmPassword,
+    errorConfirm,
+    errorfullname,
+    errorem,
+    errorpass,
+    Validate,
+  } = useAuth();
+
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    if (!Validate()) return;
   };
   return (
     <>
@@ -29,7 +50,7 @@ function Register() {
           <section className="lg:bg-cover lg:w-2/3">
             <section className="flex h-full">
               <section className="px-5 flex justify-center flex-col w-full lg:px-20">
-                <div className="flex items-center gap-2 md:mb-10">
+                <div className="flex items-center gap-2 md:mb-3">
                   <img src="/icon.svg" alt="icon" />
                   <img src="/Logo.svg" alt="" />
                 </div>
@@ -44,7 +65,7 @@ function Register() {
                 </header>
 
                 {/* input user email and pass */}
-                <form>
+                <form onSubmit={submitHandler}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="Fullname" className="font-medium">
                       Fullname
@@ -56,10 +77,14 @@ function Register() {
                         id="fulname"
                         placeholder="Enter Your Fullname"
                         className="w-full outline-none"
+                        value={fullname}
+                        onChange={(e) => {
+                          setFullname(e.target.value);
+                        }}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorem} */}
+                      {errorfullname}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -73,10 +98,14 @@ function Register() {
                         id="email"
                         placeholder="Enter Your Email"
                         className="w-full outline-none"
+                        value={email}
+                        onChange={(e) => {
+                          setEmail(e.target.value);
+                        }}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorem} */}
+                      {errorem}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -94,6 +123,10 @@ function Register() {
                         id="password"
                         placeholder="Enter Your Password"
                         className="w-full outline-none"
+                        value={password}
+                        onChange={(e) => {
+                          setPassword(e.target.value);
+                        }}
                       />
                       <img
                         src={
@@ -107,7 +140,7 @@ function Register() {
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorpass} */}
+                      {errorpass}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -125,8 +158,8 @@ function Register() {
                         id="confirmpassword"
                         placeholder="Enter Your Password Again"
                         className="w-full outline-none"
-                        // value={confirmPassword}
-                        // onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                       />
                       <img
                         src={
@@ -140,17 +173,15 @@ function Register() {
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorConfirmpass} */}
+                      {errorConfirm}
                     </span>
                   </div>
-                  <Link to={"../login"}>
-                    <button
-                      type="submit"
-                      className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
-                    >
-                      Register
-                    </button>
-                  </Link>
+                  <button
+                    type="submit"
+                    className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
+                  >
+                    Register
+                  </button>
                   <p className="text-center mt-8 text-gray-500">
                     Have An Account ?{" "}
                     <Link to="../login">
