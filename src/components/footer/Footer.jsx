@@ -3,7 +3,7 @@ import React from "react";
 function Footer() {
   return (
     <>
-      <footer className="px-8 py-10 bg-white">
+      <footer className="px-8 py-10 bg-gray-200">
         <div className="flex flex-col gap-10 lg:flex-row lg:justify-evenly lg:items-start">
           {/* Logo & Description */}
           <div className="flex flex-col gap-4 lg:w-1/5">

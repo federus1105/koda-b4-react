@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "../../components/cardproduct/Card";
 import { ArrowBigLeft, ArrowBigRight, MessageCircleMore } from "lucide-react";
+import Chat from "../../components/modal/Chat";
 
 function Home() {
+  const [modalOpen, setModalOpen] = useState(false);
   return (
     <>
       <header className="flex flex-col lg:flex-row lg:flex-row-reverse">
@@ -54,7 +56,7 @@ function Home() {
         <div className="px-5 flex flex-col gap-5 lg:w-1/2 md:px-16 lg:px-32 my-10">
           <div className="flex my-3">
             <div>
-              <div class="border-2 border-orange-300 h-16 mr-4"></div>
+              <div className="border-2 border-orange-300 h-16 mr-4"></div>
             </div>
             <h1 className="text-3xl">
               We Provide{" "}
@@ -155,9 +157,13 @@ function Home() {
           </div>
         </div>
       </div>
-      <button className="flex items-center justify-center fixed bottom-6 right-6 bg-orange-500 text-white w-13 h-13 rounded-full hover:bg-orange-600">
+      <button
+        className="flex items-center justify-center fixed bottom-6 right-6 bg-orange-500 text-white w-13 h-13 rounded-full hover:bg-orange-600"
+        onClick={() => setModalOpen(true)}
+      >
         <MessageCircleMore size={30} />
       </button>
+      <Chat isOpen={modalOpen} onClose={() => setModalOpen(false)} />
     </>
   );
 }
