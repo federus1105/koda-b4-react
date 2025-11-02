@@ -1,9 +1,15 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
+import { login } from "../../redux/slice/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const users = useSelector((state) => state.auth.users);
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
@@ -20,10 +26,22 @@ function Login() {
     Validate,
   } = useAuth();
 
-  const submitHandler = async (event) => {
+  const submitHandler = (event) => {
     event.preventDefault();
+
     if (!Validate()) return;
+    const isValid = users.find(
+      (u) => u.email === email.trim() && u.password === password
+    );
+    if (isValid) {
+      dispatch(login(isValid));
+      toast.success("Login Berhasil");
+      navigate("/");
+    } else {
+      toast.error("Email atau password salah!");
+    }
   };
+
   return (
     <>
       <section className="min-h-screen">
@@ -116,13 +134,13 @@ function Login() {
                   >
                     Login
                   </button>
-                  <p className="text-center mt-8 text-gray-500">
-                    Have An Account ?{" "}
-                    <Link to="../register">
-                      <span className="text-orange-400">Register</span>
-                    </Link>
-                  </p>
                 </form>
+                <p className="text-center mt-8 text-gray-500">
+                  Have An Account ?{" "}
+                  <Link to="../register">
+                    <span className="text-orange-400">Register</span>
+                  </Link>
+                </p>
                 <div className="relative text-center my-8">
                   <hr className="border-t border-gray-300" />
                   <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-7 text-gray-400">
