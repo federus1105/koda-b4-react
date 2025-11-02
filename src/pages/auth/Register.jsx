@@ -1,11 +1,16 @@
 import React, { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
+import { useDispatch } from "react-redux";
+import { register } from "../../redux/slice/authSlice";
+import { toast } from "react-toastify";
 
 function Register() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setConfirmIsPasswordVisible] =
     useState(false);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
@@ -34,6 +39,11 @@ function Register() {
   const submitHandler = async (event) => {
     event.preventDefault();
     if (!Validate()) return;
+    if (email && password && fullname) {
+      dispatch(register({ email, password, fullname }));
+      toast.success("Akun berhasil dibuat")
+      navigate("/auth/login");
+    }
   };
   return (
     <>
