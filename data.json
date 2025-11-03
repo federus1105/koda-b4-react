@@ -1,0 +1,224 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Hazelnut Latte",
+      "description": "You can explore the menu that we provide with fun and have their own taste and make your day better.",
+      "category": "coffee",
+      "price_original": 20000,
+      "price_discount": 20000,
+      "rating": 5.0,
+      "image": "https://img-global.cpcdn.com/recipes/35ef6f9212576405/300x426cq80/vanilla-hazelnut-latte-foto-resep-utama.webp",
+      "flash_sale": true
+    },
+    {
+      "id": 2,
+      "name": "Caramel Macchiato",
+      "description": "A sweet blend of caramel and espresso to boost your day.",
+      "category": "coffee",
+      "price_original": 25000,
+      "price_discount": 18000,
+      "rating": 4.8,
+      "image": "https://deltacoffee.co.id/wp-content/uploads/2023/05/Cara-Membuat-Caramel-Macchiato.jpg",
+      "flash_sale": true
+    },
+    {
+      "id": 3,
+      "name": "Americano",
+      "description": "Classic black coffee for those who love simplicity.",
+      "category": "coffee",
+      "price_original": 18000, 
+      "price_discount": 15000,
+      "rating": 4.5,
+      "image": "https://www.shutterstock.com/image-photo/glass-iced-americano-coffee-crystal-600nw-2673648749.jpg",
+      "flash_sale": false
+    },
+    {
+      "id": 4,
+      "name": "Vanilla Latte",
+      "description": "Vanilla-flavored coffee that soothes your soul.",
+      "category": "coffee",
+      "price_original": 22000,
+      "price_discount": 20000,
+      "rating": 4.9,
+      "image": "https://www.forkinthekitchen.com/wp-content/uploads/2022/08/220629.iced_.latte_.vanilla-9009.jpg",
+      "flash_sale": true
+    },
+    {
+      "id": 5,
+      "name": "Strawberry Smoothie",
+      "description": "Fresh strawberry smoothie perfect for your break.",
+      "category": "non-coffee",
+      "price_original": 23000,
+      "price_discount": 21000,
+      "rating": 4.7,
+      "image": "https://media.istockphoto.com/id/184129563/id/foto/smoothie-stroberi.jpg?s=612x612&w=0&k=20&c=ssFMX4aNQ360AVk3KnLPrENZqkKagKoE25odF-MbfHw=",
+      "flash_sale": false
+    },
+    {
+      "id": 6,
+      "name": "Lemon Tea",
+      "description": "Refreshing lemon tea served cold or hot.",
+      "category": "non-coffee",
+      "price_original": 15000,
+      "price_discount": 12000,
+      "rating": 4.3,
+      "image": "https://img-global.cpcdn.com/recipes/539550354afa55e7/680x781cq80/shaken-lemon-tea-foto-resep-utama.jpg",
+      "flash_sale": false
+    },
+    {
+      "id": 7,
+      "name": "Avocado Juice",
+      "description": "Creamy avocado juice full of nutrients.",
+      "category": "non-coffee",
+      "price_original": 27000,
+      "price_discount": 24000,
+      "rating": 4.6,
+      "image": "https://toquehotels.com/wp-content/uploads/2025/01/Avocado-Milkshake-3-1.jpg",
+      "flash_sale": true
+    },
+    {
+      "id": 8,
+      "name": "Fried Chicken & Chips",
+      "description": "Crispy fried chicken served with potato chips.",
+      "category": "foods",
+      "price_original": 30000,
+      "price_discount": 25000,
+      "rating": 5.0,
+      "image": "https://images.pexels.com/photos/12118979/pexels-photo-12118979.jpeg",
+      "flash_sale": true
+    },
+    {
+      "id": 9,
+      "name": "Spaghetti Bolognese",
+      "description": "Rich tomato sauce and minced beef over pasta.",
+      "category": "foods",
+      "price_original": 35000,
+      "price_discount": 33000,
+      "rating": 4.9,
+      "image": "https://asset.kompas.com/crops/eWh25QLGaUd83ZfRO6yvdxwygKg=/0x22:968x667/1200x800/data/photo/2023/06/02/64793cbdad978.jpg",
+      "flash_sale": false
+    },
+    {
+      "id": 10,
+      "name": "French Fries",
+      "description": "Golden crispy fries, perfect for snacking.",
+      "category": "foods",
+      "price_original": 15000,
+      "price_discount": 10000,
+      "rating": 4.2,
+      "image": "https://img-global.cpcdn.com/recipes/0cf5f891547316a6/680x781f0.5_0.5_1.0q80/french-fries-foto-resep-utama.jpg",
+      "flash_sale": true
+    },
+    {
+      "id": 11,
+      "name": "Matcha Latte",
+      "description": "Smooth green tea latte for a calming break.",
+      "category": "non-coffee",
+      "price_original": 22000,
+      "price_discount": 19000,
+      "rating": 4.4,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 12,
+      "name": "Espresso",
+      "description": "Strong, rich espresso shot to kickstart your day.",
+      "category": "coffee",
+      "price_original": 16000,
+      "price_discount": 16000,
+      "rating": 4.6,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 13,
+      "name": "Iced Chocolate",
+      "description": "Chilled chocolate drink perfect for sunny days.",
+      "category": "non-coffee",
+      "price_original": 23000,
+      "price_discount": 20000,
+      "rating": 4.5,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 14,
+      "name": "Cheese Sandwich",
+      "description": "Melted cheese in toasted bread, simple & tasty.",
+      "category": "foods",
+      "price_original": 20000,
+      "price_discount": 18000,
+      "rating": 4.1,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 15,
+      "name": "Mango Smoothie",
+      "description": "Fresh mango smoothie made with real fruit.",
+      "category": "non-coffee",
+      "price_original": 24000,
+      "price_discount": 21000,
+      "rating": 4.8,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": true
+    },
+    {
+      "id": 16,
+      "name": "Black Tea",
+      "description": "Classic black tea with a bold flavor.",
+      "category": "non-coffee",
+      "price_original": 14000,
+      "price_discount": 12000,
+      "rating": 4.0,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 17,
+      "name": "Chocolate Muffin",
+      "description": "Soft muffin with rich chocolate chunks.",
+      "category": "foods",
+      "price_original": 18000,
+      "price_discount": 15000,
+      "rating": 4.6,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": true
+    },
+    {
+      "id": 18,
+      "name": "Latte",
+      "description": "Creamy coffee latte made with steamed milk.",
+      "category": "coffee",
+      "price_original": 20000,
+      "price_discount": 18000,
+      "rating": 4.7,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 19,
+      "name": "Chicken Wrap",
+      "description": "Grilled chicken wrapped in soft tortilla bread.",
+      "category": "foods",
+      "price_original": 28000,
+      "price_discount": 25000,
+      "rating": 4.5,
+      "image": "https://via.placeholder.com/150",
+      "flash_sale": false
+    },
+    {
+      "id": 20,
+      "name": "Mocha Frappe",
+      "description": "Iced mocha blended with chocolate and coffee.",
+      "category": "coffee",
+      "price_original": 26000,
+      "price_discount": 22000,
+      "rating": 4.9,
+      "image": "https://via.placeholder.com/150", 
+      "flash_sale": true
+    }
+  ]
+}
