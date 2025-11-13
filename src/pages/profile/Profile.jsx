@@ -1,24 +1,27 @@
 import { Mail } from "lucide-react";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
 
 function Profile() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const profile = useSelector((state) => state.auth.currentUser)
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
+    const defaultProfilePhoto = "/default-profile.webp";
   return (
     <>
       <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-30">
-        <header className="flex flex-col gap-4 lg:w-1/5">
+        <header className="flex flex-col gap-4 lg:w-1/4">
           <h1 className="font-medium text-xl lg:text-3xl">Profile</h1>
           <div className="border border-gray-300 rounded-lg flex flex-col px-10 py-3 lg:py-10 items-center gap-3">
-            <h1 className="font-medium text-xl">Ghaluh Wizard</h1>
-            <p className="text-gray-500">ghaluhwizz@gmail.com</p>
+            <h1 className="font-medium text-xl">{profile.fullname}</h1>
+            <p className="text-gray-500">{profile.email}</p>
             <div className="w-20 h-20 rounded-full overflow-hidden">
               <img
-                src="/justin.jpg"
+               src={defaultProfilePhoto}
                 alt=""
                 className="w-full h-full object-cover"
               />
@@ -32,7 +35,7 @@ function Profile() {
             </p>
           </div>
         </header>
-        <div className="border border-gray-300 px-3 py-5 lg:my-13 rounded-lg lg:w-1/3">
+        <div className="border border-gray-300 px-3 lg:px-20 lg:py-15 py-5 lg:my-13 rounded-lg lg:w-1/2">
           <form className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="Phone" className="font-medium">
@@ -43,6 +46,7 @@ function Profile() {
                 <input
                   type="text"
                   id="fulname"
+                  value={profile.fullname}
                   placeholder="Enter Your Fullname"
                   className="w-full outline-none"
                 />
@@ -58,8 +62,10 @@ function Profile() {
                 <input
                   type="text"
                   id="email"
+                  value={profile.email}
                   placeholder="Enter Your Email"
                   className="w-full outline-none"
+                  disabled
                 />
               </div>
             </div>
