@@ -35,7 +35,7 @@ function Chart() {
   ];
   return (
     <>
-      <section className="min-h-screen bg-gradient-to-br py-4 md:py-8">
+      <section className="bg-gradient-to-br">
         <div className="mx-auto">
           {/* --- Main Chart Card --- */}
           <div className="bg-white rounded-2xl border border-gray-200 p-6 md:p-8">
