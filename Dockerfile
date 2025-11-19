@@ -1,17 +1,12 @@
-FROM node:18-alpine AS builder
+FROM node:alpine AS builder
 
 ARG VITE_BASE_URL
+
 ENV VITE_BASE_URL=${VITE_BASE_URL}
 
 WORKDIR /app
-
-COPY package*.json ./
-
-RUN apk add --no-cache python3 g++ make libc6-compat
-RUN npm ci
-
 COPY . .
-RUN npm run build
+RUN npm ci && npm run build
 
 FROM nginx:alpine
 
