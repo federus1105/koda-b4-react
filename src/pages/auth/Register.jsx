@@ -3,48 +3,36 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
 import { toast } from "react-toastify";
 import { registerUser } from "../../services/authService";
+import { KeyRound, Mail, User } from "lucide-react";
 
 function Register() {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [isConfirmPasswordVisible, setConfirmIsPasswordVisible] =
-    useState(false);
+  const { formData, errors, handleChange, validate } = useAuth("register");
   const navigate = useNavigate();
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    password: false,
+    confirmPassword: false,
+  });
 
-  // toogle password visibiliy
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
+  // ---- TOGGLE FUNCTION ---
+  const togglePasswordVisibility = (field) => {
+    setPasswordVisibility((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
   };
-  // toogle confirm password visibiliy
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmIsPasswordVisible(!isConfirmPasswordVisible);
-  };
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    fullname,
-    setFullname,
-    confirmPassword,
-    setConfirmPassword,
-    errorConfirm,
-    errorfullname,
-    errorem,
-    errorpass,
-    Validate,
-  } = useAuth();
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
-    if (!Validate()) {
+  // --- HANDLE SUBMIT ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    if (!validate()) {
       toast.error("Cek kembali form kamu!");
       return;
     }
     try {
-      const data = await registerUser();
+      const data = await registerUser(formData);
       toast.success("Registrasi berhasil!");
-      navigate("/login");
-      console.log(data);
+      navigate("/auth/login");
     } catch (error) {
       console.error("Register error:", error);
       toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
@@ -80,26 +68,25 @@ function Register() {
                 </header>
 
                 {/* input user email and pass */}
-                <form onSubmit={submitHandler}>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="Fullname" className="font-medium">
                       Fullname
                     </label>
                     <div className="input-Fulname flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <img src="/Profile.svg" alt="" className="w-4 h-3.5" />
+                      <User className="text-gray-400" />
                       <input
                         type="text"
-                        id="fulname"
+                        id="fullname"
+                        name="fullname"
                         placeholder="Enter Your Fullname"
                         className="w-full outline-none"
-                        value={fullname}
-                        onChange={(e) => {
-                          setFullname(e.target.value);
-                        }}
+                        value={formData.fullname}
+                        onChange={handleChange}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorfullname}
+                      {errors.fullname}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -107,20 +94,19 @@ function Register() {
                       Email
                     </label>
                     <div className="input-email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <img src="/Logo-Email.svg" alt="" className="w-4 h-3.5" />
+                      <Mail className="text-gray-400" />
                       <input
                         type="text"
                         id="email"
+                        name="email"
                         placeholder="Enter Your Email"
                         className="w-full outline-none"
-                        value={email}
-                        onChange={(e) => {
-                          setEmail(e.target.value);
-                        }}
+                        value={formData.email}
+                        onChange={handleChange}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorem}
+                      {errors.email}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -128,34 +114,29 @@ function Register() {
                       Password
                     </label>
                     <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                      <img
-                        src="/Logo-Password.svg"
-                        alt="password"
-                        className="w-4 h-3.5"
-                      />
+                      <KeyRound className="text-gray-400" />
                       <input
-                        type={isPasswordVisible ? "text" : "password"}
+                        type={passwordVisibility.password ? "text" : "password"}
                         id="password"
+                        name="password"
                         placeholder="Enter Your Password"
                         className="w-full outline-none"
-                        value={password}
-                        onChange={(e) => {
-                          setPassword(e.target.value);
-                        }}
+                        value={formData.password}
+                        onChange={handleChange}
                       />
                       <img
                         src={
-                          isPasswordVisible
+                          passwordVisibility
                             ? "/Logo-Eye.svg"
                             : "/Logo-Eye-Close.svg"
                         }
                         alt=""
                         className="w-20 h-3.5 cursor-pointer"
-                        onClick={togglePasswordVisibility}
+                        onClick={() => togglePasswordVisibility("password")}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorpass}
+                      {errors.password}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -163,32 +144,35 @@ function Register() {
                       Confirm Password
                     </label>
                     <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <img
-                        src="/Logo-Password.svg"
-                        alt="confirmpassword"
-                        className="w-4 h-3.5"
-                      />
+                      <KeyRound className="text-gray-400" />
                       <input
-                        type={isConfirmPasswordVisible ? "text" : "password"}
-                        id="confirmpassword"
+                        type={
+                          passwordVisibility.confirmPassword
+                            ? "text"
+                            : "password"
+                        }
+                        id="confirmPassword"
+                        name="confirmPassword"
                         placeholder="Enter Your Password Again"
                         className="w-full outline-none"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
                       />
                       <img
                         src={
-                          isConfirmPasswordVisible
+                          passwordVisibility
                             ? "/Logo-Eye.svg"
                             : "/Logo-Eye-Close.svg"
                         }
                         alt=""
                         className="w-20 h-3.5 cursor-pointer"
-                        onClick={toggleConfirmPasswordVisibility}
+                        onClick={() =>
+                          togglePasswordVisibility("confirmPassword")
+                        }
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorConfirm}
+                      {errors.confirmPassword}
                     </span>
                   </div>
                   <button
