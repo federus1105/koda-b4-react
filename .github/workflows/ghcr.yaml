@@ -27,18 +27,13 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Check VITE_BASE_URL
-        run: echo "VITE_BASE_URL is $VITE_BASE_URL"
         
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: |
-            ${{ env.IMAGE_NAME }}:latest
-            ${{ env.IMAGE_NAME }}:${{ github.ref_name }}
+          tags:  ghcr.io/federus1105/koda-b4-react:latest
           build-args: |
             VITE_BASE_URL=${{ env.VITE_BASE_URL }}
 
