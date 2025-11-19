@@ -5,8 +5,14 @@ ARG VITE_BASE_URL
 ENV VITE_BASE_URL=${VITE_BASE_URL}
 
 WORKDIR /app
+
 COPY . .
-RUN npm ci && npm run build
+
+COPY package*.json ./
+
+RUN apk add --no-cache python3 g++ make bash && npm ci
+
+RUN npm run build
 
 FROM nginx:alpine
 
