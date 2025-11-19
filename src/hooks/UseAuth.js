@@ -1,110 +1,112 @@
 import { useState } from "react";
 
-function useAuth(mode = "login", initialValues = { email: "", password: "", fullname:"", confirmPassword:"" }) {
-  const [email, setEmail] = useState(initialValues.email);
-  const [password, setPassword] = useState(initialValues.password);
-  const [fullname, setFullname] = useState(initialValues.fullname);
-  const [phone, setPhone] = useState(initialValues.phone);
-  const [confirmPassword, setConfirmPassword] =  useState(initialValues.confirmPassword)
+function useAuth(mode = "register") {
+  // Data
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    address: "",
+    password: "",
+    confirmPassword: ""
+  });
 
-  const [errorConfirm, setErrorConfirm] = useState("")
-  const [errorem, setErrorem] = useState("");
-  const [errorpass, setErrorPass] = useState("");
-  const [errorfullname, setErrorFullname] = useState("");
-  const [alertMsg, setAlertMsg] = useState("");
+//   Error
+  const [errors, setErrors] = useState({
+    fullname: "",
+    email: "",
+    address: "",
+    password: "",
+    confirmPassword: "",
+  });
 
-  // regex untuk email
-  const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
-  const RegexKecil = /[a-z]/;
-  const RegexBesar = /[A-Z]/;
-  const Spesial = /[!@#$%^&*/><]/;
+  // Regex pattern
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
+  const smallRegex = /[a-z]/;
+  const bigRegex = /[A-Z]/;
+  const specialRegex = /[!@#$%^&*/><]/;
 
-  const Validate = () => {
+  // Handle
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  // Function Validation
+  const validate = () => {
     let valid = true;
+    const newErrors = {
+      fullname: "",
+      email: "",
+      address: "",
+      password: "",
+      confirmPassword: "",
+    };
 
-        // === Validasi khusus register ===
+    // fullname
+  if (mode === "register") {
+    if (!formData.fullname.trim()) {
+      newErrors.fullname = "fullname tidak boleh kosong";
+      valid = false;
+    } else if (formData.fullname.length < 5) {
+      newErrors.fullname = "fullname minimal 5 karakter";
+      valid = false;
+    } else if (formData.fullname.length > 20) {
+      newErrors.fullname = "fullname tidak boleh lebih dari 20 karakter";
+      valid = false;
+    }
+  }
+
+    // Email
+  if (mode === "register") {
+    if (!formData.email.trim()) {
+      newErrors.email = "Email tidak boleh kosong";
+      valid = false;
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = "Format email tidak valid";
+      valid = false;
+    }
+  }
+
+    // Password
+    if (!formData.password.trim()) {
+      newErrors.password = "Password tidak boleh kosong";
+      valid = false;
+    } else if (formData.password.length < 8) {
+      newErrors.password = "Password minimal 8 karakter";
+      valid = false;
+    } else if (!smallRegex.test(formData.password)) {
+      newErrors.password = "Password harus mengandung huruf kecil";
+      valid = false;
+    } else if (!bigRegex.test(formData.password)) {
+      newErrors.password = "Password harus mengandung huruf besar";
+      valid = false;
+    } else if (!specialRegex.test(formData.password)) {
+      newErrors.password = "Password harus mengandung karakter spesial (!@#$%^&*)";
+      valid = false;
+    }
+
+    // Confirm Password
     if (mode === "register") {
-      // Fullname
-      if (fullname.trim().length <= 3) {
-        setErrorFullname("Fullname minimal 3 karakter");
+      if (!formData.confirmPassword.trim()) {
+        newErrors.confirmPassword = "Konfirmasi password tidak boleh kosong";
         valid = false;
-      } else if (fullname.trim().length >= 20) {
-        setErrorFullname("Fullname maksimal 20 karakter");
+      } else if (formData.confirmPassword !== formData.password) {
+        newErrors.confirmPassword = "Konfirmasi password tidak sama dengan password";
         valid = false;
-      } else {
-        setErrorFullname("");
-      }
-
-      // Confirm Password
-      if (password !== confirmPassword) {
-        setErrorConfirm("Password dan konfirmasi password harus sama");
-        valid = false;
-      } else {
-        setErrorConfirm("");
       }
     }
 
-    // Validasi Email
-    if (email.trim() === ``) {
-      setErrorem("Email tidak boleh kosong");
-      valid = false;
-    } else if (!re.test(email)) {
-      setErrorem("Format Email salah");
-      valid = false;
-    } else {
-      setErrorem("");
-    }
-
-    // Validasi Password
-    if (password.trim() === ``) {
-      setErrorPass("Password tidak boleh kosong");
-      valid = false;
-    } else if (password.length < 8) {
-      setErrorPass("Minimal harus 8 karakter");
-      valid = false;
-    } else if (!RegexKecil.test(password)) {
-      setErrorPass("Minimal harus ada huruf kecil");
-      valid = false;
-    }  else if (!Spesial.test(password)) {
-        setErrorPass("Minimal harus ada karakter spesial")
-        valid = false;
-    }
-    else {
-      /* Jika input email benar tetapi password salah, input email tidak akan
-  muncul di console harus kedua nya benar */
-      setErrorem("");
-      setErrorPass("");
-    }
+    setErrors(newErrors);
     return valid;
   };
 
   return {
-    // Data
-    email,
-    setEmail,
-    password,
-    setPassword,
-    fullname,
-    setFullname,
-    phone,
-    setPhone,
-    confirmPassword,
-    setConfirmPassword,
-
-    // Error
-    errorem,
-    setErrorem,
-    errorpass,
-    setErrorPass,
-    errorfullname,
-    setErrorFullname,
-    errorConfirm,
-    setErrorConfirm,
-    alertMsg,
-    setAlertMsg,
-
-    // Method
-    Validate,
+    formData,
+    setFormData,
+    errors,
+    setErrors,
+    handleChange,
+    validate,
   };
 }
 
