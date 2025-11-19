@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Card from "../../components/cardproduct/Card";
 import { ArrowBigLeft, ArrowBigRight, MessageCircleMore } from "lucide-react";
 import Chat from "../../components/modal/Chat";
+import FavoriteProduct from "../../components/cardproduct/FavoriteProduct";
 
 function Home() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -103,7 +104,7 @@ function Home() {
             taste and make your day better.
           </p>
         </div>
-        <Card />
+        <FavoriteProduct />
       </div>
       {/* map */}
       <div className="px-6 py-15 bg-gray-100 flex flex-col gap-5 md:px-15">
