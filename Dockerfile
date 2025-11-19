@@ -1,4 +1,4 @@
-FROM node:alpine AS builder
+FROM node:18-alpine AS builder
 
 ARG VITE_BASE_URL
 
@@ -9,7 +9,8 @@ WORKDIR /app
 
 COPY package*.json ./
 
-RUN apk add --no-cache python3 g++ make bash && npm ci
+RUN apk add --no-cache python3 g++ make bash libc6-compat
+RUN npm ci
 
 COPY . .
 
