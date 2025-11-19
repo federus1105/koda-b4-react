@@ -6,11 +6,12 @@ ENV VITE_BASE_URL=${VITE_BASE_URL}
 
 WORKDIR /app
 
-COPY . .
 
 COPY package*.json ./
 
 RUN apk add --no-cache python3 g++ make bash && npm ci
+
+COPY . .
 
 RUN npm run build
 
