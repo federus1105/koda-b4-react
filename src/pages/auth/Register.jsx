@@ -1,15 +1,13 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
-import { useDispatch } from "react-redux";
-import { register } from "../../redux/slice/authSlice";
 import { toast } from "react-toastify";
+import { registerUser } from "../../services/authService";
 
 function Register() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isConfirmPasswordVisible, setConfirmIsPasswordVisible] =
     useState(false);
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // toogle password visibiliy
@@ -38,11 +36,18 @@ function Register() {
 
   const submitHandler = async (event) => {
     event.preventDefault();
-    if (!Validate()) return;
-    if (email && password && fullname) {
-      dispatch(register({ email, password, fullname }));
-      toast.success("Akun berhasil dibuat")
-      navigate("/auth/login");
+    if (!Validate()) {
+      toast.error("Cek kembali form kamu!");
+      return;
+    }
+    try {
+      const data = await registerUser();
+      toast.success("Registrasi berhasil!");
+      navigate("/login");
+      console.log(data);
+    } catch (error) {
+      console.error("Register error:", error);
+      toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
     }
   };
   return (
