@@ -43,8 +43,6 @@ jobs:
   deploy:
     needs: build-and-publish
     runs-on: ubuntu-latest
-    permissions:
-      packages: read
     steps:
       - name: Deploy frontend via SSH
         uses: appleboy/ssh-action@v0.1.9
