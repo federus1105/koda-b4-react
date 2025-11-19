@@ -7,18 +7,20 @@ import {
   MoveRight,
   Import,
 } from "lucide-react";
-import Card from "../../components/cardproduct/Card";
 import { Link, useParams } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setSize, setVariant, setPieces } from "../../redux/slice/orderSlice";
+import { getProductById } from "../../services/productService";
+import FavoriteProduct from "../../components/cardproduct/FavoriteProduct";
 
 function DetailProduct({ min = 0, max = 10, onChange }) {
   const [product, setProduct] = useState(null);
-  const { id } = useParams();
   const [quantity, setQuantity] = useState(min);
   const dispatch = useDispatch();
   const [selectedSize, setSelectedSize] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState(null);
+  const { id } = useParams();
+  const token = useSelector((state) => state.auth.token);
 
   const handleDecrease = () => {
     if (quantity > min) {
@@ -37,40 +39,47 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
       onChange?.(newQty);
     }
   };
-
+  // --- GET PRODUCT BY ID ---
   useEffect(() => {
-    async function fetchData() {
-      if (!id) return;
+    const fetchProduct = async () => {
       try {
-        const res = await fetch(
-          `https://raw.githubusercontent.com/federus1105/koda-b4-react/refs/heads/development/data.json`
-        );
-        if (!res.ok) {
-          throw new Error(`HTTP error! status: ${res.status}`);
-        }
-        const data = await res.json();
-        const foundProduct = data.products.find(
-          (item) => item.id === Number(id)
-        );
-        setProduct(foundProduct);
-      } catch (err) {
-        console.log(err);
+        const data = await getProductById(id, token);
+        console.log(data.Result);
+
+        //--- MAPPING DATA ---
+        const productData = {
+          name: data.Result.name,
+          description: data.Result.desc,
+          images: data.Result.images,
+          price_original: data.Result.price,
+          price_discount: data.Result.priceDiscount,
+          rating: data.Result.rating,
+          sizes: data.Result.sizes,
+          variants: data.Result.variant,
+          stock: data.Result.stock,
+        };
+
+        setProduct(productData);
+      } catch (error) {
+        console.error(error);
       }
-    }
-    fetchData();
-  }, [id]);
+    };
+
+    fetchProduct();
+  }, [id, token]);
+
   if (!product) {
     return <p>Loading...</p>;
   }
   return (
     <>
       <header className="my-20 mx-5 lg:flex lg:mx-30 lg:mt-40 lg:items-center">
-        {/* Images */}
+        {/* --- Images --- */}
         <div className="lg:w-1/2 flex flex-col md:items-center">
           {/* Gambar utama */}
           <div className="w-full max-w-md">
             <img
-              src={product.image}
+              src={product.images[0]}
               alt={product.name}
               className="mx-auto aspect-square w-full object-cover"
             />
@@ -80,17 +89,17 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
           <div className="flex my-4 w-full md:justify-center">
             <div className="flex gap-3 w-full max-w-md">
               <img
-                src={product.image}
+                src={product.images[1]}
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src={product.image}
+                src={product.images[2]}
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src={product.image}
+                src={product.images[3]}
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
@@ -98,25 +107,31 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
           </div>
         </div>
 
-        {/* Description */}
+        {/* --- Description  --- */}
         <div className="lg:w-1/2 md:mx-10 lg:mx-0 ">
-          {product.flash_sale && (
+          {/* {product.flash_sale && (
             <button className="bg-red-700 text-white rounded-4xl py-2 px-5">
               FLASH SALE
             </button>
-          )}
+          )} */}
           <div className="flex flex-col gap-5 mt-5">
             <h1 className="text-xl font-medium lg:text-3xl">{product.name}</h1>
             <div className="flex gap-2">
-              {product.price_discount < product.price_original && (
+              {product.price_discount > 0 && (
                 <span className="line-through text-red-700">
                   IDR {product.price_original.toLocaleString("id-ID")}
                 </span>
               )}
+
               <h1 className="text-orange-500 text-xl">
-                IDR {product.price_discount.toLocaleString("id-ID")}
+                IDR{" "}
+                {(product.price_discount > 0
+                  ? product.price_discount
+                  : product.price_original
+                ).toLocaleString("id-ID")}
               </h1>
             </div>
+
             <div className="flex items-center gap-2">
               {Array.from({ length: 5 }).map((_, index) => (
                 <img key={index} src="/star.svg" alt="Star" />
@@ -155,43 +170,44 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             <div className="flex flex-col gap-3">
               <h1 className="font-medium">Choose Size</h1>
               <div className="flex justify-between gap-10">
-                {["Regular", "Medium", "Large"].map((size) => (
+                {product.sizes.map((size) => (
                   <button
-                    key={size}
+                    key={size.id}
                     onClick={() => {
-                      setSelectedSize(size);
-                      dispatch(setSize(size));
+                      setSelectedSize(size.name);
+                      dispatch(setSize(size.name));
                     }}
                     className={`border w-full py-2 px-4 cursor-pointer ${
-                      selectedSize === size
+                      selectedSize === size.name
                         ? "border-orange-500 text-orange-500 font-bold"
                         : "border-gray-300"
                     }`}
                   >
-                    {size}
+                    {size.name.charAt(0).toUpperCase() + size.name.slice(1)}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* Variant */}
+            {/* --- Variant  --- */}
             <div className="flex flex-col gap-3">
               <h1 className="font-medium">Hot/Ice?</h1>
               <div className="flex justify-between lg:gap-10">
-                {["Ice", "Hot"].map((variant) => (
+                {product.variants.map((variant) => (
                   <button
-                    key={variant}
+                    key={variant.id}
                     onClick={() => {
-                      setSelectedVariant(variant);
-                      dispatch(setVariant(variant));
+                      setSelectedVariant(variant.name);
+                      dispatch(setVariant(variant.name));
                     }}
                     className={`border py-2 px-20 lg:w-full cursor-pointer ${
-                      selectedVariant === variant
+                      selectedVariant === variant.name
                         ? "border-orange-500 text-orange-500 font-bold"
                         : "border-gray-300"
                     }`}
                   >
-                    {variant}
+                    {variant.name.charAt(0).toUpperCase() +
+                      variant.name.slice(1)}
                   </button>
                 ))}
               </div>
@@ -216,7 +232,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
         <h1 className="text-center text-2xl font-medium">
           Recommendation <span className="text-[#8E6447]">For You</span>
         </h1>
-        <Card />
+        <FavoriteProduct />
         <div className="mb-10">
           <div className="flex items-center justify-center gap-2 mt-10">
             {[1, 2, 3, 4].map((num) => (
