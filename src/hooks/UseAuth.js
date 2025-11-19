@@ -1,12 +1,13 @@
 import { useState } from "react";
 
-function useAuth(initialValues = { email: "", password: "", fullname:"", confirmPassword:"" }) {
+function useAuth(mode = "login", initialValues = { email: "", password: "", fullname:"", confirmPassword:"" }) {
   const [email, setEmail] = useState(initialValues.email);
   const [password, setPassword] = useState(initialValues.password);
   const [fullname, setFullname] = useState(initialValues.fullname);
   const [phone, setPhone] = useState(initialValues.phone);
   const [confirmPassword, setConfirmPassword] =  useState(initialValues.confirmPassword)
-  const [errorConfirm, setErrorConfirm] = useState(initialValues.confirmPassword)
+
+  const [errorConfirm, setErrorConfirm] = useState("")
   const [errorem, setErrorem] = useState("");
   const [errorpass, setErrorPass] = useState("");
   const [errorfullname, setErrorFullname] = useState("");
@@ -14,24 +15,33 @@ function useAuth(initialValues = { email: "", password: "", fullname:"", confirm
 
   // regex untuk email
   const re = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)+$/;
-  // regex untuk huruf kecil
   const RegexKecil = /[a-z]/;
-  // regex untuk huruf besar
   const RegexBesar = /[A-Z]/;
-  // regex untuk karakter spesial
   const Spesial = /[!@#$%^&*/><]/;
 
   const Validate = () => {
     let valid = true;
 
-    if (fullname.trim().length <= 3) {
-        setErrorFullname("Fullname minimal 3 karakter")
+        // === Validasi khusus register ===
+    if (mode === "register") {
+      // Fullname
+      if (fullname.trim().length <= 3) {
+        setErrorFullname("Fullname minimal 3 karakter");
         valid = false;
-    } else if  (fullname.trim().length >= 20) {
-        setErrorFullname("Fullname maximal 20 karakter")
-        valid = false
-    } else {
-        setErrorFullname("")
+      } else if (fullname.trim().length >= 20) {
+        setErrorFullname("Fullname maksimal 20 karakter");
+        valid = false;
+      } else {
+        setErrorFullname("");
+      }
+
+      // Confirm Password
+      if (password !== confirmPassword) {
+        setErrorConfirm("Password dan konfirmasi password harus sama");
+        valid = false;
+      } else {
+        setErrorConfirm("");
+      }
     }
 
     // Validasi Email
@@ -45,13 +55,6 @@ function useAuth(initialValues = { email: "", password: "", fullname:"", confirm
       setErrorem("");
     }
 
-        // validasi confirm password
-    if (password !== confirmPassword) {
-      setErrorConfirm("Password dan konfirmasi password harus sama");
-      valid = false;
-    } else {
-      setErrorConfirm("");
-    }
     // Validasi Password
     if (password.trim() === ``) {
       setErrorPass("Password tidak boleh kosong");
@@ -76,6 +79,7 @@ function useAuth(initialValues = { email: "", password: "", fullname:"", confirm
   };
 
   return {
+    // Data
     email,
     setEmail,
     password,
@@ -86,16 +90,20 @@ function useAuth(initialValues = { email: "", password: "", fullname:"", confirm
     setPhone,
     confirmPassword,
     setConfirmPassword,
-    errorConfirm,
-    setErrorConfirm,
+
+    // Error
     errorem,
     setErrorem,
     errorpass,
+    setErrorPass,
     errorfullname,
     setErrorFullname,
-    setErrorPass,
+    errorConfirm,
+    setErrorConfirm,
     alertMsg,
     setAlertMsg,
+
+    // Method
     Validate,
   };
 }

@@ -14,12 +14,14 @@ function Card() {
   useEffect(() => {
     async function fetchproducts() {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/products`);
+        const res = await fetch(
+          "https://raw.githubusercontent.com/federus1105/koda-b4-react/refs/heads/development/data.json"
+        );
         if (!res.ok) {
           throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
-        setProducts(data);
+        setProducts(data.products);
       } catch (err) {
         console.log(err);
       }

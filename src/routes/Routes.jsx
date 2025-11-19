@@ -14,6 +14,10 @@ import Profile from "../pages/profile/Profile";
 import { ToastContainer } from "react-toastify";
 import PrivateRoute from "../utils/PrivateRoute";
 import { Slide } from "react-toastify";
+import AdminLayout from "../layouts/AdminLayout";
+import Dashboard from "../pages/dashboardAdmin/Dashboard";
+import ProductAdmin from "../pages/productAdmin/ProductAdmin";
+import ModalCreate from "../components/productAdmin/ModalCreate";
 
 function Router() {
   return (
@@ -68,6 +72,11 @@ function Router() {
                 </PrivateRoute>
               }
             />
+          </Route>
+          <Route element={<AdminLayout/>}>
+             <Route path="/admin/dashboard" element={<Dashboard />} />
+             <Route path="/admin/product" element={<ProductAdmin />} />
+             <Route path="/admin/order" element={<ModalCreate/>} />
           </Route>
         </Routes>
       </BrowserRouter>

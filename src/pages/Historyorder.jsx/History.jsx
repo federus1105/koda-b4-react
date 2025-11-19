@@ -6,7 +6,7 @@ function History() {
   return (
     <>
       <div className="my-20 mx-5 lg:flex lg:mx-30 justify-center gap-20 md:mx-15 lg:my-30">
-        <div className="lg:w-1/3 flex flex-col gap-5">
+        <div className="lg:w-1/2 flex flex-col gap-5">
           <h1 className="font-medium text-xl lg:text-3xl">History Order</h1>
           <div className="flex flex-col justify-between gap-3 lg:flex-row-reverse">
             <div className="flex items-center bg-gray-100 py-3 px-2 gap-2 w-fit">
@@ -45,7 +45,7 @@ function History() {
             </div>
           </div>
         </div>
-        <div className="lg:w-1/3 border h-fit border-gray-300 p-5 flex flex-col gap-3 lg:mt-15">
+        <div className="lg:w-1/4 border h-fit border-gray-300 p-5 flex flex-col gap-3 lg:mt-15">
           <MessageSquareMore />
           <p className="font-medium text-gray-500">Send Us Message</p>
           <p className="text-gray-500">
