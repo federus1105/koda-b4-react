@@ -1,47 +1,44 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
-import { login } from "../../redux/slice/authSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch} from "react-redux";
 import { toast } from "react-toastify";
+import {login} from "../../redux/slice/authSlice";
+import { loginUser } from "../../services/authService";
+import { KeyRound, Mail } from "lucide-react";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
+  const { formData, errors, handleChange, validate } = useAuth("login");
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const users = useSelector((state) => state.auth.users);
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
 
-  const {
-    email,
-    setEmail,
-    password,
-    setPassword,
-    errorem,
-    errorpass,
-    Validate,
-  } = useAuth();
-
-  const submitHandler = (event) => {
-    event.preventDefault();
-
-    if (!Validate()) return;
-    const isValid = users.find(
-      (u) => u.email === email.trim() && u.password === password
-    );
-    if (isValid) {
-      dispatch(login(isValid));
-      toast.success("Login Berhasil");
-      navigate("/");
-    } else {
-      toast.error("Email atau password salah!");
+  // --- SUBMIT ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) {
+      return;
+    }
+    try {
+      const data = await loginUser(formData);
+      dispatch(
+        login({
+          token: data.Result.token,
+        })
+      );
+      toast.success("Login berhasil!");
+      console.log(data)
+      navigate("/profile");
+    } catch (error) {
+      console.error("Login error:", error);
+      toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
     }
   };
-
   return (
     <>
       <section className="min-h-screen">
@@ -70,24 +67,25 @@ function Login() {
                 </header>
 
                 {/* input user email and pass */}
-                <form onSubmit={submitHandler}>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium">
                       Email
                     </label>
                     <div className="input-email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <img src="/Logo-Email.svg" alt="" className="w-4 h-3.5" />
+                      <Mail className="text-gray-400"/>
                       <input
                         type="text"
                         id="email"
+                        name="email"
                         placeholder="Enter Your Email"
                         className="w-full outline-none"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={formData.email}
+                        onChange={handleChange}
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorem}
+                      {errors.email}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -95,18 +93,15 @@ function Login() {
                       Password
                     </label>
                     <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                      <img
-                        src="/Logo-Password.svg"
-                        alt="password"
-                        className="w-4 h-3.5"
-                      />
+                      <KeyRound className="text-gray-400"/>
                       <input
                         type={isPasswordVisible ? "text" : "password"}
                         id="password"
+                        name="password"
                         placeholder="Enter Your Password"
                         className="w-full outline-none"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
+                        value={formData.password}
+                        onChange={handleChange}
                       />
                       <img
                         src={
@@ -120,7 +115,7 @@ function Login() {
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {errorpass}
+                      {errors.password}
                     </span>
                   </div>
                   <Link to={"../forgot"}>
