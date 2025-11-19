@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ThumbsUp,
   Minus,
@@ -8,78 +8,120 @@ import {
   Import,
 } from "lucide-react";
 import Card from "../../components/cardproduct/Card";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setSize, setVariant, setPieces } from "../../redux/slice/orderSlice";
 
-function DetailProduct({ min = 1, max = 10, onChange }) {
+function DetailProduct({ min = 0, max = 10, onChange }) {
+  const [product, setProduct] = useState(null);
+  const { id } = useParams();
   const [quantity, setQuantity] = useState(min);
+  const dispatch = useDispatch();
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [selectedVariant, setSelectedVariant] = useState(null);
 
   const handleDecrease = () => {
     if (quantity > min) {
       const newQty = quantity - 1;
       setQuantity(newQty);
+      dispatch(setPieces(newQty));
       onChange?.(newQty);
     }
   };
+
   const handleIncrease = () => {
     if (quantity < max) {
       const newQty = quantity + 1;
       setQuantity(newQty);
+      dispatch(setPieces(newQty));
       onChange?.(newQty);
     }
   };
 
+  useEffect(() => {
+    async function fetchData() {
+      if (!id) return;
+      try {
+        const res = await fetch(
+          `https://raw.githubusercontent.com/federus1105/koda-b4-react/refs/heads/development/data.json`
+        );
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        const foundProduct = data.products.find(
+          (item) => item.id === Number(id)
+        );
+        setProduct(foundProduct);
+      } catch (err) {
+        console.log(err);
+      }
+    }
+    fetchData();
+  }, [id]);
+  if (!product) {
+    return <p>Loading...</p>;
+  }
   return (
     <>
-      <header className="my-20 mx-5 lg:flex lg:mx-30 lg:mt-40">
+      <header className="my-20 mx-5 lg:flex lg:mx-30 lg:mt-40 lg:items-center">
         {/* Images */}
-        <div className="lg:w-1/2 flex flex-col items-center">
+        <div className="lg:w-1/2 flex flex-col md:items-center">
           {/* Gambar utama */}
           <div className="w-full max-w-md">
             <img
-              src="/coffe1.svg"
-              alt="Main Coffee"
-              className="mx-auto w-full object-cover"
+              src={product.image}
+              alt={product.name}
+              className="mx-auto aspect-square w-full object-cover"
             />
           </div>
 
           {/* Gambar thumbnail / list */}
-          <div className="flex justify-center my-4 w-full">
+          <div className="flex my-4 w-full md:justify-center">
             <div className="flex gap-3 w-full max-w-md">
               <img
-                src="/coffe2.svg"
-                alt="Coffee 2"
-                className="w-1/3 object-cover"
+                src={product.image}
+                alt={product.name}
+                className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src="/coffe3.svg"
-                alt="Coffee 3"
-                className="w-1/3 object-cover"
+                src={product.image}
+                alt={product.name}
+                className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src="/coffe4.svg"
-                alt="Coffee 4"
-                className="w-1/3 object-cover"
+                src={product.image}
+                alt={product.name}
+                className="w-1/3 h-1/2 object-cover"
               />
             </div>
           </div>
         </div>
 
         {/* Description */}
-        <div className="lg:w-1/2 md:mt-5 md:mx-15">
-          <button className="bg-red-700 text-white rounded-4xl py-2 px-5">
-            FlASH SALE
-          </button>
+        <div className="lg:w-1/2 md:mx-10 lg:mx-0 ">
+          {product.flash_sale && (
+            <button className="bg-red-700 text-white rounded-4xl py-2 px-5">
+              FLASH SALE
+            </button>
+          )}
           <div className="flex flex-col gap-5 mt-5">
-            <h1 className="text-xl font-medium lg:text-3xl">Hazelnut Latte</h1>
+            <h1 className="text-xl font-medium lg:text-3xl">{product.name}</h1>
             <div className="flex gap-2">
-              <span className="line-through text-red-700">IDR10.000</span>
-              <h1 className="text-orange-500 text-xl">IDR 20.000</h1>
+              {product.price_discount < product.price_original && (
+                <span className="line-through text-red-700">
+                  IDR {product.price_original.toLocaleString("id-ID")}
+                </span>
+              )}
+              <h1 className="text-orange-500 text-xl">
+                IDR {product.price_discount.toLocaleString("id-ID")}
+              </h1>
             </div>
             <div className="flex items-center gap-2">
               {Array.from({ length: 5 }).map((_, index) => (
                 <img key={index} src="/star.svg" alt="Star" />
               ))}
-              <p>5.0</p>
+              <p>{product.rating}</p>
             </div>
             <div className="flex gap-5 text-gray-500 text-xl">
               <p>200+ Review</p>
@@ -88,12 +130,7 @@ function DetailProduct({ min = 1, max = 10, onChange }) {
               <ThumbsUp />
             </div>
             <div>
-              <p className="text-gray-500 text-xl">
-                Cold brewing is a method of brewing that combines ground coffee
-                and cool water and uses time instead of heat to extract the
-                flavor. It is brewed in small batches and steeped for as long as
-                48 hours
-              </p>
+              <p className="text-gray-500 text-xl">{product.description}</p>
             </div>
             <div className="flex items-center gap-2">
               <button
@@ -114,35 +151,59 @@ function DetailProduct({ min = 1, max = 10, onChange }) {
                 <Plus size={15} />
               </button>
             </div>
+            {/* Size */}
             <div className="flex flex-col gap-3">
               <h1 className="font-medium">Choose Size</h1>
               <div className="flex justify-between gap-10">
-                <button className="border border-gray-300 w-full py-2 px-4 cursor-pointer">
-                  Regular
-                </button>
-                <button className="border border-gray-300 w-full py-2 px-4 cursor-pointer">
-                  Medium
-                </button>
-                <button className="border border-gray-300 w-full py-2 px-4 cursor-pointer">
-                  Large
-                </button>
+                {["Regular", "Medium", "Large"].map((size) => (
+                  <button
+                    key={size}
+                    onClick={() => {
+                      setSelectedSize(size);
+                      dispatch(setSize(size));
+                    }}
+                    className={`border w-full py-2 px-4 cursor-pointer ${
+                      selectedSize === size
+                        ? "border-orange-500 text-orange-500 font-bold"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {size}
+                  </button>
+                ))}
               </div>
             </div>
+
+            {/* Variant */}
             <div className="flex flex-col gap-3">
               <h1 className="font-medium">Hot/Ice?</h1>
               <div className="flex justify-between lg:gap-10">
-                <button className="border border-gray-300 py-2 px-20 lg:w-full cursor-pointer">
-                  Ice
-                </button>
-                <button className="border border-gray-300 py-2 px-20 lg:w-full cursor-pointer">
-                  Hot
-                </button>
+                {["Ice", "Hot"].map((variant) => (
+                  <button
+                    key={variant}
+                    onClick={() => {
+                      setSelectedVariant(variant);
+                      dispatch(setVariant(variant));
+                    }}
+                    className={`border py-2 px-20 lg:w-full cursor-pointer ${
+                      selectedVariant === variant
+                        ? "border-orange-500 text-orange-500 font-bold"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {variant}
+                  </button>
+                ))}
               </div>
             </div>
+
             <div className="flex gap-4 flex-col md:flex-row lg:mt-10">
-                <Link to={"/checkout"} className="bg-orange-400 w-full py-4 rounded-md cursor-pointer text-center">
-                  Buy
-                </Link>
+              <Link
+                to={"/checkout"}
+                className="bg-orange-400 w-full py-4 rounded-md cursor-pointer text-center"
+              >
+                Buy
+              </Link>
               <button className="flex border border-orange-400 text-orange-500 w-full justify-center py-4 gap-2 rounded-md cursor-pointer">
                 <ShoppingCart />
                 Add To Cart

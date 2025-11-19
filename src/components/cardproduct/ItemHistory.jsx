@@ -6,6 +6,7 @@ import { formatDate } from "../../utils/formatedDate";
 
 function ItemHistory() {
   const history = useSelector((state) => state.order.orderHistory);
+  console.log(history);
 
   if (!history.length) {
     return <p className="text-center text-gray-500">No order history yet.</p>;
@@ -21,7 +22,11 @@ function ItemHistory() {
               className="bg-gray-100 px-5 py-5 flex flex-col lg:flex-row lg:flex-wrap gap-7 lg:justify-between rounded-lg"
             >
               <div className="hidden lg:block">
-                <img src={item.selectedProduct.image} alt={item.selectedProduct.name} className="w-15 h-20" />
+                <img
+                  src={item.selectedProduct.image}
+                  alt={item.selectedProduct.name}
+                  className="w-15 h-20"
+                />
               </div>
               <div className="flex justify-between lg:gap-15">
                 <div className="flex flex-col gap-2">
@@ -62,13 +67,13 @@ function ItemHistory() {
                   </p>
                 </div>
               </div>
-{/* 
+              {/* 
               {item.id ? ( */}
-                <Link to={`/detailorder/${history[0].id}`}>
-                  <p className="text-orange-500 underline cursor-pointer">
-                    View Order Detail
-                  </p>
-                </Link>
+              <Link to={`/detailorder/${history[0].id}`}>
+                <p className="text-orange-500 underline cursor-pointer">
+                  View Order Detail
+                </p>
+              </Link>
               {/* ) : (
                 <p className="text-gray-400 italic">No ID available</p>
               )} */}
