@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
@@ -95,6 +95,16 @@ function Router() {
       />
     </>
   );
+}
+
+export function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [pathname]);
+
+  return null;
 }
 
 export default Router;
