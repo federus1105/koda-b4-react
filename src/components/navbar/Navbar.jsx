@@ -11,7 +11,7 @@ function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const token = useSelector((state) => state.auth.token);
-  const email = useSelector((state) => state.auth.currentUser.result.email)
+  const email = useSelector((state) => state.auth.currentUser.email)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
