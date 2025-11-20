@@ -7,6 +7,7 @@ import { currentUser, login } from "../../redux/slice/authSlice";
 import { loginUser } from "../../services/authService";
 import { KeyRound, Mail } from "lucide-react";
 import { profileUser } from "../../services/profileClient";
+import {jwtDecode} from 'jwt-decode';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -32,12 +33,21 @@ function Login() {
           token: data.result.token,
         })
       );
+
+      // --- DECODE TOKEN GET ROLE ---
+      const decodedToken = jwtDecode(data.result.token);
+      const role = decodedToken.role;
+
       // --- FETCH PROFILE USER ---
       const profile = await profileUser(data.result.token);
       dispatch(currentUser(profile.result));
 
       toast.success("Login berhasil!");
-      navigate("/");
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else {
+        navigate("/"); //
+      }
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
