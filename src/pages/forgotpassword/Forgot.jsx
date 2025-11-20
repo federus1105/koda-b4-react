@@ -1,6 +1,27 @@
 import React from "react";
+import useAuth from "../../hooks/UseAuth";
+import { toast } from "react-toastify";
+import { forgotPassword } from "../../services/authService";
+import { Mail } from "lucide-react";
 
 function Forgot() {
+  const { formData, errors, handleChange, validate } = useAuth("");
+
+  // --- HANDLE SUBMIT ---
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) {
+      return;
+    }
+    try {
+      const resp = await forgotPassword(formData);
+      toast.success("Token Reset password telah dikirim!");
+    } catch (error) {
+      console.error("forgot error:", error);
+      toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
+    }
+  };
+
   return (
     <>
       <section className="min-h-screen">
@@ -31,22 +52,25 @@ function Forgot() {
                 </header>
 
                 {/* input user email and pass */}
-                <form>
+                <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium">
                       Email
                     </label>
-                    <div className="input-email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <img src="/Logo-Email.svg" alt="" className="w-4 h-3.5" />
+                    <div className="email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
+                      <Mail className="text-gray-400" />
                       <input
                         type="text"
                         id="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
                         placeholder="Enter Your Email"
                         className="w-full outline-none"
                       />
                     </div>
                     <span className="text-red-500 min-h-[1.5rem] text-sm">
-                      {/* {errorem} */}
+                      {errors.email}
                     </span>
                   </div>
                   <button
