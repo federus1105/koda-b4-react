@@ -11,7 +11,7 @@ function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const token = useSelector((state) => state.auth.token);
-  const email = useSelector((state) => state.auth.currentUser.email)
+  const profile = useSelector((state) => state.auth.currentUser)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -56,7 +56,7 @@ function Navbar() {
               />
               {dropdownOpen && (
                 <div className="flex flex-col gap-3 py-3 px-4 absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
-                  <p className="text-gray-600">{email}</p>
+                  <p className="text-gray-600">{profile.email}</p>
                   <Link to="/profile">
                     <p className="text-gray-600">Profile</p>
                   </Link>
