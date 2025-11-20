@@ -18,6 +18,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/dashboardAdmin/Dashboard";
 import ProductAdmin from "../pages/productAdmin/ProductAdmin";
 import ModalCreate from "../components/productAdmin/ModalCreate";
+import ResetPassword from "../pages/reset-password/ResetPassword";
 
 function Router() {
   return (
@@ -28,6 +29,7 @@ function Router() {
             <Route path="register" element={<Register />} />
             <Route path="login" element={<Login />} />
             <Route path="forgot" element={<Forgot />} />
+            <Route path="reset" element={<ResetPassword />} />
           </Route>
           <Route element={<MainLayout />}>
             <Route path="/" element={<Home />} />
