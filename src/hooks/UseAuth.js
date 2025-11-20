@@ -27,7 +27,7 @@ export default function useAuth(mode = "register") {
     const newErrors = {};
 
     // --- FULLNAME ---
-    if (mode === "register" && "fullname" in formData) {
+    if ("fullname" in formData && (mode === "register" || mode === "profile") ) {
       if (!formData.fullname.trim()) {
         newErrors.fullname = "Fullname tidak boleh kosong";
         valid = false;
@@ -41,7 +41,7 @@ export default function useAuth(mode = "register") {
     }
 
     // --- PASSWORD ---
-    if ("password" in formData && (mode === "register" || mode === "login" || mode === "reset")) {
+    if ("password" in formData && (mode === "register" || mode === "login" || mode === "reset" || mode === "profile")) {
       if (!formData.password.trim()) {
         newErrors.password = "Password tidak boleh kosong";
         valid = false;
@@ -62,7 +62,7 @@ export default function useAuth(mode = "register") {
     }
 
       // --- EMAIL ---
-    if ("email" in formData) {
+    if ("email" in formData && (mode === "forgot" || mode === "register" || mode === "login" || mode === "profile")) {
       if (!formData.email.trim()) {
         newErrors.email = "Email tidak boleh kosong";
         valid = false;
