@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { favoriteProduct } from "../../services/productService";
 import { toast } from "react-toastify";
@@ -7,14 +6,13 @@ import { ShoppingCart } from "lucide-react";
 
 function FavoriteProduct() {
   const [products, setProducts] = useState([]);
-  const token = useSelector((state) => state.auth.token);
   const navigate = useNavigate();
 
   // --- GET PRODUCT FAVORITE ---
   useEffect(() => {
     const fetchProvinces = async () => {
       try {
-        const result = await favoriteProduct(token);
+        const result = await favoriteProduct();
         console.log(result.data);
         setProducts(result.data);
       } catch (error) {
@@ -23,8 +21,8 @@ function FavoriteProduct() {
       }
     };
 
-    if (token) fetchProvinces();
-  }, [token]);
+    fetchProvinces();
+  }, []);
 
   const handleSelectProduct = (productId) => {
     navigate(`/detailproduct/${productId}`);

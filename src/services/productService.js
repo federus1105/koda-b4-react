@@ -1,12 +1,9 @@
 import { apiClient } from "./apiClient";
 
 //--- FAVORITE PRODUCT ---
-export const favoriteProduct = async (token) => {
+export const favoriteProduct = async () => {
     return apiClient("/favorite-product", {
         method: "GET",
-        headers: {
-         Authorization: `Bearer ${token}`,
-        }
     })
 }
 
