@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/UseAuth";
-import { useDispatch} from "react-redux";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import {login} from "../../redux/slice/authSlice";
+import { currentUser, login } from "../../redux/slice/authSlice";
 import { loginUser } from "../../services/authService";
 import { KeyRound, Mail } from "lucide-react";
+import { profileUser } from "../../services/profileClient";
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
@@ -31,8 +32,12 @@ function Login() {
           token: data.result.token,
         })
       );
+      // --- FETCH PROFILE USER ---
+      const profile = await profileUser(data.result.token);
+      dispatch(currentUser(profile.result));
+
       toast.success("Login berhasil!");
-      navigate("/profile");
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
@@ -72,7 +77,7 @@ function Login() {
                       Email
                     </label>
                     <div className="input-email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <Mail className="text-gray-400"/>
+                      <Mail className="text-gray-400" />
                       <input
                         type="text"
                         id="email"
@@ -92,7 +97,7 @@ function Login() {
                       Password
                     </label>
                     <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                      <KeyRound className="text-gray-400"/>
+                      <KeyRound className="text-gray-400" />
                       <input
                         type={isPasswordVisible ? "text" : "password"}
                         id="password"
