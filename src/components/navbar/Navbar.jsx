@@ -11,6 +11,7 @@ function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const token = useSelector((state) => state.auth.token);
+  const email = useSelector((state) => state.auth.currentUser.result.email)
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,8 +40,8 @@ function Navbar() {
         </div>
 
         <div className="flex items-center lg:gap-3 relative">
-          <Search className="text-white hidden md:block" />
-          <ShoppingCart className="text-white hidden md:block" />
+          <Search className="text-white hidden lg:block" />
+          <ShoppingCart className="text-white hidden lg:block" />
           <button onClick={() => setModalOpen(true)} className="lg:hidden">
             <img src="/menu-right.svg" alt="menu" className="w-8" />
           </button>
@@ -55,6 +56,7 @@ function Navbar() {
               />
               {dropdownOpen && (
                 <div className="flex flex-col gap-3 py-3 px-4 absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg z-50">
+                  <p className="text-gray-600">{email}</p>
                   <Link to="/profile">
                     <p className="text-gray-600">Profile</p>
                   </Link>
