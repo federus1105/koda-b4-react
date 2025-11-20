@@ -1,16 +1,35 @@
-import { Mail } from "lucide-react";
-import React, { useState } from "react";
+import { KeyRound, LucideClosedCaption, Mail, MapPin, Phone, User } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { profileUser } from "../../services/profileClient";
+import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
+const defaultProfilePhoto = "/default-profile.webp";
 
 function Profile() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const profile = useSelector((state) => state.auth.currentUser)
+  const [profile, setProfile] = useState("")
+  const token = useSelector((state) => state.auth.token);
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-    const defaultProfilePhoto = "/default-profile.webp";
+
+  // --- GET PROFILE USER ---
+    useEffect(() => {
+      const fetchProfile = async () => {
+        try {
+          const res = await profileUser(token);
+          console.log(res)
+          setProfile(res.result);
+        } catch (error) {
+          console.error(error);
+          toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
+        }
+      };
+  
+      if (token) fetchProfile(token);
+    }, [token]);
   return (
     <>
       <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-30">
@@ -18,10 +37,10 @@ function Profile() {
           <h1 className="font-medium text-xl lg:text-3xl">Profile</h1>
           <div className="border border-gray-300 rounded-lg flex flex-col px-10 py-3 lg:py-10 items-center gap-3">
             <h1 className="font-medium text-xl">{profile.fullname}</h1>
-            <p className="text-gray-500">{profile.email}</p>
+            <p className="text-gray-500"></p>
             <div className="w-20 h-20 rounded-full overflow-hidden">
               <img
-               src={defaultProfilePhoto}
+                src={profile.photos || defaultProfilePhoto}
                 alt=""
                 className="w-full h-full object-cover"
               />
@@ -36,17 +55,17 @@ function Profile() {
           </div>
         </header>
         <div className="border border-gray-300 px-3 lg:px-20 lg:py-15 py-5 lg:my-13 rounded-lg lg:w-1/2">
-          <form className="flex flex-col gap-4">
+          <form onSubmit="" className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">
               <label htmlFor="Phone" className="font-medium">
                 Fullname
               </label>
               <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                <img src="/Profile.svg" alt="" className="w-4 h-3.5" />
+                <User className="text-gray-400" />
                 <input
                   type="text"
-                  id="fulname"
                   value={profile.fullname}
+                  id="fulname"
                   placeholder="Enter Your Fullname"
                   className="w-full outline-none"
                 />
@@ -65,7 +84,6 @@ function Profile() {
                   value={profile.email}
                   placeholder="Enter Your Email"
                   className="w-full outline-none"
-                  disabled
                 />
               </div>
             </div>
@@ -74,10 +92,12 @@ function Profile() {
               <label htmlFor="phone" className="font-medium">
                 Phone
               </label>
-              <div className="iflex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
+              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
+                <Phone className="text-gray-400"/>
                 <input
                   type="text"
                   id="fulname"
+                  value={profile.phone || ""}
                   placeholder="Enter Your Phone"
                   className="w-full outline-none"
                 />
@@ -89,11 +109,7 @@ function Profile() {
                 Password
               </label>
               <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                <img
-                  src="/Logo-Password.svg"
-                  alt="password"
-                  className="w-4 h-3.5"
-                />
+                <KeyRound className="text-gray-400" />
                 <input
                   type={isPasswordVisible ? "text" : "password"}
                   id="password"
@@ -115,10 +131,12 @@ function Profile() {
               <label htmlFor="address" className="font-medium">
                 Address
               </label>
-              <div className="iflex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
+              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
+                <MapPin className="text-gray-400"/>
                 <input
                   type="text"
                   id="address"
+                  value={profile.addres || ""}
                   placeholder="Enter Your Address"
                   className="w-full outline-none"
                 />
@@ -126,7 +144,7 @@ function Profile() {
             </div>
             <button
               type="submit"
-              className="bg-orange-400 w-full py-3 rounded-lg"
+              className="cursor-pointer bg-orange-400 w-full py-3 rounded-lg"
             >
               Submit
             </button>
