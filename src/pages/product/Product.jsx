@@ -30,44 +30,6 @@ function Product() {
             <SlidersHorizontal className="cursor-pointer" />
           </div>
         </div>
-        <div>
-          <div className="flex md:justify-between md:mx-20 lg:mx-30">
-            <h1 className="font-semibold text-xl lg:text-3xl">
-              Today <span className="text-[#8E6447]">Promo</span>
-            </h1>
-            <div className="md:flex gap-3 hidden md:block">
-              <button className="bg-gray-300 rounded-full p-3">
-                {" "}
-                <MoveLeft />
-              </button>
-              <button className="bg-orange-500 rounded-full p-3">
-                {" "}
-                <MoveRight />
-              </button>
-            </div>
-          </div>
-        </div>
-        {/* Card */}
-        <div className="flex gap-2">
-          <div className="bg-[#88B788] rounded-xl w-full md:w-[350px] flex items-end gap-4 px-3 py-2">
-            <img src="/karakter.svg" alt="Karakter" className="w-18" />
-            <div>
-              <h1 className="font-semibold">
-                HAPPY MOTHER’S DAY! <br />
-                <span className="font-normal text-base">
-                  Get one of our favorite menu for free!
-                </span>
-              </h1>
-              <p className="cursor-pointer text-white">Klaim Kupon</p>
-            </div>
-          </div>
-        </div>
-        <div className="flex gap-2 mt-4 justify-start md:mx-20 lg:30">
-          <button className="w-6 h-2 rounded-full duration-300 bg-orange-500" />
-          <button className="w-2 h-2 rounded-full duration-300 bg-gray-300" />
-          <button className="w-2 h-2 rounded-full duration-300 bg-gray-300" />
-          <button className="w-2 h-2 rounded-full duration-300 bg-gray-300" />
-        </div>
       </header>
       <div className="mx-5 lg:mx-30 lg:flex justify-between">
         <div>
