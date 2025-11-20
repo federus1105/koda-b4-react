@@ -79,7 +79,10 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
           {/* Gambar utama */}
           <div className="w-full max-w-md">
             <img
-              src={product.images[0]}
+              src={
+                product.images[0] ||
+                "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+              }
               alt={product.name}
               className="mx-auto aspect-square w-full object-cover"
             />
@@ -89,17 +92,26 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
           <div className="flex my-4 w-full md:justify-center">
             <div className="flex gap-3 w-full max-w-md">
               <img
-                src={product.images[1]}
+                src={
+                  product.images[1] ||
+                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                }
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src={product.images[2]}
+                src={
+                  product.images[2] ||
+                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                }
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
               <img
-                src={product.images[3]}
+                src={
+                  product.images[3] ||
+                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                }
                 alt={product.name}
                 className="w-1/3 h-1/2 object-cover"
               />
@@ -115,7 +127,10 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             </button>
           )} */}
           <div className="flex flex-col gap-5 mt-5">
-            <h1 className="text-xl font-medium lg:text-3xl">{product.name}</h1>
+            <h1 className="text-xl font-medium lg:text-3xl">
+              {" "}
+              {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
+            </h1>
             <div className="flex gap-2">
               {product.price_discount > 0 && (
                 <span className="line-through text-red-700">
@@ -133,10 +148,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             </div>
 
             <div className="flex items-center gap-2">
-              {Array.from({ length: 5 }).map((_, index) => (
-                <img key={index} src="/star.svg" alt="Star" />
-              ))}
-              <p>{product.rating}</p>
+              <p>Rating : {product.rating}</p>
             </div>
             <div className="flex gap-5 text-gray-500 text-xl">
               <p>200+ Review</p>
