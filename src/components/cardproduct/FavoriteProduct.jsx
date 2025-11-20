@@ -15,6 +15,7 @@ function FavoriteProduct() {
     const fetchProvinces = async () => {
       try {
         const result = await favoriteProduct(token);
+        console.log(result.data);
         setProducts(result.data);
       } catch (error) {
         console.error(error);
@@ -61,7 +62,7 @@ function FavoriteProduct() {
                   onClick={() => handleSelectProduct(product.id)}
                   className="text-lg font-semibold cursor-pointer"
                 >
-                  {product.name}
+                  {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
                 </h2>
                 <p className="text-sm text-gray-600 leading-snug line-clamp-2">
                   {product.description}

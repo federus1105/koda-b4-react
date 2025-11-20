@@ -44,19 +44,19 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
     const fetchProduct = async () => {
       try {
         const data = await getProductById(id, token);
-        console.log(data.Result);
+        console.log(data.result);
 
         //--- MAPPING DATA ---
         const productData = {
-          name: data.Result.name,
-          description: data.Result.desc,
-          images: data.Result.images,
-          price_original: data.Result.price,
-          price_discount: data.Result.priceDiscount,
-          rating: data.Result.rating,
-          sizes: data.Result.sizes,
-          variants: data.Result.variant,
-          stock: data.Result.stock,
+          name: data.result.name,
+          description: data.result.desc,
+          images: data.result.images,
+          price_original: data.result.price,
+          price_discount: data.result.priceDiscount,
+          rating: data.result.rating,
+          sizes: data.result.sizes,
+          variants: data.result.variant,
+          stock: data.result.stock,
         };
 
         setProduct(productData);
