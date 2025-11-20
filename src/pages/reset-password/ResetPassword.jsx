@@ -1,12 +1,12 @@
 import { Eye, EyeOff, KeyRound, QrCode } from "lucide-react";
 import React, { useState } from "react";
-import useAuth from "../../hooks/UseAuth";
+import { useResetPassword } from "../../hooks/UseValidation";
 import { resetPassword } from "../../services/authService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 function ResetPassword() {
-  const { formData, errors, handleChange, validate } = useAuth("reset");
+  const { formData, errors, handleChange, validate } = useResetPassword();
   const [passwordVisibility, setPasswordVisibility] = useState({
     password: false,
     confirmPassword: false,

@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/UseAuth";
+import { useRegister } from "../../hooks/UseValidation";
 import { toast } from "react-toastify";
 import { registerUser } from "../../services/authService";
 import { KeyRound, Mail, User } from "lucide-react";
 
 function Register() {
-  const { formData, errors, handleChange, validate } = useAuth("register");
+  const { formData, errors, handleChange, validate } = useRegister();
   const navigate = useNavigate();
   const [passwordVisibility, setPasswordVisibility] = useState({
     password: false,
@@ -26,7 +26,6 @@ function Register() {
     e.preventDefault();
 
     if (!validate()) {
-      toast.error("Cek kembali form kamu!");
       return;
     }
     try {

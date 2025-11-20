@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import useAuth from "../../hooks/UseAuth";
+import { useLogin } from "../../hooks/UseValidation";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { currentUser, login } from "../../redux/slice/authSlice";
@@ -11,7 +11,7 @@ import {jwtDecode} from 'jwt-decode';
 
 function Login() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const { formData, errors, handleChange, validate } = useAuth("login");
+  const { formData, errors, handleChange, validate } = useLogin();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 

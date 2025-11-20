@@ -1,11 +1,11 @@
 import React from "react";
-import useAuth from "../../hooks/UseAuth";
+import { useForgot } from "../../hooks/UseValidation";
 import { toast } from "react-toastify";
 import { forgotPassword } from "../../services/authService";
 import { Mail } from "lucide-react";
 
 function Forgot() {
-  const { formData, errors, handleChange, validate } = useAuth("");
+  const { formData, errors, handleChange, validate } = useForgot();
 
   // --- HANDLE SUBMIT ---
   const handleSubmit = async (e) => {
@@ -15,6 +15,7 @@ function Forgot() {
     }
     try {
       const resp = await forgotPassword(formData);
+      console.log(resp)
       toast.success("Token Reset password telah dikirim!");
     } catch (error) {
       console.error("forgot error:", error);
