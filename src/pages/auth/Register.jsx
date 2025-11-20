@@ -42,7 +42,7 @@ function Register() {
     <>
       <section className="min-h-screen">
         <div className="flex justify-center">
-          {/* right side image */}
+          {/* ---- right side image  ---- */}
           <section className="lg:w-1/3 flex items-center min-h-screen justify-center">
             <img
               src="/bg-register.svg"
@@ -57,7 +57,7 @@ function Register() {
                   <img src="/icon.svg" alt="icon" />
                   <img src="/Logo.svg" alt="" />
                 </div>
-                {/* header */}
+                {/*---  header ----*/}
                 <header className="flex flex-col gap-2 my-3">
                   <h1 className="text-[#8E6447] text-xl font-medium">
                     Register
@@ -67,7 +67,7 @@ function Register() {
                   </p>
                 </header>
 
-                {/* input user email and pass */}
+                {/* ---- input user email and pass ---- */}
                 <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="Fullname" className="font-medium">
