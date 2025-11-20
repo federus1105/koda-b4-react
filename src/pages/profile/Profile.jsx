@@ -1,35 +1,16 @@
 import { KeyRound, LucideClosedCaption, Mail, MapPin, Phone, User } from "lucide-react";
-import React, { useEffect, useState } from "react";
-import { profileUser } from "../../services/profileClient";
-import { toast } from "react-toastify";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 const defaultProfilePhoto = "/default-profile.webp";
 
 function Profile() {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-  const [profile, setProfile] = useState("")
-  const token = useSelector((state) => state.auth.token);
+  const profile = useSelector((state) => state.auth.currentUser);
 
   // toogle password visibiliy
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-
-  // --- GET PROFILE USER ---
-    useEffect(() => {
-      const fetchProfile = async () => {
-        try {
-          const res = await profileUser(token);
-          console.log(res)
-          setProfile(res.result);
-        } catch (error) {
-          console.error(error);
-          toast.error("Terjadi kesalahan!, Silahkan coba lagi.");
-        }
-      };
-  
-      if (token) fetchProfile(token);
-    }, [token]);
   return (
     <>
       <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-30">
