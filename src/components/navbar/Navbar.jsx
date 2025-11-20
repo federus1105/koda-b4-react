@@ -10,7 +10,7 @@ const defaultProfilePhoto = "/default-profile.webp";
 function Navbar() {
   const [modalOpen, setModalOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const isloggedIn = useSelector((state) => state.auth.isLoggedIn);
+  const token = useSelector((state) => state.auth.token);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -39,13 +39,13 @@ function Navbar() {
         </div>
 
         <div className="flex items-center lg:gap-3 relative">
-          <Search className="text-white" />
-          <ShoppingCart className="text-white" />
+          <Search className="text-white hidden md:block" />
+          <ShoppingCart className="text-white hidden md:block" />
           <button onClick={() => setModalOpen(true)} className="lg:hidden">
             <img src="/menu-right.svg" alt="menu" className="w-8" />
           </button>
 
-          {isloggedIn ? (
+          {token ? (
             <div className="relative hidden lg:block">
               <img
                 src={defaultProfilePhoto}
