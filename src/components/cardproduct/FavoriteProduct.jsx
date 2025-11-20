@@ -33,8 +33,8 @@ function FavoriteProduct() {
     <section className="flex flex-wrap gap-6 md:justify-center">
       {displayProducts.map((product, index) => (
         <div
-          key={product?.id || index}
-          className="w-[175px] lg:w-[280px] p-4 flex flex-col gap-3 border rounded-md"
+          key={index}
+          className="w-[151px] lg:w-[280px] p-4 flex flex-col gap-3 border rounded-md"
         >
           {/* === IMAGE === */}
           <div
