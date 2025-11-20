@@ -28,11 +28,10 @@ function Login() {
       const data = await loginUser(formData);
       dispatch(
         login({
-          token: data.Result.token,
+          token: data.result.token,
         })
       );
       toast.success("Login berhasil!");
-      console.log(data)
       navigate("/profile");
     } catch (error) {
       console.error("Login error:", error);
@@ -43,7 +42,7 @@ function Login() {
     <>
       <section className="min-h-screen">
         <div className="flex justify-center">
-          {/* right side image */}
+          {/* --- right side image --- */}
           <section className="lg:w-1/3 flex items-center min-h-screen justify-center">
             <img
               src="/bg-register.svg"
@@ -58,7 +57,7 @@ function Login() {
                   <img src="/icon.svg" alt="icon" />
                   <img src="/Logo.svg" alt="" />
                 </div>
-                {/* header */}
+                {/* --- header --- */}
                 <header className="flex flex-col gap-2 my-3">
                   <h1 className="text-[#8E6447] text-xl font-medium">Login</h1>
                   <p className="text-gray-500 mt-2">
@@ -66,7 +65,7 @@ function Login() {
                   </p>
                 </header>
 
-                {/* input user email and pass */}
+                {/* --- input user email and pass --- */}
                 <form onSubmit={handleSubmit}>
                   <div className="flex flex-col gap-2">
                     <label htmlFor="email" className="font-medium">
@@ -142,7 +141,8 @@ function Login() {
                     Or
                   </span>
                 </div>
-                {/* Sign In other */}
+
+                {/* ---- Sign In other ---- */}
                 <section className="flex gap-5 mt-5">
                   <button className="shadow-lg rounded-xl w-full h-13 border-gray-300 cursor-pointer flex items-center justify-center gap-5">
                     <img src="/Google.svg" alt="" />
