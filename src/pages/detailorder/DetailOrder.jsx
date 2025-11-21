@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import ItemDetailOrder from "../../components/cardproduct/ItemDetailOrder";
 import { useSelector } from "react-redux";
-import { formatDate } from "../../utils/formatedDate";
+import { formatDate } from "../../utils/common";
 import { useParams } from "react-router-dom";
 
 function DetailOrder() {
