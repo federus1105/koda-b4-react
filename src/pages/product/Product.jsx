@@ -1,8 +1,67 @@
-import { MoveLeft, Search, SlidersHorizontal, MoveRight } from "lucide-react";
-import React from "react";
-import Card from "../../components/cardproduct/Card";
+import {
+  Search,
+  SlidersHorizontal,
+} from "lucide-react";
+import React, { useEffect, useState } from "react";
+import ItemsProduct from "../../components/cardproduct/ItemsProduct";
+import { categoryOptions } from "../../utils/common";
+import ModalFilterProduct from "../../components/modal/ModalFilterProduct";
+import { Pagination } from "antd";
 
 function Product() {
+  const [filters, setFilters] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [tempFilters, setTempFilters] = useState({
+    page: "1",
+    perPage: "10",
+    name: "",
+    category: [],
+    min_price: "",
+    max_price: "",
+    sortBy: "",
+  });
+
+  // --- AUTO APPLY FILTER ---
+  useEffect(() => {
+    setIsLoading(true);
+    const timer = setTimeout(() => {
+      setFilters(tempFilters);
+      setIsLoading(false);
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [tempFilters]);
+
+  // === UPDATE FILTER ===
+  const updateTempFilter = (key, value) => {
+    setTempFilters((prev) => ({ ...prev, [key]: value }));
+  };
+
+  // === UPDATE CATEGORY ===
+  const handleCategoryChange = (categoryId, checked) => {
+    setTempFilters((prev) => {
+      const updated = checked
+        ? [...prev.category, categoryId]
+        : prev.category.filter((c) => c !== categoryId);
+
+      return { ...prev, category: updated };
+    });
+  };
+
+  // === RESET FILTER ===
+  const resetFilters = () => {
+    setTempFilters({
+      name: "",
+      category: [],
+      min_price: "",
+      max_price: "",
+      sortBy: "",
+    });
+  };
+
   return (
     <>
       <header className="my-20 mx-5 md:my-18 md:mx-0 flex flex-col gap-5">
@@ -16,159 +75,226 @@ function Product() {
             We Provide Good Coffee and Healthy Meals
           </h1>
         </div>
-        {/* Search */}
-        <div className="flex items-center gap-3 md:hidden">
+
+        {/* --- MOBILE SEARCH --- */}
+        <div className="flex items-center gap-3 md:px-25 lg:hidden">
           <div className="relative w-full">
             <Search className="absolute top-3 left-2" />
             <input
               type="text"
               placeholder="Find Product"
               className="border border-gray-400 bg-gray-200 rounded-lg py-3 w-full pl-10"
+              value={tempFilters.name}
+              onChange={(e) => updateTempFilter("name", e.target.value)}
             />
           </div>
-          <div>
-            <SlidersHorizontal className="cursor-pointer" />
-          </div>
+          <button
+            onClick={() => setShowMobileFilter(!showMobileFilter)}
+            className="bg-[#997950] text-white p-3 rounded-xl hover:bg-[#997950] shadow-md active:scale-95"
+          >
+            <SlidersHorizontal className="w-5 h-5" />
+          </button>
         </div>
       </header>
-      <div className="mx-5 lg:mx-30 lg:flex justify-between">
-        <div>
-          <h1 className="text-xl mb-2">
-            Our <span className="text-[#8E6447]">Product</span>
-          </h1>
-          <div className="bg-black w-100 hidden lg:block text-white px-5 rounded-md py-7">
-            <div className="flex flex-col gap-5">
-              <div className="flex justify-between">
-                <p>Filter</p>
-                <p>Reset Filter</p>
-              </div>
-              {/* search */}
-              <div className="w-full">
-                <p>Search</p>
-                <input
-                  type="text"
-                  placeholder="Search Your Product"
-                  className="bg-white py-3 w-full pl-10 text-black"
-                />
-              </div>
-              {/* Category */}
-              <div className="flex flex-col gap-5">
-                <h1 className="font-semibold">Category</h1>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="favorite"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="favorite">Favorite Product</label>
+
+      <div className="max-w-10xl px-4 md:px-8 lg:px-30 mb-20">
+        <div className="lg:grid lg:grid-cols-12 gap-10 lg:items-start">
+          {/* --- Sidebar Filter --- */}
+          <div className="hidden lg:block lg:col-span-3">
+            <div className="sticky top-8 w-full">
+              <h2 className="text-2xl font-bold mb-6">
+                Our <span className="text-[#997950]">Products</span>
+              </h2>
+              {/* --- FORM FILTER --- */}
+              <form>
+                <div className="bg-gradient-to-br from-gray-900 to-gray-800 text-white rounded-2xl p-6 shadow-xl">
+                  <div className="space-y-6">
+                    {/* ---- Filter Header --- */}
+                    <div className="flex justify-between items-center pb-4 border-b border-gray-700">
+                      <p className="font-semibold text-lg">Filters</p>
+                      <button
+                        onClick={resetFilters}
+                        className="cursor-pointer text-sm font-medium"
+                      >
+                        Reset All
+                      </button>
+                    </div>
+
+                    {/* --- Search name --- */}
+                    <div>
+                      <label
+                        htmlFor="search"
+                        className="block text-sm font-medium mb-2"
+                      >
+                        Search
+                      </label>
+                      <div className="relative">
+                        <Search className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400 w-4 h-4" />
+                        <input
+                          type="text"
+                          id="search"
+                          placeholder="Search product..."
+                          value={tempFilters.name}
+                          onChange={(e) =>
+                            updateTempFilter("name", e.target.value)
+                          }
+                          className="bg-white py-2.5 w-full pl-10 pr-3 text-black rounded-lg focus:ring-2 focus:ring-[#997950] focus:outline-none "
+                        />
+                      </div>
+                    </div>
+
+                    {/* --- Category Section- -- */}
+                    <div>
+                      <p className="font-semibold mb-3 text-sm uppercase">
+                        Category
+                      </p>
+                      <div className="space-y-3">
+                        {categoryOptions.map((c) => (
+                          <label
+                            key={c.id}
+                            htmlFor={`category-${c.id}`}
+                            className="flex items-center gap-3 cursor-pointer group"
+                          >
+                            <input
+                              type="checkbox"
+                              id={`category-${c.id}`}
+                              checked={tempFilters.category.includes(c.value)}
+                              onChange={(e) =>
+                                handleCategoryChange(c.value, e.target.checked)
+                              }
+                              className="w-4 h-4 rounded border-gray-300 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                            />
+                            <span className="group-hover:text-[#997950]">
+                              {c.label}
+                            </span>
+                          </label>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* --- Sort By Section --- */}
+                    <div>
+                      <p className="font-semibold mb-3 text-sm uppercase tracking-wide">
+                        Sort By
+                      </p>
+                      <div className="space-y-3">
+                        <label
+                          htmlFor="name"
+                          className="flex items-center gap-3 cursor-pointer group"
+                        >
+                          <input
+                            type="radio"
+                            id="name"
+                            name="sort"
+                            value="name"
+                            checked={tempFilters.sortBy === "name"}
+                            onChange={(e) =>
+                              updateTempFilter("sortBy", e.target.value)
+                            }
+                            className="w-4 h-4 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                          />
+                          <span className="group-hover:text-[#997950]">
+                            Name
+                          </span>
+                        </label>
+
+                        <label
+                          htmlFor="priceOriginal"
+                          className="flex items-center gap-3 cursor-pointer group"
+                        >
+                          <input
+                            type="radio"
+                            id="priceOriginal"
+                            name="sort"
+                            value="priceOriginal"
+                            checked={tempFilters.sortBy === "priceOriginal"}
+                            onChange={(e) =>
+                              updateTempFilter("sortBy", e.target.value)
+                            }
+                            className="w-4 h-4 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                          />
+                          <span className="group-hover:text-[#997950]">
+                            Price
+                          </span>
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* --- Price Range --- */}
+                    <div>
+                      <label
+                        htmlFor="pricerange"
+                        className="font-semibold mb-3 text-sm uppercase tracking-wide"
+                      >
+                        Price Range
+                      </label>
+                      <input
+                        type="range"
+                        min="0"
+                        id="pricerange"
+                        max="150000"
+                        step="5000"
+                        value={tempFilters.min_price || 0}
+                        onChange={(e) =>
+                          updateTempFilter("min_price", e.target.value)
+                        }
+                        className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#997950]"
+                      />
+                      <div className="mt-3 bg-gray-700/50 rounded-lg px-3 py-2">
+                        <span className="text-[#997950] font-semibold">
+                          IDR{" "}
+                          {Number(tempFilters.min_price || 0).toLocaleString(
+                            "id-ID"
+                          )}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="coffe"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="coffe">Coffe</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="noncoffe"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="noncoffe">Non Coffe</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="foods"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="foods">Foods</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="addon"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="addon">Add-On</label>
-                </div>
-              </div>
-              {/* Sort By */}
-              <div className="flex flex-col gap-5">
-                <h1 className="font-semibold">Sort By</h1>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="buy1"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="buy1">Buy 1 Get 1</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="flahssale"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="flahssale">Flash Sale</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="birthday"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="birthday">Birthday Package</label>
-                </div>
-                <div className="flex gap-5">
-                  <input
-                    type="checkbox"
-                    id="Cheap"
-                    className="accent-orange-500 w-4 rounded-md"
-                  />
-                  <label htmlFor="Cheap">Cheap</label>
-                </div>
-              </div>
-              {/* Range Price */}
-              <div>
-                <h1>Range Price</h1>
-                <input
-                  type="range"
-                  min="0"
-                  max="1000"
-                  step="10"
-                  className="w-full accent-orange-500   "
-                />
-                <div className="flex justify-between text-sm text-gray-600">
-                  <span>idr0</span>
-                  <span>idr1000</span>
-                </div>
-              </div>
-              <button className="w-full bg-orange-500 h-12 rounded-lg">
-                Apply Filter
-              </button>
+              </form>
             </div>
           </div>
-        </div>
-        <div className="mb-10">
-          <Card />
-          <div className="flex items-center justify-center gap-2 mt-10">
-            {[1, 2, 3, 4].map((num) => (
-              <button
-                key={num}
-                className="w-8 h-8 rounded-full border border-gray-300 active:bg-orange-400"
-              >
-                {num}
-              </button>
-            ))}
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-orange-400">
-              <MoveRight className="text-white" />
-            </button>
+
+          {/*  --- Products --- */}
+          <div className="lg:col-span-9 mt-8 lg:mt-0">
+            <ItemsProduct
+              filters={filters}
+              isLoading={isLoading}
+              setTotalPages={setTotalPages}
+            />
           </div>
         </div>
       </div>
+
+
+      {/* --- Pagination --- */}
+      <div className="mb-16">
+        <div className="flex items-center justify-center gap-2">
+          <Pagination
+            current={currentPage}
+            total={totalPages * Number(tempFilters.perPage)}
+            pageSize={Number(tempFilters.perPage)}
+            onChange={(page) => {
+              setCurrentPage(page);
+              updateTempFilter("page", String(page));
+            }}
+            showSizeChanger={false}
+            showLessItems
+          />
+        </div>
+      </div>
+
+      {/* --- MOBILE FILTER MODAL --- */}
+      {showMobileFilter && (
+        <ModalFilterProduct
+          tempFilters={tempFilters}
+          setTempFilters={setTempFilters}
+          handleCategoryChange={handleCategoryChange}
+          resetFilters={resetFilters}
+          onClose={() => setShowMobileFilter(false)}
+          categoryOptions={categoryOptions}
+        />
+      )}
     </>
   );
 }
