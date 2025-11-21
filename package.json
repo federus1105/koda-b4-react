@@ -10,9 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
+    "@mui/material": "^7.3.5",
     "@reduxjs/toolkit": "^2.9.1",
     "@tailwindcss/vite": "^4.1.14",
-    "antd": "^5.29.1",
     "json-server": "^1.0.0-beta.3",
     "jwt-decode": "^4.0.0",
     "lucide-react": "^0.545.0",
