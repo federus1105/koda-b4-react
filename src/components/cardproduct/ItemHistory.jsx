@@ -2,7 +2,7 @@ import React from "react";
 import { GlassWater, Calendar, Repeat, RefreshCcw } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { formatDate } from "../../utils/formatedDate";
+import { formatDate } from "../../utils/common";
 
 function ItemHistory() {
   const history = useSelector((state) => state.order.orderHistory);

@@ -1,5 +1,5 @@
 import React from "react";
-import { baseClass, activeClass } from "../../utils/styling";
+import { baseClass, activeClass } from "../../utils/common";
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import {
