@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Card from "../../components/cardproduct/Card";
 import { ArrowBigLeft, ArrowBigRight, MessageCircleMore } from "lucide-react";
 import Chat from "../../components/modal/Chat";
 import FavoriteProduct from "../../components/cardproduct/FavoriteProduct";
