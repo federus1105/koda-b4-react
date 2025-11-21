@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Loader2, PackageX, RatIcon, ShoppingCart } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Loader2, PackageX, ShoppingCart } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { productList } from "../../services/productService";
 
-function ItemsProduct({ filters, isLoading }) {
+function ItemsProduct({ filters, isLoading, setTotalPages }) {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
@@ -12,6 +12,7 @@ function ItemsProduct({ filters, isLoading }) {
       try {
         const res = await productList(filters);
         setProducts(res.data);
+        setTotalPages(res.totalPages);
       } catch (err) {
         console.log(err);
       }
@@ -24,7 +25,7 @@ function ItemsProduct({ filters, isLoading }) {
     navigate(`/detailproduct/${productId}`);
   };
 
-    if (isLoading) {
+  if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-[400px]">
         <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
@@ -36,9 +37,12 @@ function ItemsProduct({ filters, isLoading }) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] text-center px-4">
         <PackageX className="w-20 h-20 text-gray-400 mb-4" />
-        <h3 className="text-2xl font-bold text-gray-700 mb-2">Product Not Found</h3>
+        <h3 className="text-2xl font-bold text-gray-700 mb-2">
+          Product Not Found
+        </h3>
         <p className="text-gray-500 max-w-md">
-          We couldn't find any products matching your filters. Try adjusting your search criteria.
+          We couldn't find any products matching your filters. Try adjusting
+          your search criteria.
         </p>
       </div>
     );
@@ -46,11 +50,11 @@ function ItemsProduct({ filters, isLoading }) {
 
   return (
     <>
-      <section className="flex flex-wrap gap-6 md:justify-center">
+      <section className="flex flex-wrap gap-6 justify-center">
         {products.slice(0, 8).map((product, index) => (
           <div
             key={index}
-            className="w-[175px] lg:w-[250px] p-4 flex flex-col gap-3 border-2 border-[#997950] rounded-lg"
+            className="w-[165px] lg:w-[250px] p-4 flex flex-col gap-3 border-2 border-[#997950] rounded-lg"
           >
             {/* === IMAGE === */}
             <div
