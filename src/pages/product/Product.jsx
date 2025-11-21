@@ -1,12 +1,10 @@
-import {
-  Search,
-  SlidersHorizontal,
-} from "lucide-react";
+import { Search, SlidersHorizontal } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import ItemsProduct from "../../components/cardproduct/ItemsProduct";
 import { categoryOptions } from "../../utils/common";
 import ModalFilterProduct from "../../components/modal/ModalFilterProduct";
-import { Pagination } from "antd";
+import { Pagination, Stack } from "@mui/material";
+import Paginations from "../../components/pagination/Paginations";
 
 function Product() {
   const [filters, setFilters] = useState({});
@@ -266,22 +264,18 @@ function Product() {
         </div>
       </div>
 
-
       {/* --- Pagination --- */}
       <div className="mb-16">
-        <div className="flex items-center justify-center gap-2">
-          <Pagination
-            current={currentPage}
-            total={totalPages * Number(tempFilters.perPage)}
-            pageSize={Number(tempFilters.perPage)}
-            onChange={(page) => {
-              setCurrentPage(page);
-              updateTempFilter("page", String(page));
-            }}
-            showSizeChanger={false}
-            showLessItems
-          />
-        </div>
+        <Paginations
+          totalPages={totalPages}
+          currentPage={currentPage}
+          onChange={(page) => {
+            setCurrentPage(page);
+            updateTempFilter("page", String(page));
+          }}
+          siblingCount={1}
+          boundaryCount={0}
+        />
       </div>
 
       {/* --- MOBILE FILTER MODAL --- */}
