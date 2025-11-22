@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Car,
   HandHelping,
@@ -7,15 +7,39 @@ import {
   RefreshCcw,
   UserPen,
 } from "lucide-react";
-import ItemDetailOrder from "../../components/cardproduct/ItemDetailOrder";
+import ItemDetailOrder from "../../components/cardproduct/ItemDetailHistory";
 import { useSelector } from "react-redux";
-import { formatDate } from "../../utils/common";
+import { formatDate, formatDelivery } from "../../utils/common";
 import { useParams } from "react-router-dom";
+import { DetailHistory } from "../../services/historyService";
+import ItemDetailHistory from "../../components/cardproduct/ItemDetailHistory";
 
 function DetailOrder() {
+  const token = useSelector((state) => state.auth.token);
+  const [isLoading, setIsLoading] = useState(false);
+  const [order, setOrder] = useState(null);
   const { id } = useParams();
-  const history = useSelector((state) => state.order.orderHistory);
-    const order = history[+id];
+
+  useEffect(() => {
+    const fetchOrder = async () => {
+      setIsLoading(true);
+      try {
+        const res = await DetailHistory(id, token);
+        console.log(res.result);
+        setOrder(res.result);
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchOrder();
+  }, [id, token]);
+
+  if (isLoading) {
+    return <p className="text-center mt-10">Loading...</p>;
+  }
 
   if (!order) {
     return <p className="text-center mt-10">Order not found</p>;
@@ -25,7 +49,9 @@ function DetailOrder() {
     <>
       <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:mx-30 md:mx-15 lg:my-30 lg:justify-center lg:gap-20">
         <div className="flex flex-col gap-3 lg:w-1/3">
-          <h1 className="font-medium text-xl lg:text-3xl">#{order.id}</h1>
+          <h1 className="font-medium text-xl lg:text-3xl">
+            {order.order_number}
+          </h1>
           <p className="text-gray-500">{formatDate(order.timestamp)}</p>
           <div className="flex flex-col gap-4">
             <h1 className="font-medium">Order Information</h1>
@@ -71,7 +97,7 @@ function DetailOrder() {
                 <Car />
                 Shipping
               </p>
-              <p className="font-medium">{order.delivery}</p>
+              <p className="font-medium">{formatDelivery(order.delivery)}</p>
             </div>
 
             <hr className="text-gray-300" />
@@ -97,7 +123,9 @@ function DetailOrder() {
 
         <div className="flex flex-col gap-3 lg:w-1/3">
           <h1 className="font-medium">Your Order</h1>
-          <ItemDetailOrder order={order.selectedProduct} />
+          {order.items.map((item, index) => (
+            <ItemDetailHistory key={index} item={item} />
+          ))}
         </div>
       </div>
     </>
