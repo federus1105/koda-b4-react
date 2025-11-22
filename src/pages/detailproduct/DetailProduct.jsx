@@ -5,23 +5,31 @@ import {
   Plus,
   ShoppingCart,
   MoveRight,
-  Import,
+  Loader2,
 } from "lucide-react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { setSize, setVariant, setPieces } from "../../redux/slice/orderSlice";
+import { setPieces } from "../../redux/slice/orderSlice";
 import { getProductById } from "../../services/productService";
 import FavoriteProduct from "../../components/cardproduct/FavoriteProduct";
+import OptionButton from "../../components/optionButton/OptionButton";
+import { createCart } from "../../services/orderService";
+import { toast } from "react-toastify";
+import { delay } from "../../utils/common";
 
 function DetailProduct({ min = 0, max = 10, onChange }) {
-  const [product, setProduct] = useState(null);
-  const [quantity, setQuantity] = useState(min);
-  const dispatch = useDispatch();
-  const [selectedSize, setSelectedSize] = useState(null);
+  const [isLoadingAddCart, setIsLoadingAddCart] = useState(false);
   const [selectedVariant, setSelectedVariant] = useState(null);
-  const { id } = useParams();
+  const [selectedSize, setSelectedSize] = useState(null);
   const token = useSelector((state) => state.auth.token);
+  const [isLoading, setIsLoading] = useState(true);
+  const [quantity, setQuantity] = useState(min);
+  const [product, setProduct] = useState(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { id } = useParams();
 
+  // --- HANDLE QUANTITY ---
   const handleDecrease = () => {
     if (quantity > min) {
       const newQty = quantity - 1;
@@ -39,12 +47,13 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
       onChange?.(newQty);
     }
   };
+
   // --- GET PRODUCT BY ID ---
   useEffect(() => {
     const fetchProduct = async () => {
+      setIsLoading(true);
       try {
         const data = await getProductById(id, token);
-        console.log(data.result);
 
         //--- MAPPING DATA ---
         const productData = {
@@ -57,20 +66,59 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
           sizes: data.result.sizes,
           variants: data.result.variant,
           stock: data.result.stock,
+          flash_sale: data.result.flash_sale,
         };
 
+        await delay(500);
         setProduct(productData);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchProduct();
   }, [id, token]);
 
-  if (!product) {
-    return <p>Loading...</p>;
+  // --- ADD TO CARTS ---
+  const handleAddToCart = async (shouldNavigate = false) => {
+    if (quantity < 1) {
+      toast.error("Quantity harus diisi");
+      return;
+    }
+    setIsLoadingAddCart(true);
+    try {
+      const payload = {
+        product_id: Number(id),
+        size: selectedSize?.id,
+        variant: selectedVariant?.id,
+        quantity: quantity,
+        token,
+      };
+
+      await Promise.all([createCart(payload), delay(800)]);
+
+      toast.success("Product di tambahkan ke cart");
+      if (shouldNavigate) {
+        navigate("/checkout");
+      }
+    } catch (error) {
+      toast.error(error);
+      toast.error("Terjadi Kesalahan! silahkan coba lagi");
+    } finally {
+      setIsLoadingAddCart(false);
+    }
+  };
+
+  if (isLoading || isLoadingAddCart) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <Loader2 className="w-16 h-16 animate-spin text-[#997950]" />
+      </div>
+    );
   }
+
   return (
     <>
       <header className="my-20 mx-5 lg:flex lg:mx-30 lg:mt-40 lg:items-center">
@@ -121,14 +169,14 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
 
         {/* --- Description  --- */}
         <div className="lg:w-1/2 md:mx-10 lg:mx-0 ">
-          {/* {product.flash_sale && (
+          {product.flash_sale && (
             <button className="bg-red-700 text-white rounded-4xl py-2 px-5">
               FLASH SALE
             </button>
-          )} */}
+          )}
+
           <div className="flex flex-col gap-5 mt-5">
             <h1 className="text-xl font-medium lg:text-3xl">
-              {" "}
               {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
             </h1>
             <div className="flex gap-2">
@@ -138,7 +186,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
                 </span>
               )}
 
-              <h1 className="text-orange-500 text-xl">
+              <h1 className="text-[#997950] text-xl">
                 IDR{" "}
                 {(product.price_discount > 0
                   ? product.price_discount
@@ -148,7 +196,9 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             </div>
 
             <div className="flex items-center gap-2">
-              <p>Rating : {product.rating}</p>
+              <p className="text-yellow-600 font-medium">
+                ⭐{(Number(product.rating) || 0).toFixed(1)}
+              </p>
             </div>
             <div className="flex gap-5 text-gray-500 text-xl">
               <p>200+ Review</p>
@@ -169,70 +219,48 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
               </button>
 
               <span className="px-4 py-2 font-medium">{quantity}</span>
-
               <button
                 onClick={handleIncrease}
-                className="p-2 rounded bg-orange-500 text-white hover:bg-orange-600 disabled:opacity-50"
+                className="p-2 rounded bg-[#997950] text-white hover:bg-[#997950] disabled:opacity-50"
                 disabled={quantity === max}
               >
                 <Plus size={15} />
               </button>
             </div>
-            {/* Size */}
-            <div className="flex flex-col gap-3">
-              <h1 className="font-medium">Choose Size</h1>
-              <div className="flex justify-between gap-10">
-                {product.sizes.map((size) => (
-                  <button
-                    key={size.id}
-                    onClick={() => {
-                      setSelectedSize(size.name);
-                      dispatch(setSize(size.name));
-                    }}
-                    className={`border w-full py-2 px-4 cursor-pointer ${
-                      selectedSize === size.name
-                        ? "border-orange-500 text-orange-500 font-bold"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    {size.name.charAt(0).toUpperCase() + size.name.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
 
-            {/* --- Variant  --- */}
-            <div className="flex flex-col gap-3">
-              <h1 className="font-medium">Hot/Ice?</h1>
-              <div className="flex justify-between lg:gap-10">
-                {product.variants.map((variant) => (
-                  <button
-                    key={variant.id}
-                    onClick={() => {
-                      setSelectedVariant(variant.name);
-                      dispatch(setVariant(variant.name));
-                    }}
-                    className={`border py-2 px-20 lg:w-full cursor-pointer ${
-                      selectedVariant === variant.name
-                        ? "border-orange-500 text-orange-500 font-bold"
-                        : "border-gray-300"
-                    }`}
-                  >
-                    {variant.name.charAt(0).toUpperCase() +
-                      variant.name.slice(1)}
-                  </button>
-                ))}
-              </div>
-            </div>
+            {/* ---- Size --- */}
+            <OptionButton
+              title="Choose Size"
+              options={product.sizes}
+              selected={selectedSize}
+              onSelect={(size) => {
+                setSelectedSize(size);
+              }}
+              emptyText="Tidak ada Pilihan"
+            />
+
+            {/*---  Variant --- */}
+            <OptionButton
+              title="Hot/Ice?"
+              options={product.variants}
+              selected={selectedVariant}
+              onSelect={(variant) => {
+                setSelectedVariant(variant);
+              }}
+              emptyText="Tidak ada pilihan"
+            />
 
             <div className="flex gap-4 flex-col md:flex-row lg:mt-10">
               <Link
-                to={"/checkout"}
-                className="bg-orange-400 w-full py-4 rounded-md cursor-pointer text-center"
+                className="bg-[#997950] w-full py-4 rounded-md cursor-pointer text-center"
+                onClick={() => handleAddToCart(true)}
               >
                 Buy
               </Link>
-              <button className="flex border border-orange-400 text-orange-500 w-full justify-center py-4 gap-2 rounded-md cursor-pointer">
+              <button
+                className="flex border border-[#997950] text-[#997950] w-full justify-center py-4 gap-2 rounded-md cursor-pointer"
+                onClick={() => handleAddToCart(false)}
+              >
                 <ShoppingCart />
                 Add To Cart
               </button>
@@ -250,12 +278,12 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             {[1, 2, 3, 4].map((num) => (
               <button
                 key={num}
-                className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-orange-400"
+                className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-[#997950]"
               >
                 {num}
               </button>
             ))}
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-orange-400">
+            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-[#997950]">
               <MoveRight className="text-white" />
             </button>
           </div>
