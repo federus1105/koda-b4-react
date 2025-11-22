@@ -35,6 +35,17 @@ export const GetCart = async (token) => {
 }
 }
 
+
+// --- DELETE CART ---
+export const DeleteCart = async (id_Cart,token)=> {
+  return await apiClient(`/cart/${id_Cart}`, {
+    method: "DELETE",
+    headers: {
+         Authorization: `Bearer ${token}`,
+        },
+  });
+}
+
 // --- ORDER ---
 export const OrderProduct = async (input, token)=>{
   return await apiClient("/transactions", {
