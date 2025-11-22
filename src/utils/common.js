@@ -40,3 +40,6 @@ export const paymentMethods = [
     { id: 7, name: "BRI", img: "https://cdn.ngopibareng.id/uploads/2025/2025-04-03/kapan-bank-bri-buka-jadwal-dan-jam-operasional-selama-lebaran--thumbnail-289" },
     { id: 8, name: "OVO", img: "https://i.pinimg.com/736x/28/fd/ed/28fdedc2022b5de9ae5a7f2507eb5f2d.jpg" },
   ];
+
+// --- DELAY ---
+ export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
