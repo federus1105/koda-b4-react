@@ -45,7 +45,7 @@ function PaymentOrder({ carts, selectedPayment, setSelectedPayment  }) {
               {paymentMethods.map((method) => (
                 <button
                   key={method.id}
-                  className={`p-1 rounded-md border transition ${
+                  className={`cursor-pointer p-1 rounded-md border transition ${
                     selectedPayment === method.id
                       ? "border-[#997950] bg-[#997950]"
                       : "border-transparent hover:border-gray-300"
