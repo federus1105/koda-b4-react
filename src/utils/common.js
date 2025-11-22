@@ -43,3 +43,21 @@ export const paymentMethods = [
 
 // --- DELAY ---
  export const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+
+// --- LIST MONTH ---
+export const months = [ "January", "February", "March", "April", "May",
+"June", "July", "August", "September", "October", "November",
+"December" ];
+
+export const formatDelivery = (delivery) => {
+  if (!delivery) return "N/A";
+
+  if (delivery.includes("_")) {
+    return delivery
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+  }
+  return delivery.charAt(0).toUpperCase() + delivery.slice(1);
+};
