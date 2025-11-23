@@ -10,9 +10,10 @@ function FavoriteProduct() {
 
   // --- GET PRODUCT FAVORITE ---
   useEffect(() => {
-    const fetchProvinces = async () => {
+    const fetchFavorite = async () => {
       try {
         const result = await favoriteProduct();
+        console.log(result);
         setProducts(result.data);
       } catch (error) {
         console.error(error);
@@ -20,21 +21,19 @@ function FavoriteProduct() {
       }
     };
 
-    fetchProvinces();
+    fetchFavorite();
   }, []);
 
   const handleSelectProduct = (productId) => {
     navigate(`/detailproduct/${productId}`);
   };
 
-  const displayProducts = products.length > 0 ? products : Array(4).fill(null);
-
   return (
-    <section className="flex flex-wrap gap-6 md:justify-center">
-      {displayProducts.map((product, index) => (
+    <section className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      {products.map((product, index) => (
         <div
           key={index}
-          className="w-[151px] lg:w-[280px] p-4 flex flex-col gap-3 border rounded-md"
+          className="p-4 flex flex-col gap-3 border border-gray-600 rounded-md"
         >
           {/* === IMAGE === */}
           <div
@@ -70,29 +69,19 @@ function FavoriteProduct() {
                 <div>
                   <h2
                     onClick={() => handleSelectProduct(product.id)}
-                    className="text-lg font-semibold cursor-pointer"
+                    className="text-white text-lg font-semibold cursor-pointer"
                   >
-                    {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
+                    {product.name.charAt(0).toUpperCase() +
+                      product.name.slice(1)}
                   </h2>
-                  <p className="text-sm text-gray-600 leading-snug line-clamp-2">
+                  <p className="text-sm text-white leading-snug line-clamp-2">
                     {product.description}
                   </p>
 
                   {/* === PRICE & RATING === */}
                   <div className="flex flex-col gap-2 mt-2">
-                    <div className="flex items-center gap-2">
-                      {Array.from({ length: 5 }).map((_, idx) => (
-                        <img key={idx} src="/star.svg" alt="Star" />
-                      ))}
-                      <p>{product.rating}</p>
-                    </div>
-                    <p className="text-orange-600 font-semibold text-base">
+                    <p className="text-[#997950] font-semibold text-base">
                       IDR {product.price}
-                      {product.price_original > product.price_discount && (
-                        <span className="line-through text-xs text-gray-500 ml-2">
-                          IDR {product.price.toLocaleString("id-ID")}
-                        </span>
-                      )}
                     </p>
                   </div>
                 </div>
@@ -101,11 +90,14 @@ function FavoriteProduct() {
                 <div className="flex flex-col gap-2 mt-4">
                   <button
                     onClick={() => handleSelectProduct(product.id)}
-                    className="bg-orange-500 text-white font-medium py-1.5 rounded-md hover:bg-orange-600 cursor-pointer"
+                    className="bg-[#997950] text-white font-medium py-1.5 rounded-md hover:bg-[#997950] cursor-pointer"
                   >
                     Buy
                   </button>
-                  <button className="border border-orange-500 text-orange-500 py-1.5 rounded-md hover:bg-orange-50 cursor-pointer flex justify-center">
+                  <button
+                    className="cursor-pointer border border-gray-500 text-[#997950] py-1.5 rounded-md hover:bg-[#997950]cursor-pointer flex justify-center"
+                    onClick={() => handleSelectProduct(product.id)}
+                  >
                     <ShoppingCart size={20} />
                   </button>
                 </div>
@@ -125,6 +117,5 @@ function FavoriteProduct() {
     </section>
   );
 }
-
 
 export default FavoriteProduct;
