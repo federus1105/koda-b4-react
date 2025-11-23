@@ -25,9 +25,9 @@ function Navbar() {
     <>
       <nav className="z-10 bg-gradient-to-br from-gray-900 to-gray-800 fixed top-0 w-full flex justify-between px-5 py-5 md:px-15 lg:px-30 duration-100">
         <div className="flex gap-35">
-          <div className="flex gap-3">
-            <img src="/iconv2.svg" alt="icon" />
-            <img src="/logov2.svg" alt="logo" />
+          <div className="flex gap-3 items-center">
+            <img src="/senja-kopi-kiri.png" alt="icon" className="w-14" />
+            <p className="text-white text-xl">𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦</p>
           </div>
           <div className="lg:flex gap-10 hidden lg:block">
             <button className="text-white cursor-pointer">
