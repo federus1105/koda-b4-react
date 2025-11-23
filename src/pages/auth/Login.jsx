@@ -3,10 +3,10 @@ import { Link, useNavigate } from "react-router-dom";
 import { useLogin } from "../../hooks/UseValidation";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-import { currentUser, login } from "../../redux/slice/authSlice";
+import { setCurrentUser, login } from "../../redux/slice/authSlice";
 import { loginUser } from "../../services/authService";
 import { KeyRound, Mail } from "lucide-react";
-import { profileUser } from "../../services/profileClient";
+import { profileUser } from "../../services/profileService";
 import {jwtDecode} from 'jwt-decode';
 
 function Login() {
@@ -40,7 +40,7 @@ function Login() {
 
       // --- FETCH PROFILE USER ---
       const profile = await profileUser(data.result.token);
-      dispatch(currentUser(profile.result));
+      dispatch(setCurrentUser(profile.result));
 
       toast.success("Login berhasil!");
       if (role === "admin") {
