@@ -1,16 +1,15 @@
 import React from "react";
 import { paymentMethods } from "../../utils/common";
 
-function PaymentOrder({ carts, selectedPayment, setSelectedPayment  }) {
-
+function PaymentOrder({ carts, selectedPayment, setSelectedPayment }) {
   const subTotal = carts.reduce((acc, item) => {
-    const price = item.price_discount > 0 ? item.price_discount : item.price;
+    const price =
+      item.discount > 0 && item.flash_sale == true ? item.discount : item.price;
     return acc + price * item.qty;
   }, 0);
 
   const delivery = 0;
   const tax = 0;
-
 
   const total = subTotal + delivery + tax;
 
@@ -21,11 +20,15 @@ function PaymentOrder({ carts, selectedPayment, setSelectedPayment  }) {
         <div className="bg-gray-100 px-5 py-10 flex flex-col gap-6">
           <div className="flex justify-between">
             <p className="font-medium text-gray-500">Order</p>
-            <p className="font-medium">IDR {subTotal.toLocaleString("id-ID")}</p>
+            <p className="font-medium">
+              IDR {subTotal.toLocaleString("id-ID")}
+            </p>
           </div>
           <div className="flex justify-between">
             <p className="font-medium text-gray-500">Delivery</p>
-            <p className="font-medium">IDR {delivery.toLocaleString("id-ID")}</p>
+            <p className="font-medium">
+              IDR {delivery.toLocaleString("id-ID")}
+            </p>
           </div>
           <div className="flex justify-between">
             <p className="font-medium text-gray-500">Tax</p>
@@ -52,7 +55,11 @@ function PaymentOrder({ carts, selectedPayment, setSelectedPayment  }) {
                   }`}
                   onClick={() => setSelectedPayment(method.id)}
                 >
-                  <img src={method.img} alt={method.name} className="max-w-17 max-h-15 mx-auto" />
+                  <img
+                    src={method.img}
+                    alt={method.name}
+                    className="max-w-17 max-h-15 mx-auto"
+                  />
                 </button>
               ))}
             </div>
@@ -62,6 +69,5 @@ function PaymentOrder({ carts, selectedPayment, setSelectedPayment  }) {
     </div>
   );
 }
-
 
 export default PaymentOrder;
