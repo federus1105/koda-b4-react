@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import { Loader2, PackageX, ShoppingCart } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { productList } from "../../services/productService";
+import { delay } from "../../utils/common";
 
-function ItemsProduct({ filters, isLoading, setTotalPages }) {
+function ItemsProduct({ filters, setTotalPages }) {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const fetchproducts = async () => {
+      setIsLoading(true);
+      await delay(500);
       try {
         const res = await productList(filters);
         setProducts(res.data);
         setTotalPages(res.totalPages);
       } catch (err) {
         console.log(err);
+      } finally {
+        setIsLoading(false);
       }
     };
     fetchproducts();

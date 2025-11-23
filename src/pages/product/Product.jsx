@@ -3,35 +3,47 @@ import React, { useEffect, useState } from "react";
 import ItemsProduct from "../../components/cardproduct/ItemsProduct";
 import { categoryOptions } from "../../utils/common";
 import ModalFilterProduct from "../../components/modal/ModalFilterProduct";
-import { Pagination, Stack } from "@mui/material";
 import Paginations from "../../components/pagination/Paginations";
+import { useSearchParams } from "react-router-dom";
 
 function Product() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [filters, setFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
-  const [isLoading, setIsLoading] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+
   const [tempFilters, setTempFilters] = useState({
-    page: "1",
-    perPage: "10",
-    name: "",
-    category: [],
-    min_price: "",
-    max_price: "",
-    sortBy: "",
+    page: searchParams.get("page") || "1",
+    perPage: searchParams.get("perPage") || "10",
+    name: searchParams.get("name") || "",
+    category: searchParams.getAll("category") || [],
+    min_price: searchParams.get("min_price") || "",
+    max_price: searchParams.get("max_price") || "",
+    sortBy: searchParams.get("sortBy") || "",
   });
 
-  // --- AUTO APPLY FILTER ---
-  useEffect(() => {
-    setIsLoading(true);
-    const timer = setTimeout(() => {
-      setFilters(tempFilters);
-      setIsLoading(false);
-    }, 300);
+  const applyFilters = () => {
+    const params = {};
 
-    return () => clearTimeout(timer);
-  }, [tempFilters]);
+    Object.entries(tempFilters).forEach(([key, value]) => {
+      if (!value || (Array.isArray(value) && value.length === 0)) return;
+
+      if (Array.isArray(value)) {
+        params[key] = value;
+      } else {
+        params[key] = value;
+      }
+    });
+
+    setSearchParams(params);
+  };
+
+  useEffect(() => {
+    const urlFilters = Object.fromEntries([...searchParams]);
+    urlFilters.category = searchParams.getAll("category");
+    setFilters(urlFilters);
+  }, [searchParams]);
 
   // === UPDATE FILTER ===
   const updateTempFilter = (key, value) => {
@@ -247,6 +259,13 @@ function Product() {
                         </span>
                       </div>
                     </div>
+                    <button
+                      type="submit"
+                      onClick={applyFilters}
+                      className="bg-[#997950] text-white w-full py-2 rounded-lg mt-5 hover:bg-[#876943] transition"
+                    >
+                      Apply Filter
+                    </button>
                   </div>
                 </div>
               </form>
@@ -255,11 +274,7 @@ function Product() {
 
           {/*  --- Products --- */}
           <div className="lg:col-span-9 mt-8 lg:mt-0">
-            <ItemsProduct
-              filters={filters}
-              isLoading={isLoading}
-              setTotalPages={setTotalPages}
-            />
+            <ItemsProduct filters={filters} setTotalPages={setTotalPages} />
           </div>
         </div>
       </div>
@@ -270,11 +285,13 @@ function Product() {
           totalPages={totalPages}
           currentPage={currentPage}
           onChange={(page) => {
-            setCurrentPage(page);
-            updateTempFilter("page", String(page));
+            setCurrentPage(page); // update halaman aktif
+            updateTempFilter("page", String(page)); // update tempFilters
+            applyFilters(); // langsung update searchParams → triggers useEffect
           }}
           siblingCount={1}
           boundaryCount={0}
+          color="#997950"
         />
       </div>
 
