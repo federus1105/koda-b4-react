@@ -7,8 +7,8 @@ export function formatDate(timestamp) {
   });
 }
 
-export const activeClass = "bg-orange-400 text-white";
-export const baseClass = "flex gap-5 cursor-pointer items-center p-2 rounded-xl hover:bg-orange-400 hover:text-white";
+export const activeClass = "bg-[#997950] text-white";
+export const baseClass = "flex gap-5 cursor-pointer items-center p-2 rounded-xl hover:bg-[#997950] hover:text-white";
 
 // ---- CATEGORY PRODUCT ---
 export const categoryOptions = [
@@ -50,6 +50,8 @@ export const months = [ "January", "February", "March", "April", "May",
 "June", "July", "August", "September", "October", "November",
 "December" ];
 
+
+// --- FORMAT DELIVERY ----
 export const formatDelivery = (delivery) => {
   if (!delivery) return "N/A";
 
@@ -60,4 +62,24 @@ export const formatDelivery = (delivery) => {
       .join(" ");
   }
   return delivery.charAt(0).toUpperCase() + delivery.slice(1);
+};
+
+
+// --- KEY USING PAGES ADMIN PRODUCT ---
+export const imageKeys = ["image_one", "image_two", "image_three", "image_four"];
+export const sizeMap = {
+  Regular: 1,
+  Medium: 2,
+  Large: 3,
+};
+export const sizes = ["regular", "medium", "large"];
+
+
+// --- FORMAT CATEGORY ---
+export const formatCategoryName = (name) => {
+  return name
+    .replace(/_/g, " ")
+    .split(" ")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 };
