@@ -1,138 +1,220 @@
-import { KeyRound, LucideClosedCaption, Mail, MapPin, Phone, User } from "lucide-react";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import {
+  Car,
+  History,
+  Loader2,
+  PlusCircle,
+  ShoppingBag,
+  ShoppingCart,
+  Upload,
+  UploadIcon,
+} from "lucide-react";
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { UpdateProfile } from "../../services/profileService";
+import { updateUser } from "../../redux/slice/authSlice";
+import { toast } from "react-toastify";
 const defaultProfilePhoto = "/default-profile.webp";
+import { useForm } from "react-hook-form";
+import { delay } from "../../utils/common";
+import UpdatePassword from "../../components/updatePassword/UpdatePassword";
+import { Link } from "react-router-dom";
 
 function Profile() {
-  const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const profile = useSelector((state) => state.auth.currentUser);
+  const token = useSelector((state) => state.auth.token);
+  const fileInputRef = useRef(null);
+  const dispatch = useDispatch();
+  const [file, setFile] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-  // toogle password visibiliy
-  const togglePasswordVisibility = () => {
-    setIsPasswordVisible(!isPasswordVisible);
+  // --- USE FORM ---
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      fullname: profile.fullname,
+      email: profile.email,
+      phone: profile.phone || "",
+      address: profile.address || "",
+      photos: null,
+    },
+  });
+
+  // --- UPDATE PROFILE ----
+  const onSubmitProfile = async (data) => {
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      if (data.fullname !== profile.fullname)
+        formData.append("fullname", data.fullname);
+      if (data.email !== profile.email) formData.append("email", data.email);
+      if (data.phone !== profile.phone) formData.append("phone", data.phone);
+      if (data.address !== profile.address)
+        formData.append("address", data.address);
+      if (file) {
+        formData.append("photos", file);
+      }
+
+      const res = await UpdateProfile(formData, token);
+      dispatch(updateUser(res.result));
+      toast.success("Update profile berhasil");
+      await delay(1000);
+    } catch (err) {
+      console.log(err);
+      await delay(1000);
+      toast.error(err.data?.message || "Terjadi kesalahan! silahkan coba lagi");
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
+      </div>
+    );
+  }
+
   return (
-    <>
-      <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-30">
-        <header className="flex flex-col gap-4 lg:w-1/4">
-          <h1 className="font-medium text-xl lg:text-3xl">Profile</h1>
-          <div className="border border-gray-300 rounded-lg flex flex-col px-10 py-3 lg:py-10 items-center gap-3">
-            <h1 className="font-medium text-xl">{profile.fullname}</h1>
-            <p className="text-gray-500"></p>
-            <div className="w-20 h-20 rounded-full overflow-hidden">
-              <img
-                src={profile.photos || defaultProfilePhoto}
-                alt=""
-                className="w-full h-full object-cover"
+    <section className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-40">
+      {/* Left - Profile Card */}
+      <header className="flex flex-col gap-4 lg:w-1/4">
+        <div className="border border-gray-300 rounded-lg flex flex-col px-10 py-3 lg:py-10 items-center gap-3">
+          <h1 className="font-medium text-xl">{profile.fullname}</h1>
+          <div
+            className="w-20 h-20 relative cursor-pointer"
+            onClick={() => fileInputRef.current.click()}
+          >
+            <img
+              src={profile.photos || defaultProfilePhoto}
+              alt={profile.fullname}
+              className="w-full h-full object-cover rounded-full"
+            />
+            <div className="absolute bottom-0 right-0 bg-blue-500 rounded-full w-6 h-6 flex items-center justify-center border-2 border-white">
+              <span className="text-white text-lg font-bold">
+                <PlusCircle />
+              </span>
+            </div>
+          </div>
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            onChange={(e) => setFile(e.target.files[0])}
+          />
+          <p>
+            Since <span className="font-medium">20 January 2024</span>
+          </p>
+        </div>
+
+        <div className="rounded-xl border border-gray-200 bg-white shadow-sm p-5 flex flex-col divide-y divide-gray-100">
+          {/* History */}
+          <Link
+            to={"/history"}
+            className="flex items-center justify-between py-4 hover:bg-gray-50 rounded-lg px-2 transition"
+          >
+            <div className="flex items-center gap-4">
+              <div className="bg-blue-100 text-blue-600 p-3 rounded-full">
+                <History size={20} />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-gray-800 font-semibold">
+                  History Transaction
+                </p>
+                <span className="text-sm text-gray-500">
+                  Lihat riwayat pembelian Anda
+                </span>
+              </div>
+            </div>
+            <span className="text-gray-400 text-xl">›</span>
+          </Link>
+
+          {/* Cart */}
+          <Link
+            to={"/checkout"}
+            className="flex items-center justify-between py-4 hover:bg-gray-50 rounded-lg px-2 transition"
+          >
+            <div className="flex items-center gap-4">
+              <div className="bg-pink-100 text-pink-600 p-3 rounded-full">
+                <ShoppingCart size={20} />
+              </div>
+              <div className="flex flex-col">
+                <p className="text-gray-800 font-semibold">Cart</p>
+                <span className="text-sm text-gray-500">
+                  Lihat barang yang ingin dibeli
+                </span>
+              </div>
+            </div>
+            <span className="text-gray-400 text-xl">›</span>
+          </Link>
+        </div>
+      </header>
+
+      {/* Right - Forms */}
+      <div className="flex flex-col gap-6 lg:w-1/2">
+        {/* --- FORM PROFILE --- */}
+        <form
+          onSubmit={handleSubmit(onSubmitProfile)}
+          className="border border-gray-300 rounded-2xl px-6 py-6 flex flex-col gap-4"
+        >
+          <h2 className="text-lg font-medium mb-6">Details Information</h2>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="fullname" className="text-sm text-gray-600">
+              Fullname
+            </label>
+            <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
+              <input
+                type="text"
+                {...register("fullname")}
+                placeholder="Enter Your Fullname"
+                className="w-full outline-none text-sm"
               />
             </div>
-
-            <button className="bg-orange-400 py-3 rounded-lg px-4 w-full">
-              Upload New Photo
-            </button>
-            <p>
-              Since <span className="font-medium">20 January 2024</span>
-            </p>
           </div>
-        </header>
-        <div className="border border-gray-300 px-3 lg:px-20 lg:py-15 py-5 lg:my-13 rounded-lg lg:w-1/2">
-          <form onSubmit="" className="flex flex-col gap-4">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="flex flex-col gap-2">
-              <label htmlFor="Phone" className="font-medium">
-                Fullname
+              <label htmlFor="email" className="text-sm text-gray-600">
+                E-mail
               </label>
-              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                <User className="text-gray-400" />
+              <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
-                  type="text"
-                  value={profile.fullname}
-                  id="fulname"
-                  placeholder="Enter Your Fullname"
-                  className="w-full outline-none"
-                />
-              </div>
-            </div>
-            {/* email */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="email" className="font-medium">
-                Email
-              </label>
-              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                <Mail className="text-gray-400" />
-                <input
-                  type="text"
-                  id="email"
-                  value={profile.email}
+                  type="email"
+                  {...register("email")}
                   placeholder="Enter Your Email"
-                  className="w-full outline-none"
+                  className="w-full outline-none text-sm"
                 />
               </div>
             </div>
-            {/* Phone */}
+
             <div className="flex flex-col gap-2">
-              <label htmlFor="phone" className="font-medium">
-                Phone
+              <label htmlFor="phone" className="text-sm text-gray-600">
+                Phone Number
               </label>
-              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                <Phone className="text-gray-400"/>
+              <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
                   type="text"
-                  id="fulname"
-                  value={profile.phone || ""}
+                  {...register("phone")}
                   placeholder="Enter Your Phone"
-                  className="w-full outline-none"
+                  className="w-full outline-none text-sm"
                 />
               </div>
             </div>
-            {/* password */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="password" className="font-medium">
-                Password
-              </label>
-              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                <KeyRound className="text-gray-400" />
-                <input
-                  type={isPasswordVisible ? "text" : "password"}
-                  id="password"
-                  placeholder="Enter Your Password"
-                  className="w-full outline-none"
-                />
-                <img
-                  src={
-                    isPasswordVisible ? "/Logo-Eye.svg" : "/Logo-Eye-Close.svg"
-                  }
-                  alt=""
-                  className="w-20 h-3.5 cursor-pointer"
-                  onClick={togglePasswordVisibility}
-                />
-              </div>
-            </div>
-            {/* Address */}
-            <div className="flex flex-col gap-2">
-              <label htmlFor="address" className="font-medium">
-                Address
-              </label>
-              <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                <MapPin className="text-gray-400"/>
-                <input
-                  type="text"
-                  id="address"
-                  value={profile.addres || ""}
-                  placeholder="Enter Your Address"
-                  className="w-full outline-none"
-                />
-              </div>
-            </div>
-            <button
-              type="submit"
-              className="cursor-pointer bg-orange-400 w-full py-3 rounded-lg"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <button
+            type="submit"
+            className="cursor-pointer bg-[#997950] hover:bg-[#886540] text-white w-full md:w-auto px-8 py-3 rounded-lg font-medium mt-2"
+          >
+            Update Changes
+          </button>
+        </form>
+
+        {/* --- FORM UPDATE PASSWORD --- */}
+        <UpdatePassword token={token} />
       </div>
-    </>
+    </section>
   );
 }
 
