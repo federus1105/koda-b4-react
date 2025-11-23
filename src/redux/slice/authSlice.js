@@ -14,15 +14,19 @@ const authSlice = createSlice({
             state.token = action.payload.token;
             state.isLoggedIn = true;
         },
-        currentUser: (state, action) => {
-            state.currentUser = action.payload
-        },
+        setCurrentUser: (state, action) => {
+       state.currentUser = action.payload
+       },
         Logout: (state) => {
             state.currentUser = null;
             state.isLoggedIn = false;
-        }
+            state.token = null;
+        },
+        updateUser(state, action) {
+        state.currentUser = { ...state.currentUser, ...action.payload };
+       }
     }
 });
 
-export const { login, Logout, currentUser } = authSlice.actions;
+export const { login, Logout, setCurrentUser, updateUser } = authSlice.actions;
 export default authSlice.reducer;
