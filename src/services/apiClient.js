@@ -14,7 +14,7 @@ export const apiClient = async (endpoint, options = {}) => {
 
     if (!response.ok) {
       console.error(response.status, data);
-      throw new Error(data.message || `Error ${response.status}`);
+      throw { status: response.status, data };
     }
 
     return data;
