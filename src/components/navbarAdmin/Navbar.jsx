@@ -83,7 +83,7 @@ function NavbarAdmin() {
                 </button>
               </Link>
               <Link to={"/auth/register"}>
-                <button className="bg-orange-400 rounded-lg py-2 px-4 hidden lg:block cursor-pointer">
+                <button className="bg-[#997950] rounded-lg py-2 px-4 hidden lg:block cursor-pointer">
                   Sign Up
                 </button>
               </Link>

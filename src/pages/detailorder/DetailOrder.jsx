@@ -7,7 +7,6 @@ import {
   RefreshCcw,
   UserPen,
 } from "lucide-react";
-import ItemDetailOrder from "../../components/cardproduct/ItemDetailHistory";
 import { useSelector } from "react-redux";
 import { formatDate, formatDelivery } from "../../utils/common";
 import { useParams } from "react-router-dom";
@@ -25,7 +24,6 @@ function DetailOrder() {
       setIsLoading(true);
       try {
         const res = await DetailHistory(id, token);
-        console.log(res.result);
         setOrder(res.result);
       } catch (error) {
         console.error(error);
@@ -47,13 +45,13 @@ function DetailOrder() {
 
   return (
     <>
-      <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:mx-30 md:mx-15 lg:my-30 lg:justify-center lg:gap-20">
+      <div className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:mx-30 md:mx-15 lg:my-40 lg:justify-center lg:gap-20">
         <div className="flex flex-col gap-3 lg:w-1/3">
           <h1 className="font-medium text-xl lg:text-3xl">
             {order.order_number}
           </h1>
-          <p className="text-gray-500">{formatDate(order.timestamp)}</p>
-          <div className="flex flex-col gap-4">
+          <p className="text-gray-500">{formatDate(order.created_at)}</p>
+          <div className="flex flex-col gap-4 border border-gray-300 rounded-xl p-4">
             <h1 className="font-medium">Order Information</h1>
 
             <div className="flex justify-between">
@@ -114,7 +112,7 @@ function DetailOrder() {
             <hr className="text-gray-300" />
             <div className="flex justify-between">
               <p className="text-gray-700">Total Transaksi</p>
-              <p className="font-medium text-orange-400">
+              <p className="font-medium text-amber-800">
                 IDR {order.total?.toLocaleString("id-ID")}
               </p>
             </div>

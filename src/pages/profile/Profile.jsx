@@ -15,7 +15,7 @@ import { updateUser } from "../../redux/slice/authSlice";
 import { toast } from "react-toastify";
 const defaultProfilePhoto = "/default-profile.webp";
 import { useForm } from "react-hook-form";
-import { delay } from "../../utils/common";
+import { delay, formatDate } from "../../utils/common";
 import UpdatePassword from "../../components/updatePassword/UpdatePassword";
 import { Link } from "react-router-dom";
 
@@ -103,7 +103,7 @@ function Profile() {
             onChange={(e) => setFile(e.target.files[0])}
           />
           <p>
-            Since <span className="font-medium">20 January 2024</span>
+            Since <span className="font-medium">{formatDate(profile.created_at)}</span>
           </p>
         </div>
 

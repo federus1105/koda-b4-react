@@ -8,8 +8,8 @@ function Footer() {
           {/* Logo & Description */}
           <div className="flex flex-col gap-4 lg:w-1/5">
             <div className="flex gap-3 items-center">
-              <img src="/icon.svg" alt="icon" />
-              <img src="/Logo.svg" alt="logo" />
+              <img src="/senja-kopi-kiri.png" alt="icon" className="w-14" />
+              <p className="text-[#997950] text-xl">𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦</p>
             </div>
             <p className="text-gray-500">
               Coffee Shop is a store that sells some good meals, and especially
@@ -45,13 +45,17 @@ function Footer() {
             <div className="flex flex-col gap-4">
               <h1 className="font-medium">Social Media</h1>
               <div className="flex gap-5">
-                <img src="/socmed/fb.svg" alt="Facebook" />
+                <img
+                  src="/socmed/fb.svg"
+                  alt="Facebook"
+                  className="text-[#997950]"
+                />
                 <img src="/socmed/twitter.svg" alt="Twitter" />
                 <img src="/socmed/instagram.svg" alt="Instagram" />
               </div>
             </div>
-            <p className="text-gray-300 font-medium mt-4 lg:mt-auto">
-              ©2020 CoffeeStore
+            <p className="text-gray-400 font-medium mt-4 lg:mt-auto">
+              ©2025 <span className="text-[#997950]">Senja Kopi-kiri</span>
             </p>
           </div>
         </div>
