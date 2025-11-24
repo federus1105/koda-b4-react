@@ -72,7 +72,7 @@ export const sizeMap = {
   Medium: 2,
   Large: 3,
 };
-export const sizes = ["regular", "medium", "large"];
+export const sizes = ["Regular", "Medium", "Large"];
 
 
 // --- FORMAT CATEGORY ---
