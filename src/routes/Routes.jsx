@@ -75,10 +75,16 @@ function Router() {
               }
             />
           </Route>
-          <Route element={<AdminLayout/>}>
-             <Route path="/admin/dashboard" element={<Dashboard />} />
-             <Route path="/admin/product" element={<ProductAdmin />} />
-             <Route path="/admin/order" element={<ModalCreate/>} />
+          <Route
+            element={
+              <PrivateRoute redirectTo="/auth/login" requireAdmin={true}>
+                <AdminLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route path="/admin/dashboard" element={<Dashboard />} />
+            <Route path="/admin/product" element={<ProductAdmin />} />
+            <Route path="/admin/order" element={<ModalCreate />} />
           </Route>
         </Routes>
       </BrowserRouter>
