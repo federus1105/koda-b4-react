@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRegister } from "../../hooks/UseValidation";
 import { toast } from "react-toastify";
 import { registerUser } from "../../services/authService";
-import { KeyRound, Mail, User } from "lucide-react";
+import { Eye, EyeOff, KeyRound, Mail, User } from "lucide-react";
 
 function Register() {
   const { formData, errors, handleChange, validate } = useRegister();
@@ -39,173 +39,221 @@ function Register() {
   };
   return (
     <>
-      <section className="min-h-screen">
-        <div className="flex justify-center">
-          {/* ---- right side image  ---- */}
-          <section className="lg:w-1/3 flex items-center min-h-screen justify-center">
-            <img
-              src="/bg-register.svg"
-              alt="Background image"
-              className="hidden md:block w-full h-full object-cover"
-            />
-          </section>
-          <section className="lg:bg-cover lg:w-2/3">
-            <section className="flex h-full">
-              <section className="px-5 flex justify-center flex-col w-full lg:px-20">
-                <div className="flex items-center gap-2 md:mb-3">
-                  <img src="/icon.svg" alt="icon" />
-                  <img src="/Logo.svg" alt="" />
-                </div>
-                {/*---  header ----*/}
-                <header className="flex flex-col gap-2 my-3">
-                  <h1 className="text-[#8E6447] text-xl font-medium">
-                    Register
-                  </h1>
-                  <p className="text-gray-500 mt-2">
-                    Fill out the form correctly
-                  </p>
-                </header>
+      <section className="min-h-screen bg-stone-50">
+        <div className="flex justify-center min-h-screen">
 
-                {/* ---- input user email and pass ---- */}
-                <form onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="Fullname" className="font-medium">
-                      Fullname
-                    </label>
-                    <div className="input-Fulname flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <User className="text-gray-400" />
-                      <input
-                        type="text"
-                        id="fullname"
-                        name="fullname"
-                        placeholder="Enter Your Fullname"
-                        className="w-full outline-none"
-                        value={formData.fullname}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+
+          {/* Right Side - Form */}
+          <section className="w-full lg:w-3/5 xl:w-2/3 flex items-center justify-center p-6 lg:p-12">
+            <div className="w-full max-w-lg">
+              {/* Logo & Brand */}
+              <div className="flex items-center gap-3 mb-12">
+                <img
+                  src="/senja-kopi-kiri.png"
+                  alt="Senja Kopi Logo"
+                  className="w-16 h-16"
+                />
+                <p className="text-2xl font-semibold text-stone-800">
+                  𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦
+                </p>
+              </div>
+
+              {/* Header */}
+              <header className="mb-10">
+                <h1 className="text-4xl font-bold text-amber-800 mb-3">
+                  Register
+                </h1>
+                <p className="text-stone-600 text-lg">
+                  Fill out the form correctly to create your account
+                </p>
+              </header>
+
+              {/* Form */}
+              <div className="space-y-6">
+                {/* Fullname Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="fullname"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    Full Name
+                  </label>
+                  <div className="relative">
+                    <User
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type="text"
+                      id="fullname"
+                      name="fullname"
+                      placeholder="Enter your full name"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.fullname}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {errors.fullname && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.fullname}
                     </span>
+                  )}
+                </div>
+
+                {/* Email Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <Mail
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type="text"
+                      id="email"
+                      name="email"
+                      placeholder="Enter your email"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.email}
+                      onChange={handleChange}
+                    />
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="email" className="font-medium">
-                      Email
-                    </label>
-                    <div className="input-email flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <Mail className="text-gray-400" />
-                      <input
-                        type="text"
-                        id="email"
-                        name="email"
-                        placeholder="Enter Your Email"
-                        className="w-full outline-none"
-                        value={formData.email}
-                        onChange={handleChange}
-                      />
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+                  {errors.email && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.email}
                     </span>
+                  )}
+                </div>
+
+                {/* Password Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    Password
+                  </label>
+                  <div className="relative">
+                    <KeyRound
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type={passwordVisibility.password ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="Enter your password"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility("password")}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                    >
+                      {passwordVisibility.password ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="password" className="font-medium">
-                      Password
-                    </label>
-                    <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                      <KeyRound className="text-gray-400" />
-                      <input
-                        type={passwordVisibility.password ? "text" : "password"}
-                        id="password"
-                        name="password"
-                        placeholder="Enter Your Password"
-                        className="w-full outline-none"
-                        value={formData.password}
-                        onChange={handleChange}
-                      />
-                      <img
-                        src={
-                          passwordVisibility
-                            ? "/Logo-Eye.svg"
-                            : "/Logo-Eye-Close.svg"
-                        }
-                        alt=""
-                        className="w-20 h-3.5 cursor-pointer"
-                        onClick={() => togglePasswordVisibility("password")}
-                      />
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+                  {errors.password && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.password}
                     </span>
+                  )}
+                </div>
+
+                {/* Confirm Password Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    Confirm Password
+                  </label>
+                  <div className="relative">
+                    <KeyRound
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type={
+                        passwordVisibility.confirmPassword ? "text" : "password"
+                      }
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="Enter your password again"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        togglePasswordVisibility("confirmPassword")
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                    >
+                      {passwordVisibility.confirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="confirmpassword" className="font-medium">
-                      Confirm Password
-                    </label>
-                    <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <KeyRound className="text-gray-400" />
-                      <input
-                        type={
-                          passwordVisibility.confirmPassword
-                            ? "text"
-                            : "password"
-                        }
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder="Enter Your Password Again"
-                        className="w-full outline-none"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                      />
-                      <img
-                        src={
-                          passwordVisibility
-                            ? "/Logo-Eye.svg"
-                            : "/Logo-Eye-Close.svg"
-                        }
-                        alt=""
-                        className="w-20 h-3.5 cursor-pointer"
-                        onClick={() =>
-                          togglePasswordVisibility("confirmPassword")
-                        }
-                      />
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.confirmPassword}
                     </span>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
-                  >
-                    Register
-                  </button>
-                  <p className="text-center mt-8 text-gray-500">
-                    Have An Account ?{" "}
-                    <Link to="../login">
-                      <span className="text-orange-400">Login</span>
-                    </Link>
-                  </p>
-                </form>
-                <div className="relative text-center my-5">
-                  <hr className="border-t border-gray-300" />
-                  <span className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white px-7 text-gray-400">
-                    Or
-                  </span>
+                  )}
                 </div>
-                {/* Sign In other */}
-                <section className="flex gap-5 mt-5">
-                  <button className="shadow-lg rounded-xl w-full h-13 border-gray-300 cursor-pointer flex items-center justify-center gap-5">
-                    <img src="/Google.svg" alt="" />
-                    <p className="hidden lg:block">Sign In With Google</p>
-                  </button>
-                  <button className="shadow-lg rounded-xl w-full h-13 border-gray-300 cursor-pointer flex items-center justify-center gap-5">
-                    <img src="/Facebook.svg" alt="" />
-                    <p className="hidden lg:block">Sign In With Facebook</p>
-                  </button>
-                </section>
+
+                {/* Submit Button */}
+                <button
+                  onClick={handleSubmit}
+                  className="w-full bg-amber-700 cursor-pointer text-white py-4 rounded-xl font-semibold shadow-lg"
+                >
+                  Register
+                </button>
+              </div>
+
+              {/* Login Link */}
+              <p className="text-center mt-8 text-stone-600">
+                Already have an account?{" "}
+                <Link to="../login">
+                  <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer">
+                    Login
+                  </span>
+                </Link>
+              </p>
+              {/* Divider */}
+              <div className="relative text-center my-8">
+                <hr className="border-t-2 border-stone-200" />
+                <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-stone-50 px-6 text-stone-500 font-medium">
+                  Or continue with
+                </span>
+              </div>
+
+              {/* Social Login Buttons */}
+              <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                  <img src="/google.png" alt="Google" className="w-6 h-6" />
+                  <span className="font-semibold text-stone-700">Google</span>
+                </button>
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                  <img src="/Facebook.svg" alt="Facebook" className="w-6 h-6" />
+                  <span className="font-semibold text-stone-700">Facebook</span>
+                </button>
               </section>
-            </section>
+            </div>
           </section>
         </div>
       </section>

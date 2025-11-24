@@ -42,132 +42,169 @@ function ResetPassword() {
   };
   return (
     <>
-      <section className="min-h-screen">
-        <div className="flex justify-center">
-          {/* right side image */}
-          <section className="lg:w-1/3 flex items-center min-h-screen justify-center">
-            <img
-              src="/bg-register.svg"
-              alt="Background image"
-              className="hidden md:block w-full h-full object-cover"
-            />
-          </section>
-          <section className="lg:bg-cover lg:w-2/3">
-            <section className="flex h-full">
-              <section className="px-5 flex justify-center flex-col w-full lg:px-30">
-                <div className="flex items-center gap-2 md:mb-10">
-                  <img src="/icon.svg" alt="icon" />
-                  <img src="/Logo.svg" alt="" />
-                </div>
-                {/* header */}
-                <header className="flex flex-col gap-2 my-3">
-                  <h1 className="text-[#8E6447] text-xl font-medium">
-                    Fill out the form correctly
-                  </h1>
-                  <p className="text-gray-500 mt-2">
-                    We will send new password to your email
-                  </p>
-                </header>
+      <section className="min-h-screen bg-stone-50">
+        <div className="flex justify-center min-h-screen">
+          {/* Right Side - Form */}
+          <section className="w-full lg:w-3/5 xl:w-2/3 flex items-center justify-center p-6 lg:p-12">
+            <div className="w-full max-w-lg">
+              {/* Logo & Brand */}
+              <div className="flex items-center gap-3 mb-12">
+                <img
+                  src="/senja-kopi-kiri.png"
+                  alt="Senja Kopi Logo"
+                  className="w-16 h-16"
+                />
+                <p className="text-2xl font-semibold text-stone-800">
+                  𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦
+                </p>
+              </div>
 
-                {/* input user email and pass */}
-                <form onSubmit={handleSubmit}>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="token" className="font-medium">
-                      OTP
-                    </label>
-                    <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <QrCode className="text-gray-400" />
-                      <input
-                        type="text"
-                        id="token"
-                        name="token"
-                        value={formData.token}
-                        onChange={handleChange}
-                        placeholder="Enter Your Otp"
-                        className="w-full outline-none"
-                      />
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+              {/* Header */}
+              <header className="mb-10">
+                <h1 className="text-4xl font-bold text-amber-800 mb-3">
+                  Reset Password
+                </h1>
+                <p className="text-stone-600 text-lg">
+                  We will send new password to your email. Fill out the form
+                  correctly.
+                </p>
+              </header>
+
+              {/* Form */}
+              <div className="space-y-6">
+                {/* OTP Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="token"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    OTP Code
+                  </label>
+                  <div className="relative">
+                    <QrCode
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type="text"
+                      id="token"
+                      name="token"
+                      placeholder="Enter your OTP"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.token}
+                      onChange={handleChange}
+                    />
+                  </div>
+                  {errors.token && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.token}
                     </span>
+                  )}
+                </div>
+
+                {/* New Password Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="password"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    New Password
+                  </label>
+                  <div className="relative">
+                    <KeyRound
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type={passwordVisibility.password ? "text" : "password"}
+                      id="password"
+                      name="password"
+                      placeholder="Enter your new password"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.password}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => togglePasswordVisibility("password")}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                    >
+                      {passwordVisibility.password ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="password" className="font-medium">
-                      New Password
-                    </label>
-                    <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-1.5 w-full gap-3 h-11">
-                      <KeyRound className="text-gray-400" />
-                      <input
-                        type={passwordVisibility.password ? "text" : "password"}
-                        id="password"
-                        name="password"
-                        placeholder="Enter Your Password"
-                        className="w-full outline-none"
-                        value={formData.password}
-                        onChange={handleChange}
-                      />
-                      <button
-                        type="button"
-                        className="text-gray-400 cursor-pointer"
-                        onClick={() => togglePasswordVisibility("password")}
-                      >
-                        {passwordVisibility.password ? (
-                          <EyeOff size={15} />
-                        ) : (
-                          <Eye size={15} />
-                        )}
-                      </button>
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+                  {errors.password && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.password}
                     </span>
+                  )}
+                </div>
+
+                {/* Confirm New Password Field */}
+                <div className="space-y-2">
+                  <label
+                    htmlFor="confirmPassword"
+                    className="block text-sm font-semibold text-stone-700"
+                  >
+                    Confirm New Password
+                  </label>
+                  <div className="relative">
+                    <KeyRound
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                      size={20}
+                    />
+                    <input
+                      type={
+                        passwordVisibility.confirmPassword ? "text" : "password"
+                      }
+                      id="confirmPassword"
+                      name="confirmPassword"
+                      placeholder="Enter your password again"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      value={formData.confirmPassword}
+                      onChange={handleChange}
+                    />
+                    <button
+                      type="button"
+                      onClick={() =>
+                        togglePasswordVisibility("confirmPassword")
+                      }
+                      className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+                    >
+                      {passwordVisibility.confirmPassword ? (
+                        <EyeOff size={20} />
+                      ) : (
+                        <Eye size={20} />
+                      )}
+                    </button>
                   </div>
-                  <div className="flex flex-col gap-2">
-                    <label htmlFor="confirmpassword" className="font-medium">
-                      New Confirm Password
-                    </label>
-                    <div className="flex items-center border border-t border-gray-300 bg-gray-50 rounded-[8px] py-1.5 px-2.5 w-full gap-3 h-11">
-                      <KeyRound className="text-gray-400" />
-                      <input
-                        type={
-                          passwordVisibility.confirmPassword
-                            ? "text"
-                            : "password"
-                        }
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        placeholder="Enter Your Password Again"
-                        className="w-full outline-none"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                      />
-                      <button
-                        type="button"
-                        className="text-gray-400 cursor-pointer"
-                        onClick={() =>
-                          togglePasswordVisibility("confirmPassword")
-                        }
-                      >
-                        {passwordVisibility.confirmPassword ? (
-                          <EyeOff size={15} />
-                        ) : (
-                          <Eye size={15} />
-                        )}
-                      </button>
-                    </div>
-                    <span className="text-red-500 min-h-[1.5rem] text-sm">
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-sm block mt-1">
                       {errors.confirmPassword}
                     </span>
-                  </div>
-                  <button
-                    type="submit"
-                    className="w-full bg-orange-400 text-white h-10 rounded-md cursor-pointer mt-2"
-                  >
-                    Submit
-                  </button>
-                </form>
-              </section>
-            </section>
+                  )}
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  onClick={handleSubmit}
+                  className="cursor-pointer w-full bg-amber-700 text-white py-4 rounded-xl font-semibold"
+                >
+                  Submit
+                </button>
+              </div>
+
+              {/* Additional Info */}
+              <div className="mt-8 p-4 bg-amber-50 border-2 border-amber-200 rounded-xl">
+                <p className="text-sm text-amber-900">
+                  <span className="font-semibold">Note:</span> The code will
+                  expire in 15 minutes.
+                </p>
+              </div>
+            </div>
           </section>
         </div>
       </section>
