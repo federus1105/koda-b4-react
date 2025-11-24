@@ -6,6 +6,7 @@ function ModalFilterProduct({
   setTempFilters,
   handleCategoryChange,
   resetFilters,
+  applyFilters,
   onClose,
   categoryOptions,
 }) {
@@ -116,10 +117,23 @@ function ModalFilterProduct({
               </div>
 
               <button
-                onClick={resetFilters}
-                className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-300"
+                onClick={() => {
+                  resetFilters();
+                  applyFilters();
+                  onClose();
+                }}
+                className="w-full bg-gray-200 text-gray-700 py-3 rounded-lg font-medium"
               >
                 Reset Filters
+              </button>
+              <button
+                onClick={() => {
+                  applyFilters();
+                  onClose();
+                }}
+                className="w-full bg-[#997950] text-white py-3 rounded-lg font-medium"
+              >
+                Apply Filters
               </button>
             </div>
           </div>
