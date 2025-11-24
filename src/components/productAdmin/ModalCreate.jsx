@@ -405,7 +405,7 @@ function ModalCreate({ onClose }) {
                               : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                           }`}
                         >
-                          Cold
+                          Ice
                         </div>
                       </label>
                     </div>
