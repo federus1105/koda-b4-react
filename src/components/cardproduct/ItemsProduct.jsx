@@ -56,11 +56,11 @@ function ItemsProduct({ filters, setTotalPages }) {
 
   return (
     <>
-      <section className="flex flex-wrap gap-6 justify-center">
-        {products.slice(0, 8).map((product, index) => (
+      <section className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {products.map((product, index) => (
           <div
             key={index}
-            className="w-[165px] lg:w-[250px] p-4 flex flex-col gap-3 border-2 border-[#997950] rounded-lg"
+            className="w-full p-4 flex flex-col gap-3 border-2 border-[#997950] rounded-lg"
           >
             {/* === IMAGE === */}
             <div
