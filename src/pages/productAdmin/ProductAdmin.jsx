@@ -204,7 +204,7 @@ function ProductAdmin() {
                 </td>
                 <td className="p-3">
                   <img
-                    src={p.image}
+                    src={p.images.photos_one}
                     alt={p.name}
                     className="w-12 h-12 rounded-md object-cover"
                   />
