@@ -103,7 +103,10 @@ function Profile() {
             onChange={(e) => setFile(e.target.files[0])}
           />
           <p>
-            Since <span className="font-medium">{formatDate(profile.created_at)}</span>
+            Since{" "}
+            <span className="font-medium">
+              {formatDate(profile.created_at)}
+            </span>
           </p>
         </div>
 
@@ -159,17 +162,32 @@ function Profile() {
         >
           <h2 className="text-lg font-medium mb-6">Details Information</h2>
 
-          <div className="flex flex-col gap-2">
-            <label htmlFor="fullname" className="text-sm text-gray-600">
-              Fullname
-            </label>
-            <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
-              <input
-                type="text"
-                {...register("fullname")}
-                placeholder="Enter Your Fullname"
-                className="w-full outline-none text-sm"
-              />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-2">
+              <label htmlFor="fullname" className="text-sm text-gray-600">
+                Fullname
+              </label>
+              <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
+                <input
+                  type="text"
+                  {...register("fullname")}
+                  placeholder="Enter Your Fullname"
+                  className="w-full outline-none text-sm"
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-2">
+              <label htmlFor="fullname" className="text-sm text-gray-600">
+                Address
+              </label>
+              <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
+                <input
+                  type="text"
+                  {...register("address")}
+                  placeholder="Enter Your Address"
+                  className="w-full outline-none text-sm"
+                />
+              </div>
             </div>
           </div>
 
