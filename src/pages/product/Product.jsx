@@ -15,7 +15,7 @@ function Product() {
 
   const [tempFilters, setTempFilters] = useState({
     page: searchParams.get("page") || "1",
-    perPage: searchParams.get("perPage") || "10",
+    perPage: searchParams.get("perPage") || "8",
     name: searchParams.get("name") || "",
     category: searchParams.getAll("category") || [],
     min_price: searchParams.get("min_price") || "",
@@ -72,9 +72,18 @@ function Product() {
     });
   };
 
+  const handlePageChange = (page) => {
+    setTempFilters((prev) => {
+      const updated = { ...prev, page: String(page) }; // update tempFilters
+      setSearchParams(updated); // langsung apply ke URL
+      return updated;
+    });
+    setCurrentPage(page);
+  };
+
   return (
     <>
-      <header className="my-20 mx-5 md:my-18 md:mx-0 flex flex-col gap-5">
+      <header className="mt-30 mx-5 md:my-18 md:mx-0 flex flex-col gap-5">
         <div className="hidden md:block relative w-full">
           <img
             src="/bg-product.svg"
@@ -261,7 +270,10 @@ function Product() {
                     </div>
                     <button
                       type="submit"
-                      onClick={applyFilters}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        applyFilters();
+                      }}
                       className="bg-[#997950] text-white w-full py-2 rounded-lg mt-5 hover:bg-[#876943] transition"
                     >
                       Apply Filter
@@ -273,7 +285,7 @@ function Product() {
           </div>
 
           {/*  --- Products --- */}
-          <div className="lg:col-span-9 mt-8 lg:mt-0">
+          <div className="md:col-span-6 lg:col-span-8 mt-8 lg:mt-0">
             <ItemsProduct filters={filters} setTotalPages={setTotalPages} />
           </div>
         </div>
@@ -284,11 +296,7 @@ function Product() {
         <Paginations
           totalPages={totalPages}
           currentPage={currentPage}
-          onChange={(page) => {
-            setCurrentPage(page); // update halaman aktif
-            updateTempFilter("page", String(page)); // update tempFilters
-            applyFilters(); // langsung update searchParams → triggers useEffect
-          }}
+          onChange={handlePageChange}
           siblingCount={1}
           boundaryCount={0}
           color="#997950"
@@ -302,6 +310,7 @@ function Product() {
           setTempFilters={setTempFilters}
           handleCategoryChange={handleCategoryChange}
           resetFilters={resetFilters}
+          applyFilters={applyFilters}
           onClose={() => setShowMobileFilter(false)}
           categoryOptions={categoryOptions}
         />
