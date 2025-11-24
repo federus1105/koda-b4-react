@@ -1,20 +1,40 @@
+import { jwtDecode } from "jwt-decode";
 import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-function PrivateRoute({ redirectTo, children }) {
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn);
+function PrivateRoute({ redirectTo, children, requireAdmin = false }) {
+  const { isLoggedIn, token } = useSelector((state) => state.auth);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (!isLoggedIn) {
-      toast.error("Anda harus Login dulu");
-      navigate(redirectTo, { replace: true });
+  let role = null;
+  try {
+    if (token) {
+      const decoded = jwtDecode(token);
+      role = decoded?.role;
     }
-  }, [isLoggedIn, navigate, redirectTo]);
+  } catch (err) {
+    toast.error("Token tidak valid, silakan login kembali");
+    navigate(redirectTo, { replace: true });
+    console.error("Token tidak valid:", err);
+  }
+  useEffect(() => {
+    if (!isLoggedIn || !token) {
+      toast.error("Anda harus login dulu");
+      navigate(redirectTo, { replace: true });
+      return;
+    }
+    if (requireAdmin && role !== "admin") {
+      toast.error("Akses ditolak! Halaman ini hanya untuk Admin");
+      navigate("/", { replace: true });
+    }
+  }, [isLoggedIn, token, role, navigate, redirectTo, requireAdmin]);
 
-  return isLoggedIn ? children : null;
+  if (!isLoggedIn || !token) return null;
+  if (requireAdmin && role !== "admin") return null;
+
+  return children;
 }
 
 export default PrivateRoute;
