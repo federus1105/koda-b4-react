@@ -22,7 +22,7 @@ function NavbarAdmin() {
     <>
       <nav className="border-b bg-gradient-to-br from-gray-900 to-gray-800 bg-gray-100 flex justify-between px-5 py-5 md:px-15 lg:px-30 duration-100">
         <div className="flex gap-35">
-          <div className="flex gap-3">
+          <div className="flex gap-3 items-center">
             <img src="/senja-kopi-kiri.png" alt="icon" className="w-14" />
             <p className="text-white text-xl">𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦</p>
           </div>
@@ -78,7 +78,7 @@ function NavbarAdmin() {
           ) : (
             <>
               <Link to={"/auth/login"}>
-                <button className="border rounded-lg py-2 px-4 hidden lg:block cursor-pointer">
+                <button className="text-white border rounded-lg py-2 px-4 hidden lg:block cursor-pointer">
                   Signin
                 </button>
               </Link>
