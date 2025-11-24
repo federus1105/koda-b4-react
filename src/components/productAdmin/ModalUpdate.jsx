@@ -6,16 +6,25 @@ import {
   AdminUpdateProduct,
 } from "../../services/productService";
 import { useSelector } from "react-redux";
-import { formatCategoryName, imageKeys, sizes } from "../../utils/common";
+import { delay, formatCategoryName, imageKeys } from "../../utils/common";
 import { ImagesIcon, Loader2, X } from "lucide-react";
+const imageKeysResponse = [
+  "photos_one",
+  "photos_two",
+  "photos_three",
+  "photos_four",
+];
+const sizesResponse = ["regular", "medium", "large"];
 
 function ModalUpdate({ onClose, product }) {
   const [categories, setCategories] = useState([]);
   const token = useSelector((state) => state.auth.token);
   const [isLoadingUpdate, setIsLoadingUpdate] = useState(false);
-  const [selectedImagesPreview, setSelectedImagesPreview] = useState(
-    product.photos || [null, null, null, null]
+  const initialPreview = imageKeysResponse.map(
+    (key) => product.images?.[key] || null
   );
+  const [selectedImagesPreview, setSelectedImagesPreview] =
+    useState(initialPreview);
   const [selectedImageFiles, setSelectedImageFiles] = useState([
     null,
     null,
@@ -83,6 +92,7 @@ function ModalUpdate({ onClose, product }) {
     try {
       setIsLoadingUpdate(true);
       const formData = new FormData();
+      await delay(800);
 
       // Append only updated fields
       if (data.name !== product.name) formData.append("name", data.name);
@@ -94,10 +104,28 @@ function ModalUpdate({ onClose, product }) {
         formData.append("rating", data.rating);
       }
 
+      // CATEGORY
       if (data.category?.length) {
         data.category.forEach((catId) => formData.append("category", catId));
       }
 
+      // SIZE
+      const sizeMap = { regular: "1", medium: "2", large: "3" };
+      data.size.forEach((s) => {
+        const sizeId = sizeMap[s];
+        if (sizeId) formData.append("size", sizeId);
+      });
+
+      // VARIANT
+      const variantMap = { hot: "1", ice: "2" };
+      data.variant.forEach((v) => {
+        const variantId = variantMap[v];
+        if (variantId) formData.append("variant", variantId);
+      });
+
+      console.log([...formData.entries()]);
+
+      // --- IMAGES ---
       selectedImageFiles.forEach((file, idx) => {
         if (file instanceof File) formData.append(imageKeys[idx], file);
       });
@@ -115,7 +143,7 @@ function ModalUpdate({ onClose, product }) {
   // --- LOADING EARLY RETURN ---
   if (isLoadingUpdate) {
     return (
-      <div className="fixed inset-0 bg-white/70 backdrop-blur-sm flex items-center justify-center z-[9999]">
+      <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-[9999]">
         <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
       </div>
     );
@@ -299,7 +327,7 @@ function ModalUpdate({ onClose, product }) {
 
                   return (
                     <div className="flex gap-2">
-                      {sizes.map((sizeOption) => (
+                      {sizesResponse.map((sizeOption) => (
                         <label
                           key={sizeOption}
                           className="cursor-pointer flex-1"
@@ -317,7 +345,8 @@ function ModalUpdate({ onClose, product }) {
                                 : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                             }`}
                           >
-                            {sizeOption}
+                            {sizeOption.charAt(0).toUpperCase() +
+                              sizeOption.slice(1).toLowerCase()}
                           </div>
                         </label>
                       ))}
@@ -335,29 +364,30 @@ function ModalUpdate({ onClose, product }) {
               <Controller
                 name="variant"
                 control={control}
-                defaultValue={[]}
                 render={({ field }) => {
                   const { value, onChange } = field;
-                  const handleVariantChange = (variantId) => {
-                    if (value.includes(variantId)) {
-                      onChange(value.filter((id) => id !== variantId));
+
+                  const handleVariantChange = (variant) => {
+                    if (value.includes(variant)) {
+                      onChange(value.filter((v) => v !== variant));
                     } else {
-                      onChange([...value, variantId]);
+                      onChange([...value, variant]);
                     }
                   };
 
                   return (
                     <div className="flex gap-2">
+                      {/* HOT */}
                       <label className="flex-1 cursor-pointer select-none">
                         <input
                           type="checkbox"
-                          checked={value.includes("1")}
-                          onChange={() => handleVariantChange("1")}
+                          checked={value.includes("hot")}
+                          onChange={() => handleVariantChange("hot")}
                           className="hidden"
                         />
                         <div
                           className={`border rounded-md py-2 px-3 text-sm text-center transition ${
-                            value.includes("1")
+                            value.includes("hot")
                               ? "border-[#997950] bg-[#997950] text-white"
                               : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                           }`}
@@ -366,27 +396,29 @@ function ModalUpdate({ onClose, product }) {
                         </div>
                       </label>
 
+                      {/* ICE */}
                       <label className="flex-1 cursor-pointer select-none">
                         <input
                           type="checkbox"
-                          checked={value.includes("2")}
-                          onChange={() => handleVariantChange("2")}
+                          checked={value.includes("ice")}
+                          onChange={() => handleVariantChange("ice")}
                           className="hidden"
                         />
                         <div
                           className={`border rounded-md py-2 px-3 text-sm text-center transition ${
-                            value.includes("2")
+                            value.includes("ice")
                               ? "border-[#997950] bg-[#997950] text-white"
                               : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                           }`}
                         >
-                          Cold
+                          Ice
                         </div>
                       </label>
                     </div>
                   );
                 }}
               />
+
               {errors.variant && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.variant.message}
