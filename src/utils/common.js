@@ -25,9 +25,9 @@ export const categoryOptions = [
 
 // --- DELIVERY ORDERS ---
 export const deliveryOptions = [
-  { id: 1, label: "Dine In"},
-  { id: 2, label: "Door Delivery"},
-  { id: 3, label: "Pick Up"},
+  { id: 1, label: "Dine In", fee:0},
+  { id: 2, label: "Door Delivery", fee:15000},
+  { id: 3, label: "Pick Up", fee:0},
 ];
 
 
