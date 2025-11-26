@@ -96,19 +96,23 @@ function ItemsProduct({ filters, setTotalPages }) {
                 {/* === PRICE & RATING === */}
                 <div className="flex flex-col gap-2 mt-2">
                   <div className="flex items-center gap-2">
-                    {Array.from({ length: 5 }).map((_, index) => (
-                      <img key={index} src="/star.svg" alt="Star" />
-                    ))}
-                    <p>{product.rating}</p>
+                    {/* ⭐{(Number(product.rating) || 0).toFixed(1)} */}
                   </div>
-                  <p className="text-[#997950] font-semibold text-base">
-                    IDR {product.price}
-                    {product.price_original > product.price_discount && (
-                      <span className="line-through text-xs text-gray-500 ml-2">
+                  <div className="flex gap-2">
+                    {product.discount > 0 && (
+                      <span className="line-through text-red-700">
                         IDR {product.price.toLocaleString("id-ID")}
                       </span>
                     )}
-                  </p>
+
+                    <h1 className="text-[#997950]">
+                      IDR{" "}
+                      {(product.discount > 0
+                        ? product.discount
+                        : product.price
+                      ).toLocaleString("id-ID")}
+                    </h1>
+                  </div>
                 </div>
               </div>
 
