@@ -1,17 +1,24 @@
 import React from "react";
 import { paymentMethods } from "../../utils/common";
 
-function PaymentOrder({ carts, selectedPayment, setSelectedPayment }) {
+function PaymentOrder({
+  carts,
+  selectedPayment,
+  setSelectedPayment,
+  selectedDelivery,
+  deliveryOptions,
+}) {
   const subTotal = carts.reduce((acc, item) => {
     const price =
       item.discount > 0 && item.flash_sale == true ? item.discount : item.price;
     return acc + price * item.qty;
   }, 0);
 
-  const delivery = 0;
-  const tax = 0;
+  const deliveryFee =
+    deliveryOptions.find((opt) => opt.id === selectedDelivery)?.fee || 0;
+  const tax = 2000;
 
-  const total = subTotal + delivery + tax;
+  const total = subTotal + deliveryFee + tax;
 
   return (
     <div className="my-20 lg:w-1/3 lg:my-40">
@@ -27,7 +34,7 @@ function PaymentOrder({ carts, selectedPayment, setSelectedPayment }) {
           <div className="flex justify-between">
             <p className="font-medium text-gray-500">Delivery</p>
             <p className="font-medium">
-              IDR {delivery.toLocaleString("id-ID")}
+              IDR {deliveryFee.toLocaleString("id-ID")}
             </p>
           </div>
           <div className="flex justify-between">
