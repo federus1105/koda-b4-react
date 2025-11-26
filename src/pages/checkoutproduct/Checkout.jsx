@@ -37,7 +37,6 @@ function Checkout() {
     fetchCarts();
   }, [token]);
 
-
   // --- USE FORM ---
   const {
     register,
@@ -82,7 +81,6 @@ function Checkout() {
       setIsLoadingPay(false);
     }
   };
-  
 
   // --- HANDLE DELETE ---
   const handleDeleteClick = (id) => {
@@ -265,6 +263,8 @@ function Checkout() {
           carts={carts}
           selectedPayment={selectedPayment}
           setSelectedPayment={setSelectedPayment}
+          selectedDelivery={delivery}
+          deliveryOptions={deliveryOptions}
         />
       </div>
     </>
