@@ -2,18 +2,44 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "react-toastify";
 import { UpdatePasswordUser } from "../../services/profileService";
-import { Loader2 } from "lucide-react";
+import { Eye, EyeOff, Loader2 } from "lucide-react";
 import { delay } from "../../utils/common";
+import {
+  validateConfirmPassword,
+  validatePassword,
+} from "../../hooks/UseValidation";
 
 function UpdatePassword({ token }) {
   const [isLoading, setIsLoading] = useState(false);
-  const { register, handleSubmit, reset } = useForm({
+  const [passwordVisibility, setPasswordVisibility] = useState({
+    oldPassword: false,
+    newPassword: false,
+    confirmPassword: false,
+  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+    reset,
+  } = useForm({
     defaultValues: {
       old_password: "",
       new_password: "",
       confirm_password: "",
     },
   });
+
+  // ---- TOGGLE FUNCTION ---
+  const togglePasswordVisibility = (field) => {
+    setPasswordVisibility((prev) => ({
+      ...prev,
+      [field]: !prev[field],
+    }));
+  };
+
+  const newPassword = watch("new_password");
+  const oldPassword = watch("old_password");
 
   // --- HANDLE SUBMIT ---
   const onSubmit = async (data) => {
@@ -34,7 +60,7 @@ function UpdatePassword({ token }) {
       reset();
     } catch (err) {
       console.error(err);
-      toast.error(err.data?.message || "Terjadi kesalahan! silahkan coba lagi");
+      toast.error("Terjadi kesalahan! silahkan coba lagi");
     } finally {
       setIsLoading(false);
     }
@@ -55,40 +81,115 @@ function UpdatePassword({ token }) {
       >
         <h2 className="text-lg font-medium mb-6">Update Password</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
+          {/* Old Password */}
+          <div className="space-y-2">
             <label htmlFor="old_password" className="text-sm text-gray-600">
               Old Password
             </label>
-            <input
-              type="password"
-              {...register("old_password")}
-              placeholder="Write your old password"
-              className="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm outline-none"
-            />
+            <div className="relative">
+              <input
+                type={passwordVisibility.oldPassword ? "text" : "password"}
+                {...register("old_password", {
+                  validate: (value) => {
+                    if (newPassword && !value)
+                      return "Old password harus diisi";
+                    return true;
+                  },
+                })}
+                placeholder="Write your old password"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("oldPassword")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+              >
+                {passwordVisibility.oldPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            </div>
+            {errors.old_password && (
+              <p className="text-red-500 text-sm">
+                {errors.old_password.message}
+              </p>
+            )}
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="space-y-2">
             <label htmlFor="new_password" className="text-sm text-gray-600">
               New Password
             </label>
-            <input
-              type="password"
-              {...register("new_password")}
-              placeholder="Write your new password"
-              className="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm outline-none"
-            />
+            <div className="relative">
+              <input
+               type={passwordVisibility.newPassword ? "text" : "password"}
+                {...register("new_password", {
+                  validate: (value) => {
+                    if (oldPassword && !value)
+                      return "New password harus diisi";
+                    if (!value) return true;
+                    return validatePassword(value) || true;
+                  },
+                })}
+                placeholder="Write your new password"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("newPassword")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+              >
+                {passwordVisibility.newPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            </div>
+            {errors.new_password && (
+              <span className="text-red-500 text-sm">
+                {errors.new_password.message}
+              </span>
+            )}
           </div>
 
-          <div className="flex flex-col gap-2">
+          <div className="space-y-2">
             <label htmlFor="confirm_password" className="text-sm text-gray-600">
               Confirm Password
             </label>
-            <input
-              type="password"
-              {...register("confirm_password")}
-              placeholder="Confirm your password"
-              className="w-full border border-gray-300 rounded-lg py-2.5 px-3 text-sm outline-none"
-            />
+            <div className="relative">
+              <input
+                type={passwordVisibility.confirmPassword ? "text" : "password"}
+                {...register("confirm_password", {
+                  validate: (value) => {
+                    if (newPassword && !value)
+                      return "Konfirmasi password harus diisi";
+                    if (!value) return true;
+                    return validateConfirmPassword(newPassword, value) || true;
+                  },
+                })}
+                placeholder="Confirm your password"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+              />
+              <button
+                type="button"
+                onClick={() => togglePasswordVisibility("confirmPassword")}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-stone-400 hover:text-stone-600"
+              >
+                {passwordVisibility.confirmPassword ? (
+                  <EyeOff size={20} />
+                ) : (
+                  <Eye size={20} />
+                )}
+              </button>
+            </div>
+            {errors.confirm_password && (
+              <p className="text-red-500 text-sm">
+                {errors.confirm_password.message}
+              </p>
+            )}
           </div>
         </div>
 
