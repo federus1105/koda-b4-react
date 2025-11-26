@@ -1,12 +1,8 @@
 import {
-  Car,
   History,
   Loader2,
   PlusCircle,
-  ShoppingBag,
   ShoppingCart,
-  Upload,
-  UploadIcon,
 } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,6 +14,7 @@ import { useForm } from "react-hook-form";
 import { delay, formatDate } from "../../utils/common";
 import UpdatePassword from "../../components/updatePassword/UpdatePassword";
 import { Link } from "react-router-dom";
+import { ProfileValidation } from "../../hooks/UseValidation";
 
 function Profile() {
   const profile = useSelector((state) => state.auth.currentUser);
@@ -28,7 +25,11 @@ function Profile() {
   const [isLoading, setIsLoading] = useState(false);
 
   // --- USE FORM ---
-  const { register, handleSubmit } = useForm({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       fullname: profile.fullname,
       email: profile.email,
@@ -46,7 +47,9 @@ function Profile() {
       if (data.fullname !== profile.fullname)
         formData.append("fullname", data.fullname);
       if (data.email !== profile.email) formData.append("email", data.email);
-      if (data.phone !== profile.phone) formData.append("phone", data.phone);
+      if (data.phone !== profile.phone && data.phone !== "") {
+        formData.append("phone", data.phone);
+      }
       if (data.address !== profile.address)
         formData.append("address", data.address);
       if (file) {
@@ -60,7 +63,7 @@ function Profile() {
     } catch (err) {
       console.log(err);
       await delay(1000);
-      toast.error(err.data?.message || "Terjadi kesalahan! silahkan coba lagi");
+      toast.error("Terjadi kesalahan! silahkan coba lagi");
     } finally {
       setIsLoading(false);
     }
@@ -68,7 +71,7 @@ function Profile() {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
         <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
       </div>
     );
@@ -159,7 +162,7 @@ function Profile() {
         <form
           onSubmit={handleSubmit(onSubmitProfile)}
           className="border border-gray-300 rounded-2xl px-6 py-6 flex flex-col gap-4"
-        >
+          >
           <h2 className="text-lg font-medium mb-6">Details Information</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -170,11 +173,19 @@ function Profile() {
               <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
                   type="text"
-                  {...register("fullname")}
+                  {...register("fullname", {
+                    validate: (value) =>
+                      ProfileValidation(value, profile.fullname, "fullname"),
+                  })}
                   placeholder="Enter Your Fullname"
                   className="w-full outline-none text-sm"
                 />
               </div>
+              {errors.fullname && (
+                <p className="text-red-500 text-sm">
+                  {errors.fullname.message}
+                </p>
+              )}
             </div>
             <div className="flex flex-col gap-2">
               <label htmlFor="fullname" className="text-sm text-gray-600">
@@ -183,11 +194,17 @@ function Profile() {
               <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
                   type="text"
-                  {...register("address")}
+                  {...register("address", {
+                    validate: (value) =>
+                      ProfileValidation(value, profile.address, "address"),
+                  })}
                   placeholder="Enter Your Address"
                   className="w-full outline-none text-sm"
                 />
               </div>
+              {errors.address && (
+                <p className="text-red-500 text-sm">{errors.address.message}</p>
+              )}
             </div>
           </div>
 
@@ -199,11 +216,17 @@ function Profile() {
               <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
                   type="email"
-                  {...register("email")}
+                  {...register("email", {
+                    validate: (value) =>
+                      ProfileValidation(value, profile.email, "email"),
+                  })}
                   placeholder="Enter Your Email"
                   className="w-full outline-none text-sm"
                 />
               </div>
+              {errors.email && (
+                <p className="text-red-500 text-sm">{errors.email.message}</p>
+              )}
             </div>
 
             <div className="flex flex-col gap-2">
@@ -213,11 +236,17 @@ function Profile() {
               <div className="flex items-center border border-gray-300 bg-gray-50 rounded-lg py-2.5 px-3 w-full gap-3">
                 <input
                   type="text"
-                  {...register("phone")}
+                  {...register("phone", {
+                    validate: (value) =>
+                      ProfileValidation(value, profile.phone, "phone"),
+                  })}
                   placeholder="Enter Your Phone"
                   className="w-full outline-none text-sm"
                 />
               </div>
+              {errors.phone && (
+                <p className="text-red-500 text-sm">{errors.phone.message}</p>
+              )}
             </div>
           </div>
 
