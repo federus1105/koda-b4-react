@@ -155,3 +155,29 @@ export function useLogin() {
   
     return { formData, errors, handleChange, validate, setFormData };
   };
+
+
+// --- VALIDATION PROFILE ---
+export const ProfileValidation = (value, oldValue, type) => {
+  if (value === oldValue) return true;
+    if (!value.trim()) return true;
+
+  if (!value.trim()) return "";
+
+  switch (type) {
+    case "fullname":
+      return validateFullname(value) || true;
+    case "email":
+      return validateEmail(value)|| true ;
+    case "phone":
+      if (!/^[0-9]+$/.test(value)) return "Phone harus angka";
+      if (value.length < 10) return "Minimal 10 digit";
+      if (value.length > 13) return "Maksimal 13 digit";
+      return true;
+    case "address":
+      if (value.length > 50) return "Alamat maksimal 50 karakter";
+      return true;
+    default:
+      return true;
+  }
+};
