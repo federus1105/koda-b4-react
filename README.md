@@ -9,7 +9,7 @@
 
 | List Product | Profile |
 |--------------|---------|
-| ![List Product](image.png) | ![Profile](public/overview/profile.png) |
+| ![List Product](public/overview/image.png) | ![Profile](public/overview/profile.png) |
 
 <br>
 
