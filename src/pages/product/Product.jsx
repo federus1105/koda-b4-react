@@ -84,21 +84,40 @@ function Product() {
   return (
     <>
       <header className="mt-30 mx-5 md:my-18 md:mx-0 flex flex-col gap-5">
-        <div className="hidden relative w-full md:block md:h-[450px] lg:h-[500px] overflow-hidden">
-          {/* Background Image */}
+        <div className="hidden md:block relative h-[450px] lg:h-[500px] overflow-hidden">
           <img
             src="/background.jpg"
-            alt="background"
+            alt="Coffee Shop Background"
             className="w-full h-full object-cover"
           />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
+          <div className="absolute inset-0 flex items-center">
+            <div className="container mx-auto px-6 md:px-12 lg:px-20">
+              <div className="max-w-2xl">
+                <h1 className="text-white text-3xl md:text-5xl lg:text-6xl font-bold leading-tight mb-4">
+                  We Provide Good Coffee, Foods and Healthy Meals
+                </h1>
+                <p className="text-white/90 text-lg md:text-xl mb-8">
+                  Discover our premium selection
+                </p>
 
-          {/* Overlay */}
-          <div className="absolute inset-0 bg-black/50"></div>
-
-          {/* Text */}
-          <h1 className="absolute inset-0 flex items-center pl-6 md:pl-12 lg:pl-20 text-white text-2xl md:text-4xl lg:text-5xl font-semibold max-w-xl leading-snug">
-            We Provide Good Coffee, Foods and Healthy Meals
-          </h1>
+                {/* Desktop Search Bar */}
+                <div className="relative max-w-xl">
+                  <Search
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-800"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    placeholder="Search for coffee, food, and more..."
+                    className="w-full pl-12 pr-4 py-4 rounded-2xl border bg-white/95 focus-brand focus:outline-none text-stone-800 shadow-xl"
+                    value={tempFilters.name}
+                    onChange={(e) => updateTempFilter("name", e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* --- MOBILE SEARCH --- */}
@@ -145,29 +164,6 @@ function Product() {
                       </button>
                     </div>
 
-                    {/* --- Search name --- */}
-                    <div>
-                      <label
-                        htmlFor="search"
-                        className="block text-sm font-medium mb-2"
-                      >
-                        Search
-                      </label>
-                      <div className="relative">
-                        <Search className="absolute top-1/2 -translate-y-1/2 left-3 text-gray-400 w-4 h-4" />
-                        <input
-                          type="text"
-                          id="search"
-                          placeholder="Search product..."
-                          value={tempFilters.name}
-                          onChange={(e) =>
-                            updateTempFilter("name", e.target.value)
-                          }
-                          className="bg-white py-2.5 w-full pl-10 pr-3 text-black rounded-lg focus:ring-2 focus:ring-[#997950] focus:outline-none "
-                        />
-                      </div>
-                    </div>
-
                     {/* --- Category Section- -- */}
                     <div>
                       <p className="font-semibold mb-3 text-sm uppercase">
@@ -189,9 +185,7 @@ function Product() {
                               }
                               className="w-4 h-4 rounded border-gray-300 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                             />
-                            <span>
-                              {c.label}
-                            </span>
+                            <span>{c.label}</span>
                           </label>
                         ))}
                       </div>
@@ -218,9 +212,7 @@ function Product() {
                             }
                             className="w-4 h-4 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                           />
-                          <span>
-                            Name
-                          </span>
+                          <span>Name</span>
                         </label>
 
                         <label
@@ -238,9 +230,7 @@ function Product() {
                             }
                             className="w-4 h-4 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                           />
-                          <span>
-                            Price
-                          </span>
+                          <span>Price</span>
                         </label>
                       </div>
                     </div>
