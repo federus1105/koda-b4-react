@@ -1,9 +1,4 @@
-import {
-  History,
-  Loader2,
-  PlusCircle,
-  ShoppingCart,
-} from "lucide-react";
+import { History, Loader2, PlusCircle, ShoppingCart } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UpdateProfile } from "../../services/profileService";
@@ -13,7 +8,7 @@ const defaultProfilePhoto = "/default-profile.webp";
 import { useForm } from "react-hook-form";
 import { delay, formatDate } from "../../utils/common";
 import UpdatePassword from "../../components/updatePassword/UpdatePassword";
-import { Link } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { ProfileValidation } from "../../hooks/UseValidation";
 
 function Profile() {
@@ -22,7 +17,7 @@ function Profile() {
   const fileInputRef = useRef(null);
   const dispatch = useDispatch();
   const [file, setFile] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const { setLoading } = useOutletContext();
 
   // --- USE FORM ---
   const {
@@ -41,7 +36,7 @@ function Profile() {
 
   // --- UPDATE PROFILE ----
   const onSubmitProfile = async (data) => {
-    setIsLoading(true);
+    setLoading(true);
     try {
       const formData = new FormData();
       if (data.fullname !== profile.fullname)
@@ -65,17 +60,9 @@ function Profile() {
       await delay(1000);
       toast.error("Terjadi kesalahan! silahkan coba lagi");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
-
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
-      </div>
-    );
-  }
 
   return (
     <section className="mx-5 my-25 flex flex-col gap-10 lg:flex-row lg:justify-center md:mx-20 lg:my-40">
@@ -162,7 +149,7 @@ function Profile() {
         <form
           onSubmit={handleSubmit(onSubmitProfile)}
           className="border border-gray-300 rounded-2xl px-6 py-6 flex flex-col gap-4"
-          >
+        >
           <h2 className="text-lg font-medium mb-6">Details Information</h2>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -252,7 +239,7 @@ function Profile() {
 
           <button
             type="submit"
-            className="cursor-pointer bg-[#997950] hover:bg-[#886540] text-white w-full md:w-auto px-8 py-3 rounded-lg font-medium mt-2"
+            className="cursor-pointer bg-brand text-white w-full md:w-auto px-8 py-3 rounded-lg font-medium mt-2"
           >
             Update Changes
           </button>

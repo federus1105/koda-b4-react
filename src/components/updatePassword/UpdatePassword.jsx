@@ -8,9 +8,11 @@ import {
   validateConfirmPassword,
   validatePassword,
 } from "../../hooks/UseValidation";
+import { useOutletContext } from "react-router-dom";
 
 function UpdatePassword({ token }) {
-  const [isLoading, setIsLoading] = useState(false);
+  // const [isLoading, setIsLoading] = useState(false);
+  const { setLoading } = useOutletContext();
   const [passwordVisibility, setPasswordVisibility] = useState({
     oldPassword: false,
     newPassword: false,
@@ -47,7 +49,7 @@ function UpdatePassword({ token }) {
       toast.error("Field harus di isi");
       return;
     }
-    setIsLoading(true);
+    setLoading(true);
     try {
       const payload = {
         old_password: data.old_password,
@@ -62,17 +64,10 @@ function UpdatePassword({ token }) {
       console.error(err);
       toast.error("Terjadi kesalahan! silahkan coba lagi");
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex justify-center items-center py-6">
-        <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
-      </div>
-    );
-  }
   return (
     <>
       <form
@@ -97,7 +92,7 @@ function UpdatePassword({ token }) {
                   },
                 })}
                 placeholder="Write your old password"
-                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
               />
               <button
                 type="button"
@@ -124,7 +119,7 @@ function UpdatePassword({ token }) {
             </label>
             <div className="relative">
               <input
-               type={passwordVisibility.newPassword ? "text" : "password"}
+                type={passwordVisibility.newPassword ? "text" : "password"}
                 {...register("new_password", {
                   validate: (value) => {
                     if (oldPassword && !value)
@@ -134,7 +129,7 @@ function UpdatePassword({ token }) {
                   },
                 })}
                 placeholder="Write your new password"
-                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
               />
               <button
                 type="button"
@@ -171,7 +166,7 @@ function UpdatePassword({ token }) {
                   },
                 })}
                 placeholder="Confirm your password"
-                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus:border-[#997950] focus:outline-none text-stone-800"
+                className="w-full pl-5 pr-12 py-2.5 border border-gray-300 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
               />
               <button
                 type="button"
@@ -195,7 +190,7 @@ function UpdatePassword({ token }) {
 
         <button
           type="submit"
-          className="cursor-pointer bg-[#997950] hover:bg-[#886540] text-white w-full md:w-auto px-8 py-3 rounded-lg font-medium mt-4"
+          className="cursor-pointer bg-brand text-white w-full md:w-auto px-8 py-3 rounded-lg font-medium mt-4"
         >
           Update Password
         </button>
