@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { Loader2, PackageX, ShoppingCart } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { productList } from "../../services/productService";
 import { delay } from "../../utils/common";
 
 function ItemsProduct({ filters, setTotalPages }) {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+    const { setLoading } = useOutletContext();
 
   useEffect(() => {
     const fetchproducts = async () => {
-      setIsLoading(true);
-      await delay(500);
+      setLoading(true);
+      await delay(800);
       try {
         const res = await productList(filters);
         setProducts(res.data);
@@ -20,24 +20,16 @@ function ItemsProduct({ filters, setTotalPages }) {
       } catch (err) {
         console.log(err);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
     fetchproducts();
-  }, [filters]);
+  }, [filters, setTotalPages, setLoading]);
 
   // === SELECT PRODUCT ===
   const handleSelectProduct = (productId) => {
     navigate(`/detailproduct/${productId}`);
   };
-
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="w-12 h-12 animate-spin text-[#997950]" />
-      </div>
-    );
-  }
 
   if (products.length === 0) {
     return (
@@ -60,7 +52,7 @@ function ItemsProduct({ filters, setTotalPages }) {
         {products.map((product, index) => (
           <div
             key={index}
-            className="w-full p-4 flex flex-col gap-3 border-2 border-[#997950] rounded-lg"
+            className="w-full p-4 flex flex-col gap-3 border-brand rounded-lg"
           >
             {/* === IMAGE === */}
             <div
@@ -100,12 +92,12 @@ function ItemsProduct({ filters, setTotalPages }) {
                   </div>
                   <div className="flex gap-2">
                     {product.discount > 0 && (
-                      <span className="line-through text-red-700">
+                      <span className="line-through text-gray-400">
                         IDR {product.price.toLocaleString("id-ID")}
                       </span>
                     )}
 
-                    <h1 className="text-[#997950]">
+                    <h1 className="text-brand font-bold">
                       IDR{" "}
                       {(product.discount > 0
                         ? product.discount
@@ -120,11 +112,11 @@ function ItemsProduct({ filters, setTotalPages }) {
               <div className="flex flex-col gap-2 mt-4">
                 <button
                   onClick={() => handleSelectProduct(product.id)}
-                  className="bg-[#997950] text-white font-medium py-1.5 rounded-md cursor-pointer"
+                  className="bg-brand text-white font-medium py-1.5 rounded-md cursor-pointer"
                 >
                   Buy
                 </button>
-                <button className="border border-[#997950] text-[#997950] py-1.5 rounded-md cursor-pointer flex justify-center">
+                <button className="border-brand text-brand py-1.5 rounded-md cursor-pointer flex justify-center">
                   <ShoppingCart size={20} />
                 </button>
               </div>

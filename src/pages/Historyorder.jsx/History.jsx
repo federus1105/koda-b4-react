@@ -13,7 +13,6 @@ function History() {
   const [monthFilter, setMonthFilter] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-
   // --- GET CART ---
   useEffect(() => {
     setIsLoading(true);
@@ -35,7 +34,6 @@ function History() {
     fetchistory();
   }, [token, statusFilter, monthFilter]);
 
-  
   return (
     <>
       <div className="my-20 mx-5 lg:flex lg:mx-30 justify-center gap-20 md:mx-15 lg:my-30">
@@ -60,9 +58,9 @@ function History() {
             <div className="bg-gray-100 py-3 px-4 flex justify-between lg:gap-4">
               <button
                 onClick={() => setStatusFilter(1)}
-                className={`px-3 py-1 rounded ${
+                className={`cursor-pointer px-3 py-1 rounded ${
                   statusFilter === 1
-                    ? "bg-[#997950] text-white"
+                    ? "bg-brand text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -70,9 +68,9 @@ function History() {
               </button>
               <button
                 onClick={() => setStatusFilter(2)}
-                className={`px-3 py-1 rounded ${
+                className={`cursor-pointer px-3 py-1 rounded ${
                   statusFilter === 2
-                    ? "bg-[#997950] text-white"
+                    ? "bg-brand text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -80,9 +78,9 @@ function History() {
               </button>
               <button
                 onClick={() => setStatusFilter(3)}
-                className={`px-3 py-1 rounded ${
+                className={`cursor-pointer px-3 py-1 rounded ${
                   statusFilter === 3
-                    ? "bg-[#997950] text-white"
+                    ? "bg-brand text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -90,9 +88,9 @@ function History() {
               </button>
               <button
                 onClick={() => setStatusFilter("")}
-                className={`px-3 py-1 rounded ${
+                className={`cursor-pointer px-3 py-1 rounded ${
                   statusFilter === ""
-                    ? "bg-[#997950] text-white"
+                    ? "bg-brand text-white"
                     : "bg-gray-200 text-gray-700"
                 }`}
               >
@@ -120,7 +118,7 @@ function History() {
               {[1, 2, 3, 4].map((num) => (
                 <button
                   key={num}
-                  className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-[#997950]"
+                  className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-brand"
                 >
                   {num}
                 </button>

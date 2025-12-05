@@ -74,8 +74,8 @@ function Product() {
 
   const handlePageChange = (page) => {
     setTempFilters((prev) => {
-      const updated = { ...prev, page: String(page) }; // update tempFilters
-      setSearchParams(updated); // langsung apply ke URL
+      const updated = { ...prev, page: String(page) };
+      setSearchParams(updated);
       return updated;
     });
     setCurrentPage(page);
@@ -84,14 +84,20 @@ function Product() {
   return (
     <>
       <header className="mt-30 mx-5 md:my-18 md:mx-0 flex flex-col gap-5">
-        <div className="hidden md:block relative w-full">
+        <div className="hidden relative w-full md:block md:h-[450px] lg:h-[500px] overflow-hidden">
+          {/* Background Image */}
           <img
-            src="/bg-product.svg"
+            src="/background.jpg"
             alt="background"
-            className="brightness-70 w-full"
+            className="w-full h-full object-cover"
           />
-          <h1 className="absolute top-1/2 left-10 lg:left-30 -translate-y-1/2 text-white z-2 text-2xl lg:text-4xl max-w-xl">
-            We Provide Good Coffee and Healthy Meals
+
+          {/* Overlay */}
+          <div className="absolute inset-0 bg-black/50"></div>
+
+          {/* Text */}
+          <h1 className="absolute inset-0 flex items-center pl-6 md:pl-12 lg:pl-20 text-white text-2xl md:text-4xl lg:text-5xl font-semibold max-w-xl leading-snug">
+            We Provide Good Coffee, Foods and Healthy Meals
           </h1>
         </div>
 
@@ -101,7 +107,7 @@ function Product() {
             <Search className="absolute top-3 left-2" />
             <input
               type="text"
-              placeholder="Find Product"
+              placeholder="Search Product..."
               className="border border-gray-400 bg-gray-200 rounded-lg py-3 w-full pl-10"
               value={tempFilters.name}
               onChange={(e) => updateTempFilter("name", e.target.value)}
@@ -109,7 +115,7 @@ function Product() {
           </div>
           <button
             onClick={() => setShowMobileFilter(!showMobileFilter)}
-            className="bg-[#997950] text-white p-3 rounded-xl hover:bg-[#997950] shadow-md active:scale-95"
+            className="bg-brand text-white p-3 rounded-xl shadow-md active:scale-95"
           >
             <SlidersHorizontal className="w-5 h-5" />
           </button>
@@ -122,7 +128,7 @@ function Product() {
           <div className="hidden lg:block lg:col-span-3">
             <div className="sticky top-8 w-full">
               <h2 className="text-2xl font-bold mb-6">
-                Our <span className="text-[#997950]">Products</span>
+                Our <span className="text-brand">Products</span>
               </h2>
               {/* --- FORM FILTER --- */}
               <form>
@@ -181,9 +187,9 @@ function Product() {
                               onChange={(e) =>
                                 handleCategoryChange(c.value, e.target.checked)
                               }
-                              className="w-4 h-4 rounded border-gray-300 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                              className="w-4 h-4 rounded border-gray-300 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                             />
-                            <span className="group-hover:text-[#997950]">
+                            <span>
                               {c.label}
                             </span>
                           </label>
@@ -210,9 +216,9 @@ function Product() {
                             onChange={(e) =>
                               updateTempFilter("sortBy", e.target.value)
                             }
-                            className="w-4 h-4 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                            className="w-4 h-4 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                           />
-                          <span className="group-hover:text-[#997950]">
+                          <span>
                             Name
                           </span>
                         </label>
@@ -230,9 +236,9 @@ function Product() {
                             onChange={(e) =>
                               updateTempFilter("sortBy", e.target.value)
                             }
-                            className="w-4 h-4 text-[#997950] focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
+                            className="w-4 h-4 focus:ring-[#997950] focus:ring-2 cursor-pointer accent-[#997950]"
                           />
-                          <span className="group-hover:text-[#997950]">
+                          <span>
                             Price
                           </span>
                         </label>
@@ -260,7 +266,7 @@ function Product() {
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-[#997950]"
                       />
                       <div className="mt-3 bg-gray-700/50 rounded-lg px-3 py-2">
-                        <span className="text-[#997950] font-semibold">
+                        <span className="text-brand font-semibold">
                           IDR{" "}
                           {Number(tempFilters.min_price || 0).toLocaleString(
                             "id-ID"
@@ -274,7 +280,7 @@ function Product() {
                         e.preventDefault();
                         applyFilters();
                       }}
-                      className="bg-[#997950] text-white w-full py-2 rounded-lg mt-5 hover:bg-[#876943] transition"
+                      className="cursor-pointer bg-brand text-white w-full py-2 rounded-lg mt-5 hover:bg-brand"
                     >
                       Apply Filter
                     </button>

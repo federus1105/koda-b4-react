@@ -54,6 +54,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
       setIsLoading(true);
       try {
         const data = await getProductById(id, token);
+        console.log(data);
 
         //--- MAPPING DATA ---
         const productData = {
@@ -181,12 +182,12 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             </h1>
             <div className="flex gap-2">
               {product.price_discount > 0 && (
-                <span className="line-through text-red-700">
+                <span className="line-through text-gray-400">
                   IDR {product.price_original.toLocaleString("id-ID")}
                 </span>
               )}
 
-              <h1 className="text-[#997950] text-xl">
+              <h1 className="text-brand font-medium text-xl">
                 IDR{" "}
                 {(product.price_discount > 0
                   ? product.price_discount
@@ -209,10 +210,13 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             <div>
               <p className="text-gray-500 text-xl">{product.description}</p>
             </div>
+            <p className="font-medium">
+              Stock {""}: {product.stock}
+            </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={handleDecrease}
-                className="p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50 border"
+                className="cursor-pointer p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50 border"
                 disabled={quantity === min}
               >
                 <Minus size={15} />
@@ -221,7 +225,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
               <span className="px-4 py-2 font-medium">{quantity}</span>
               <button
                 onClick={handleIncrease}
-                className="p-2 rounded bg-[#997950] text-white hover:bg-[#997950] disabled:opacity-50"
+                className="cursor-pointer p-2 rounded bg-brand text-white hover:bg-brand disabled:opacity-50"
                 disabled={quantity === max}
               >
                 <Plus size={15} />
@@ -252,13 +256,13 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
 
             <div className="flex gap-4 flex-col md:flex-row lg:mt-10">
               <Link
-                className="bg-[#997950] w-full py-4 rounded-md cursor-pointer text-center"
+                className="bg-brand w-full py-4 rounded-md cursor-pointer text-center"
                 onClick={() => handleAddToCart(true)}
               >
                 Buy
               </Link>
               <button
-                className="flex border border-[#997950] text-[#997950] w-full justify-center py-4 gap-2 rounded-md cursor-pointer"
+                className="flex border-brand text-brand w-full justify-center py-4 gap-2 rounded-md cursor-pointer"
                 onClick={() => handleAddToCart(false)}
               >
                 <ShoppingCart />
@@ -270,7 +274,7 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
       </header>
       <div className="mx-5 flex flex-col gap-5">
         <h1 className="text-center text-2xl font-medium">
-          Recommendation <span className="text-[#8E6447]">For You</span>
+          Recommendation <span className="text-brand">For You</span>
         </h1>
         <FavoriteProduct />
         <div className="mb-10">
@@ -278,12 +282,12 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
             {[1, 2, 3, 4].map((num) => (
               <button
                 key={num}
-                className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-[#997950]"
+                className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-brand"
               >
                 {num}
               </button>
             ))}
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-[#997950]">
+            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-brand">
               <MoveRight className="text-white" />
             </button>
           </div>

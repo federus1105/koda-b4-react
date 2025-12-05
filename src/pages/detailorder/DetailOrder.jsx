@@ -112,7 +112,7 @@ function DetailOrder() {
             <hr className="text-gray-300" />
             <div className="flex justify-between">
               <p className="text-gray-700">Total Transaksi</p>
-              <p className="font-medium text-amber-800">
+              <p className="font-medium text-brand">
                 IDR {order.total?.toLocaleString("id-ID")}
               </p>
             </div>

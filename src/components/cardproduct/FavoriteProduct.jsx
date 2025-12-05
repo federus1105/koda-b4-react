@@ -13,7 +13,6 @@ function FavoriteProduct() {
     const fetchFavorite = async () => {
       try {
         const result = await favoriteProduct();
-        console.log(result);
         setProducts(result.data);
       } catch (error) {
         console.error(error);
@@ -79,10 +78,20 @@ function FavoriteProduct() {
                   </p>
 
                   {/* === PRICE & RATING === */}
-                  <div className="flex flex-col gap-2 mt-2">
-                    <p className="text-[#997950] font-semibold text-base">
-                      IDR {product.price}
-                    </p>
+                  <div className="flex gap-2 pt-4">
+                    {product.discount > 0 && (
+                      <span className="line-through text-gray-400">
+                        IDR {product.price.toLocaleString("id-ID")}
+                      </span>
+                    )}
+
+                    <h1 className="text-brand font-bold">
+                      IDR{" "}
+                      {(product.discount > 0
+                        ? product.discount
+                        : product.price
+                      ).toLocaleString("id-ID")}
+                    </h1>
                   </div>
                 </div>
 
@@ -90,12 +99,12 @@ function FavoriteProduct() {
                 <div className="flex flex-col gap-2 mt-4">
                   <button
                     onClick={() => handleSelectProduct(product.id)}
-                    className="bg-[#997950] text-white font-medium py-1.5 rounded-md hover:bg-[#997950] cursor-pointer"
+                    className="bg-brand text-white font-medium py-1.5 rounded-md cursor-pointer"
                   >
                     Buy
                   </button>
                   <button
-                    className="cursor-pointer border border-gray-500 text-[#997950] py-1.5 rounded-md hover:bg-[#997950]cursor-pointer flex justify-center"
+                    className="cursor-pointer border border-gray-500 text-brand py-1.5 rounded-md cursor-pointer flex justify-center"
                     onClick={() => handleSelectProduct(product.id)}
                   >
                     <ShoppingCart size={20} />

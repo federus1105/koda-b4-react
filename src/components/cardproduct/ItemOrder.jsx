@@ -39,13 +39,13 @@ function ItemOrder({ item, onDelete }) {
           </p>
 
           <div className="flex items-center gap-2 mt-2">
-            <p className="text-orange-600 font-semibold text-base">
+            <p className="text-brand font-bold text-base">
               IDR{" "}
               {item.discount > 0
                 ? item.discount.toLocaleString("id-ID")
                 : item.price.toLocaleString("id-ID")}
               {item.discount > 0 && (
-                <span className="line-through text-xs text-gray-500 ml-2">
+                <span className="line-through text-xs text-gray-400 ml-2">
                   IDR {item.price.toLocaleString("id-ID")}
                 </span>
               )}

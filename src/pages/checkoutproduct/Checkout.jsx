@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Plus, PackageX, Loader2 } from "lucide-react";
+import { Plus, PackageX, Loader2, Mail, User, Phone, Map, MapPin } from "lucide-react";
 import ItemOrder from "../../components/cardproduct/ItemOrder";
 import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -112,7 +112,7 @@ function Checkout() {
   if (isLoadingDelete || isLoadingPay) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-16 h-16 animate-spin text-[#997950]" />
+        <Loader2 className="w-16 h-16 animate-spin text-brand" />
       </div>
     );
   }
@@ -125,7 +125,7 @@ function Checkout() {
           <div className="flex justify-between mt-8">
             <h1 className="font-medium text-xl">Your Order</h1>
             <Link to={"/product"}>
-              <button className="cursor-pointer flex bg-[#997950] rounded-md py-2 px-4">
+              <button className="cursor-pointer flex bg-brand rounded-md py-2 px-4">
                 <Plus /> Add Menu
               </button>
             </Link>
@@ -150,36 +150,53 @@ function Checkout() {
             )}
           </div>
           {/* Form */}
-          <div>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              className="flex flex-col gap-4"
-            >
+          <div className="bg-white border-2 border-stone-200 rounded-2xl p-6">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <h1 className="font-medium">Payment & Info Delivery</h1>
 
               {/* Email */}
-              <div className="flex flex-col gap-2">
-                <label className="font-medium">Email</label>
-                <input
-                  type="text"
-                  {...register("email", { required: "Email harus diisi" })}
-                  placeholder="Enter Your Email"
-                  className="w-full border rounded-md p-2"
-                />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-stone-700">
+                  Email Address
+                </label>
+                <div className="relative">
+                  <Mail
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={20}
+                  />
+                  <input
+                    type="email"
+                    {...register("email", {
+                      required: "Email harus diisi",
+                    })}
+                    placeholder="Enter your email"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
+                  />
+                </div>
                 {errors.email && (
                   <p className="text-red-500 text-sm">{errors.email.message}</p>
                 )}
               </div>
 
               {/* Fullname */}
-              <div className="flex flex-col gap-2">
-                <label className="font-medium">Fullname</label>
-                <input
-                  type="text"
-                  {...register("fullname", { required: "Nama harus diisi" })}
-                  placeholder="Enter Your Full Name"
-                  className="w-full border rounded-md p-2"
-                />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-stone-700">
+                  Full Name
+                </label>
+                <div className="relative">
+                  <User
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    {...register("fullname", {
+                      required: "Nama harus diisi",
+                    })}
+                    placeholder="Enter your full name"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
+                  />
+                </div>
                 {errors.fullname && (
                   <p className="text-red-500 text-sm">
                     {errors.fullname.message}
@@ -188,30 +205,46 @@ function Checkout() {
               </div>
 
               {/* Phone */}
-              <div className="flex flex-col gap-2">
-                <label className="font-medium">Phone Number</label>
-                <input
-                  type="text"
-                  {...register("phone", {
-                    required: "Nomor telepon harus diisi",
-                  })}
-                  placeholder="Enter Your Phone Number"
-                  className="w-full border rounded-md p-2"
-                />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-stone-700">
+                  Phone Number
+                </label>
+                <div className="relative">
+                  <Phone
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    {...register("phone", {
+                      required: "Nomor telepon harus diisi",
+                    })}
+                    placeholder="Enter your phone number"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
+                  />
+                </div>
                 {errors.phone && (
                   <p className="text-red-500 text-sm">{errors.phone.message}</p>
                 )}
               </div>
 
               {/* Address */}
-              <div className="flex flex-col gap-2">
-                <label className="font-medium">Address</label>
-                <input
-                  type="text"
-                  {...register("address", { required: "Alamat harus diisi" })}
-                  placeholder="Enter Your Address"
-                  className="w-full border rounded-md p-2"
-                />
+              <div className="space-y-2">
+                <label className="block text-sm font-semibold text-stone-700">
+                  Address
+                </label>
+                <div className="relative">
+                  <MapPin
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400"
+                    size={20}
+                  />
+                  <input
+                    type="text"
+                    {...register("address", { required: "Alamat harus diisi" })}
+                    placeholder="Enter Your Address"
+                    className="w-full pl-12 pr-4 py-3 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
+                  />
+                </div>
                 {errors.address && (
                   <p className="text-red-500 text-sm">
                     {errors.address.message}
@@ -230,7 +263,7 @@ function Checkout() {
                       onClick={() => setDelivery(opt.id)}
                       className={`cursor-pointer hover:bg-gray-100 border rounded-md py-2 px-4 w-full ${
                         delivery === opt.id
-                          ? "bg-[#997950] text-white"
+                          ? "bg-brand text-white"
                           : "border-gray-300"
                       }`}
                     >
@@ -241,7 +274,7 @@ function Checkout() {
               </div>
               <button
                 type="submit"
-                className="cursor-pointer bg-[#997950] w-full py-3 rounded-lg mt-5 text-white"
+                className="cursor-pointer bg-brand w-full py-3 rounded-lg mt-5 text-white"
               >
                 Checkout
               </button>
@@ -252,7 +285,7 @@ function Checkout() {
         {/* --- CONFIRM MODAL --- */}
         <ConfirmModal
           isOpen={showDeleteModal}
-          title="Hapus item?"
+          title="Hapus item ?"
           message="Apakah kamu yakin ingin menghapus item ini dari keranjang?"
           onCancel={() => setShowDeleteModal(false)}
           onConfirm={confirmDelete}

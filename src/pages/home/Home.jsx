@@ -25,14 +25,14 @@ function Home() {
               <div className="lg:w-1/2 w-full px-6 lg:px-16 py-16 md:py-30 lg:py-0 z-2">
                 <div className="max-w-xl">
                   <div className="inline-block mb-4">
-                    <span className="bg-[#997950] text-white px-4 py-2 rounded-full text-sm font-medium">
+                    <span className="bg-brand text-white px-4 py-2 rounded-full text-sm font-medium">
                       ☕ Premium Senja Kopi-Kiri
                     </span>
                   </div>
 
                   <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
                     Start Your Day with
-                    <span className="text-[#997950]"> Coffee </span>
+                    <span className="text-brand"> Coffee </span>
                     and Good Meals
                   </h1>
 
@@ -43,7 +43,7 @@ function Home() {
                   </p>
 
                   <Link to={"/product"}>
-                    <button className="bg-[#997950] text-white px-8 py-4 rounded-xl font-semibold cursor-pointer flex items-center gap-3">
+                    <button className="bg-brand text-white px-8 py-4 rounded-xl font-semibold cursor-pointer flex items-center gap-3">
                       Get Started
                       <ArrowRight size={20} />
                     </button>
@@ -52,13 +52,13 @@ function Home() {
                   {/* Stats */}
                   <div className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-gray-700">
                     <div className="text-center lg:text-left">
-                      <h3 className="text-4xl font-bold text-[#997950] mb-2">
+                      <h3 className="text-4xl font-bold text-brand mb-2">
                         90+
                       </h3>
                       <p className="text-gray-300 font-medium">Expert Staff</p>
                     </div>
                     <div className="text-center lg:text-left">
-                      <h3 className="text-4xl font-bold text-[#997950] mb-2">
+                      <h3 className="text-4xl font-bold text-brand mb-2">
                         30+
                       </h3>
                       <p className="text-gray-300 font-medium">
@@ -66,7 +66,7 @@ function Home() {
                       </p>
                     </div>
                     <div className="text-center lg:text-left">
-                      <h3 className="text-4xl font-bold text-[#997950] mb-2">
+                      <h3 className="text-4xl font-bold text-brand mb-2">
                         800+
                       </h3>
                       <p className="text-gray-300 font-medium">
@@ -96,7 +96,7 @@ function Home() {
             <div className="flex flex-col lg:flex-row items-center gap-16">
               {/* Image */}
               <div className="lg:w-1/2 relative ">
-                <div className="absolute inset-0 bg-[#997950]/20 rounded-3xl"></div>
+                <div className="absolute inset-0 bg-brand/20 rounded-3xl"></div>
                 <img
                   src="/bg-home3.svg"
                   alt="Coffee and Meals"
@@ -107,12 +107,12 @@ function Home() {
               {/* Content */}
               <div className="lg:w-1/2">
                 <div className="flex items-start gap-4 mb-6">
-                  <div className="w-1 h-20 bg-[#997950] rounded-full"></div>
+                  <div className="w-1 h-20 bg-brand rounded-full"></div>
                   <div>
                     <h2 className="text-4xl lg:text-5xl font-extrabold text-gray-100 mb-6">
                       We Provide{" "}
-                      <span className="text-[#997950]">Good Coffee</span> and{" "}
-                      <span className="text-[#997950]">Healthy Meals</span>
+                      <span className="text-brand">Good Coffee</span> and{" "}
+                      <span className="text-brand">Healthy Meals</span>
                     </h2>
                   </div>
                 </div>
@@ -129,7 +129,7 @@ function Home() {
                       key={index}
                       className="flex items-center gap-4 bg-gray-800 p-4 rounded-xl shadow-lg"
                     >
-                      <div className="bg-[#997950] p-2 rounded-lg">
+                      <div className="bg-brand p-2 rounded-lg">
                         <CheckCircle2 className="text-white" size={24} />
                       </div>
                       <p className="text-gray-100 font-medium">{feature}</p>
@@ -146,9 +146,9 @@ function Home() {
           <div className="container mx-auto px-6 lg:px-16">
             <div className="text-center mb-16">
               <h2 className="text-4xl lg:text-5xl font-bold text-gray-100 mb-4">
-                Customer <span className="text-[#997950]">Favorites</span>
+                Customer <span className="text-brand">Favorites</span>
               </h2>
-              <div className="w-24 h-1.5 bg-[#997950] mx-auto rounded-full mb-6"></div>
+              <div className="w-24 h-1.5 bg-brand mx-auto rounded-full mb-6"></div>
               <p className="text-gray-300 text-lg max-w-2xl mx-auto">
                 Discover our most loved items, carefully selected by our
                 community of coffee enthusiasts and food lovers.
@@ -165,7 +165,7 @@ function Home() {
         {/* Floating Chat Button */}
         <button
           onClick={() => setModalOpen(true)}
-          className="fixed bottom-8 right-8 bg-[#997950] text-white p-4 rounded-2xl"
+          className="fixed bottom-8 right-8 bg-brand text-white p-4 rounded-2xl"
         >
           <MessageCircle size={28} />
         </button>
