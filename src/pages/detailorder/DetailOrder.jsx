@@ -8,37 +8,34 @@ import {
   UserPen,
 } from "lucide-react";
 import { useSelector } from "react-redux";
-import { formatDate, formatDelivery } from "../../utils/common";
-import { useParams } from "react-router-dom";
+import { delay, formatDate, formatDelivery } from "../../utils/common";
+import { useOutletContext, useParams } from "react-router-dom";
 import { DetailHistory } from "../../services/historyService";
 import ItemDetailHistory from "../../components/cardproduct/ItemDetailHistory";
 
 function DetailOrder() {
   const token = useSelector((state) => state.auth.token);
-  const [isLoading, setIsLoading] = useState(false);
   const [order, setOrder] = useState(null);
   const { id } = useParams();
+  const { setLoading } = useOutletContext();
 
   useEffect(() => {
     const fetchOrder = async () => {
-      setIsLoading(true);
+      setLoading(true);
+      await delay(400);
       try {
         const res = await DetailHistory(id, token);
         setOrder(res.result);
       } catch (error) {
         console.error(error);
       } finally {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
     fetchOrder();
-  }, [id, token]);
-
-  if (isLoading) {
-    return <p className="text-center mt-10">Loading...</p>;
-  }
-
+  }, [setLoading, id, token]);
+  
   if (!order) {
     return <p className="text-center mt-10">Order not found</p>;
   }
