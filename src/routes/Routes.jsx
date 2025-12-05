@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
 import MainLayout from "../layouts/MainLayout";
 import Register from "../pages/auth/Register";
 import Login from "../pages/auth/Login";
-import Forgot from "../pages/forgotpassword/Forgot";
+import Forgot from "../pages/auth/Forgot";
 import Home from "../pages/home/Home";
 import Product from "../pages/product/Product";
 import DetailProduct from "../pages/detailproduct/DetailProduct";
@@ -18,7 +18,7 @@ import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/dashboardAdmin/Dashboard";
 import ProductAdmin from "../pages/productAdmin/ProductAdmin";
 import ModalCreate from "../components/productAdmin/ModalCreate";
-import ResetPassword from "../pages/reset-password/ResetPassword";
+import ResetPassword from "../pages/auth/ResetPassword";
 
 function Router() {
   return (
