@@ -198,7 +198,7 @@ function ModalUpdate({ onClose, product }) {
               <input
                 type="text"
                 {...register("name", { required: "Nama product harus diisi" })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -233,7 +233,7 @@ function ModalUpdate({ onClose, product }) {
                       {categories.map((cat) => (
                         <label
                           key={cat.id}
-                          className="flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 hover:bg-gray-50 hover:shadow-sm transition"
+                          className="flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 hover:bg-gray-50 hover:shadow-sm"
                         >
                           <input
                             type="checkbox"
@@ -271,7 +271,7 @@ function ModalUpdate({ onClose, product }) {
                 type="number"
                 placeholder="Enter Product Price"
                 {...register("price", { required: "Price is required" })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.price ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -296,7 +296,7 @@ function ModalUpdate({ onClose, product }) {
                 {...register("description", {
                   required: "Description is required",
                 })}
-                className={`w-full border rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus-brand ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -339,10 +339,10 @@ function ModalUpdate({ onClose, product }) {
                             className="hidden"
                           />
                           <div
-                            className={`border rounded-md py-2 px-3 text-center transition ${
+                            className={`border rounded-md py-2 px-3 text-center ${
                               value.includes(sizeOption)
                                 ? "border-[#997950] bg-[#997950] text-white"
-                                : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
+                                : "border-gray-300"
                             }`}
                           >
                             {sizeOption.charAt(0).toUpperCase() +
@@ -386,10 +386,10 @@ function ModalUpdate({ onClose, product }) {
                           className="hidden"
                         />
                         <div
-                          className={`border rounded-md py-2 px-3 text-sm text-center transition ${
+                          className={`border rounded-md py-2 px-3 text-sm text-center ${
                             value.includes("hot")
-                              ? "border-[#997950] bg-[#997950] text-white"
-                              : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
+                              ? "border-brand bg-brand text-white"
+                              : "border-gray-300"
                           }`}
                         >
                           Hot
@@ -405,10 +405,10 @@ function ModalUpdate({ onClose, product }) {
                           className="hidden"
                         />
                         <div
-                          className={`border rounded-md py-2 px-3 text-sm text-center transition ${
+                          className={`border rounded-md py-2 px-3 text-sm text-center ${
                             value.includes("ice")
-                              ? "border-[#997950] bg-[#997950] text-white"
-                              : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
+                              ? "border-brand bg-brand text-white"
+                              : "border-gray-300 hover:text-white"
                           }`}
                         >
                           Ice
@@ -442,7 +442,7 @@ function ModalUpdate({ onClose, product }) {
                   min: 0,
                   required: "Stock is required",
                 })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.stock ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -469,7 +469,7 @@ function ModalUpdate({ onClose, product }) {
                   message: "Rating must be between 0 and 10",
                 },
               })}
-              className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+              className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                 errors.rating ? "border-red-500" : "border-gray-300"
               }`}
             />
@@ -481,7 +481,7 @@ function ModalUpdate({ onClose, product }) {
 
             <button
               type="submit"
-              className="cursor-pointer w-full py-2 bg-[#997950] text-white rounded-md font-semibold hover:bg-[#997950] transition"
+              className="cursor-pointer w-full py-2 bg-brand text-white rounded-md font-semibold"
             >
               Update Product
             </button>

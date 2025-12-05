@@ -185,7 +185,7 @@ function ModalCreate({ onClose }) {
                 type="text"
                 placeholder="Enter Product Name"
                 {...register("name", { required: "Product name is required" })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.name ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -226,7 +226,7 @@ function ModalCreate({ onClose }) {
                       {categories.map((cat) => (
                         <label
                           key={cat.id}
-                          className="flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 hover:bg-gray-50 hover:shadow-sm transition"
+                          className="flex items-center p-3 rounded-lg cursor-pointer border border-gray-100 hover:bg-gray-50 hover:shadow-sm"
                         >
                           <input
                             type="checkbox"
@@ -264,7 +264,7 @@ function ModalCreate({ onClose }) {
                 type="number"
                 placeholder="Enter Product Price"
                 {...register("price", { required: "Price is required" })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.price ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -289,7 +289,7 @@ function ModalCreate({ onClose }) {
                 {...register("description", {
                   required: "Description is required",
                 })}
-                className={`w-full border rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus-brand ${
                   errors.description ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -335,9 +335,9 @@ function ModalCreate({ onClose }) {
                             className="hidden"
                           />
                           <div
-                            className={`border rounded-md py-2 px-3 text-sm text-center transition ${
+                            className={`border rounded-md py-2 px-3 text-sm text-center ${
                               value.includes(size)
-                                ? "border-[#997950] bg-[#997950] text-white"
+                                ? "border-brand bg-brand text-white"
                                 : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                             }`}
                           >
@@ -381,9 +381,9 @@ function ModalCreate({ onClose }) {
                           className="hidden"
                         />
                         <div
-                          className={`border rounded-md py-2 px-3 text-sm text-center transition ${
+                          className={`border rounded-md py-2 px-3 text-sm text-center ${
                             value.includes("1")
-                              ? "border-[#997950] bg-[#997950] text-white"
+                              ? "border-brand bg-brand text-white"
                               : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                           }`}
                         >
@@ -399,9 +399,9 @@ function ModalCreate({ onClose }) {
                           className="hidden"
                         />
                         <div
-                          className={`border rounded-md py-2 px-3 text-sm text-center transition ${
+                          className={`border rounded-md py-2 px-3 text-sm text-center ${
                             value.includes("2")
-                              ? "border-[#997950] bg-[#997950] text-white"
+                              ? "border-brand bg-brand text-white"
                               : "border-gray-300 hover:border-[#997950] hover:bg-[#997950] hover:text-white"
                           }`}
                         >
@@ -432,7 +432,7 @@ function ModalCreate({ onClose }) {
                 type="number"
                 placeholder="Enter Product Stock"
                 {...register("stock", { required: "Stock is required" })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.stock ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -460,7 +460,7 @@ function ModalCreate({ onClose }) {
                   min: 0,
                   max: 10,
                 })}
-                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#997950] ${
+                className={`w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus-brand ${
                   errors.rating ? "border-red-500" : "border-gray-300"
                 }`}
               />
@@ -476,7 +476,7 @@ function ModalCreate({ onClose }) {
             {/* --- Submit Button --- */}
             <button
               type="submit"
-              className="cursor-pointer w-full bg-[#997950] text-white rounded-md py-2 font-semibold hover:bg-[#997950] transition"
+              className="cursor-pointer w-full bg-brand text-white rounded-md py-2 font-semibold hover:bg-[#997950]"
             >
               Save Product
             </button>
