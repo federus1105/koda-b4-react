@@ -41,8 +41,6 @@ function Register() {
     <>
       <section className="min-h-screen bg-stone-50">
         <div className="flex justify-center min-h-screen">
-
-
           {/* Right Side - Form */}
           <section className="w-full lg:w-3/5 xl:w-2/3 flex items-center justify-center p-6 lg:p-12">
             <div className="w-full max-w-lg">
@@ -60,7 +58,7 @@ function Register() {
 
               {/* Header */}
               <header className="mb-10">
-                <h1 className="text-4xl font-bold text-amber-800 mb-3">
+                <h1 className="text-4xl font-bold text-brand mb-3">
                   Register
                 </h1>
                 <p className="text-stone-600 text-lg">
@@ -69,7 +67,7 @@ function Register() {
               </header>
 
               {/* Form */}
-              <div className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* Fullname Field */}
                 <div className="space-y-2">
                   <label
@@ -88,7 +86,7 @@ function Register() {
                       id="fullname"
                       name="fullname"
                       placeholder="Enter your full name"
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
                       value={formData.fullname}
                       onChange={handleChange}
                     />
@@ -118,7 +116,7 @@ function Register() {
                       id="email"
                       name="email"
                       placeholder="Enter your email"
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -148,7 +146,7 @@ function Register() {
                       id="password"
                       name="password"
                       placeholder="Enter your password"
-                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
                       value={formData.password}
                       onChange={handleChange}
                     />
@@ -191,7 +189,7 @@ function Register() {
                       id="confirmPassword"
                       name="confirmPassword"
                       placeholder="Enter your password again"
-                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none text-stone-800"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none text-stone-800"
                       value={formData.confirmPassword}
                       onChange={handleChange}
                     />
@@ -218,18 +216,18 @@ function Register() {
 
                 {/* Submit Button */}
                 <button
-                  onClick={handleSubmit}
-                  className="w-full bg-amber-700 cursor-pointer text-white py-4 rounded-xl font-semibold shadow-lg"
+                  type="submit"
+                  className="w-full bg-brand cursor-pointer text-white py-4 rounded-xl font-semibold shadow-lg"
                 >
                   Register
                 </button>
-              </div>
+              </form>
 
               {/* Login Link */}
               <p className="text-center mt-8 text-stone-600">
                 Already have an account?{" "}
                 <Link to="../login">
-                  <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer">
+                  <span className="text-stone-700 font-semibold cursor-pointer">
                     Login
                   </span>
                 </Link>
@@ -244,11 +242,11 @@ function Register() {
 
               {/* Social Login Buttons */}
               <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border border-stone-200 rounded-xl py-3.5 shadow-sm hover:shadow-md">
                   <img src="/google.png" alt="Google" className="w-6 h-6" />
                   <span className="font-semibold text-stone-700">Google</span>
                 </button>
-                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border border-stone-200 rounded-xl py-3.5 shadow-sm hover:shadow-md">
                   <img src="/Facebook.svg" alt="Facebook" className="w-6 h-6" />
                   <span className="font-semibold text-stone-700">Facebook</span>
                 </button>

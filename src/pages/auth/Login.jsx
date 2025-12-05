@@ -74,9 +74,7 @@ function Login() {
 
               {/* Header */}
               <header className="mb-10">
-                <h1 className="text-4xl font-bold text-amber-800 mb-3">
-                  Login
-                </h1>
+                <h1 className="text-4xl font-bold text-brand mb-3">Login</h1>
                 <p className="text-stone-600 text-lg">
                   Fill out the form correctly to access your account
                 </p>
@@ -102,7 +100,7 @@ function Login() {
                       id="email"
                       name="email"
                       placeholder="Enter your email"
-                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none  text-stone-800"
+                      className="w-full pl-12 pr-4 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none  text-stone-800"
                       value={formData.email}
                       onChange={handleChange}
                     />
@@ -132,7 +130,7 @@ function Login() {
                       id="password"
                       name="password"
                       placeholder="Enter your password"
-                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus:border-amber-600 focus:outline-none  text-stone-800"
+                      className="w-full pl-12 pr-12 py-3.5 border-2 border-stone-200 bg-white rounded-xl focus-brand focus:outline-none  text-stone-800"
                       value={formData.password}
                       onChange={handleChange}
                     />
@@ -158,7 +156,7 @@ function Login() {
                 {/* Forgot Password */}
                 <div className="text-right">
                   <Link to="../forgot">
-                    <span className="text-amber-700 hover:text-amber-800 font-medium  cursor-pointer">
+                    <span className="text-stone-700 font-medium cursor-pointer">
                       Forgot Password?
                     </span>
                   </Link>
@@ -167,7 +165,7 @@ function Login() {
                 {/* Submit Button */}
                 <button
                   type="submit"
-                  className="cursor-pointer w-full bg-amber-700 text-white py-4 rounded-xl font-semibold shadow-lg"
+                  className="cursor-pointer w-full bg-brand text-white py-4 rounded-xl font-semibold shadow-lg"
                 >
                   Login
                 </button>
@@ -177,7 +175,7 @@ function Login() {
               <p className="text-center mt-8 text-stone-600">
                 Don't have an account?{" "}
                 <Link to="../register">
-                  <span className="text-amber-700 hover:text-amber-800 font-semibold cursor-pointer">
+                  <span className="text-stone-800 font-semibold cursor-pointer">
                     Register Now
                   </span>
                 </Link>
@@ -193,11 +191,11 @@ function Login() {
 
               {/* Social Login Buttons */}
               <section className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border border-stone-200 rounded-xl py-3.5 shadow-sm hover:shadow-md">
                   <img src="/google.png" alt="Google" className="w-6 h-6" />
                   <span className="font-semibold text-stone-700">Google</span>
                 </button>
-                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border-2 border-stone-200 hover:border-amber-600 hover:bg-amber-50 rounded-xl py-3.5 shadow-sm hover:shadow-md">
+                <button className="cursor-pointer flex items-center justify-center gap-3 bg-white border border-stone-200 rounded-xl py-3.5 shadow-sm hover:shadow-md">
                   <img src="/Facebook.svg" alt="Facebook" className="w-6 h-6" />
                   <span className="font-semibold text-stone-700">Facebook</span>
                 </button>
