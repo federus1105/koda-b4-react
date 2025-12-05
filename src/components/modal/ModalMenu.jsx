@@ -1,4 +1,4 @@
-import { Search } from "lucide-react"; // atau icon yang kamu pakai
+import { Search, X } from "lucide-react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -35,43 +35,30 @@ function ModalMenu({ isopen, onclose }) {
         <div className="flex flex-col gap-7">
           {/* Icon and Logo */}
           <header className="flex justify-between items-center">
-            <div className="flex gap-3">
-              <img src="/icon.svg" alt="icon" />
-              <img src="/Logo.svg" alt="logo" />
+            <div className="flex gap-3 items-center">
+              <img src="/senja-kopi-kiri.png" alt="icon" className="w-14" />
+              <p className="text-xl">𝔖𝔢𝔫𝔧𝔞 𝔎𝔬𝔭𝔦-𝔎𝔦𝔯𝔦</p>
             </div>
             <button onClick={onclose}>
-              <img src="/XCircle.svg" alt="close" className="cursor-pointer" />
+             <X color="red"/>
             </button>
           </header>
-
-          {/* Search */}
-          <div className="flex flex-col gap-3">
-            <h1 className="font-medium">Search Product</h1>
-            <div className="relative">
-              <Search className="absolute top-3 left-2 text-gray-500" />
-              <input
-                type="text"
-                placeholder="Find Product"
-                className="border border-gray-400 bg-gray-100 rounded-lg py-3 w-full pl-10 focus:outline-none focus:ring-2 focus:ring-orange-400"
-              />
-            </div>
-          </div>
 
           {/* Navigation links */}
           <div className="flex flex-col gap-3 font-medium">
             <Link to={"/"}>
               <button
                 onClick={onclose}
-                className="text-left text-black hover:text-orange-500"
+                className="text-left text-black hover:text-brand"
               >
                 Home
               </button>
             </Link>
-            <hr className="border-orange-400" />
+            <hr className="border-brand" />
             <Link to={"/product"}>
               <button
                 onClick={onclose}
-                className="text-left text-black hover:text-orange-500"
+                className="text-left text-black hover:text-brand"
               >
                 Product
               </button>
@@ -95,7 +82,7 @@ function ModalMenu({ isopen, onclose }) {
               <Link to="/auth/register">
                 <button
                   onClick={onclose}
-                  className="w-full bg-orange-400 py-3 rounded-lg text-white hover:bg-orange-500"
+                  className="w-full bg-brand py-3 rounded-lg text-white"
                 >
                   SignUp
                 </button>
@@ -113,7 +100,7 @@ function ModalMenu({ isopen, onclose }) {
                   />
                 </Link>
                 <span className="font-medium text-gray-800">
-                  {currentUser.email}
+                  {currentUser.fullname}
                 </span>
               </div>
               <button
