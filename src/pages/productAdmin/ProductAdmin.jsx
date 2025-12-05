@@ -102,7 +102,7 @@ function ProductAdmin() {
   if (loading.get || loading.delete) {
     return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-        <Loader2 className="w-16 h-16 animate-spin text-[#997950]" />
+        <Loader2 className="w-16 h-16 animate-spin text-brand" />
       </div>
     );
   }
@@ -139,7 +139,7 @@ function ProductAdmin() {
           <h1 className="font-medium text-xl">Product List</h1>
 
           <button
-            className="cursor-pointer bg-[#997950] text-white flex items-center rounded-md px-5 py-2 gap-2 hover:bg-[#8b6c46]"
+            className="cursor-pointer bg-brand text-white flex items-center rounded-md px-5 py-2 gap-2 hover:bg-[#8b6c46]"
             onClick={() => openModal("create")}
           >
             <Plus className="w-5 h-5" />
@@ -167,7 +167,7 @@ function ProductAdmin() {
 
             <button
               onClick={handleFilter}
-              className="cursor-pointer bg-[#997950] text-white flex items-center rounded-md px-5 py-2 gap-2 hover:bg-[#8b6c46]"
+              className="cursor-pointer bg-brand text-white flex items-center rounded-md px-5 py-2 gap-2 hover:bg-[#8b6c46]"
             >
               <Funnel className="w-7 h-7" />
               Filter
