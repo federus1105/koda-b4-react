@@ -26,3 +26,63 @@
 .animate-fadeIn {
   animation: fadeIn .25s ease-in-out;
 }
+
+:root {
+  --brand-color: #997950;
+}
+
+.focus-brand:focus {
+  outline: 2px solid var(--brand-color);
+}
+
+.border-brand {
+  border: 1px solid var(--brand-color);
+}
+
+.text-brand {
+  color: var(--brand-color);
+}
+
+.bg-brand {
+  background-color: var(--brand-color);
+}
+
+
+/* --- LOADING ---- */
+:root {
+  --loader-size: 40px;
+  --loader-border: 4px;
+  --loader-color: #997950;
+  --loader-bg: #f3f3f3;
+  --loader-speed: 1s;
+}
+
+.loader-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0,0,0,0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.loader {
+  width: var(--loader-size);
+  height: var(--loader-size);
+  border: var(--loader-border) solid var(--loader-bg);
+  border-top: var(--loader-border) solid var(--loader-color);
+  border-radius: 50%;
+  animation: spin var(--loader-speed) linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}
+
+.loader-text {
+  color: white;
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
