@@ -3,9 +3,9 @@ import React from "react";
 function ItemDetailHistory({ item }) {
   return (
     <>
-      <div className="relative flex gap-4 p-4 rounded-xl bg-white shadow-md hover:shadow-xl transition-shadow duration-300 border border-gray-100">
-        {item.flash_sale && (
-          <div className="absolute -top-2 -left-2 bg-gradient-to-r from-red-500 to-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md animate-pulse">
+      <div className="cursor-pointer relative flex gap-4 p-4 rounded-xl bg-white shadow-md border border-gray-100">
+        {item.flash_Sale && (
+          <div className="absolute top-2 left-2 bg-red-600 text-white text-[10px] font-bold px-3 py-1 rounded-full shadow-md">
             FLASH SALE
           </div>
         )}
@@ -26,10 +26,10 @@ function ItemDetailHistory({ item }) {
               {item.quantity} pcs
             </span>
             <span className="px-2 py-0.5 bg-gray-100 rounded-md">
-              {item.size}
+              {item.size || "No Size"}
             </span>
             <span className="px-2 py-0.5 bg-gray-100 rounded-md">
-              {item.variant}
+              {item.variant || "No Variant "}
             </span>
           </div>
         </div>

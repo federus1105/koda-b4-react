@@ -4,8 +4,9 @@ import {
   Minus,
   Plus,
   ShoppingCart,
-  MoveRight,
   Loader2,
+  Star,
+  Package,
 } from "lucide-react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -111,187 +112,224 @@ function DetailProduct({ min = 0, max = 10, onChange }) {
       setIsLoadingAddCart(false);
     }
   };
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   if (isLoading || isLoadingAddCart) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="w-16 h-16 animate-spin text-[#997950]" />
+        <Loader2 className="w-16 h-16 animate-spin text-brand" />
       </div>
     );
   }
 
   return (
     <>
-      <header className="my-20 mx-5 lg:flex lg:mx-30 lg:mt-40 lg:items-center">
-        {/* --- Images --- */}
-        <div className="lg:w-1/2 flex flex-col md:items-center">
-          {/* Gambar utama */}
-          <div className="w-full max-w-md">
-            <img
-              src={
-                product.images[0] ||
-                "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-              }
-              alt={product.name}
-              className="mx-auto aspect-square w-full object-cover"
-            />
-          </div>
+      <div className="min-h-screen bg-stone-50">
+        {/* Product Detail Section */}
+        <section className="container mx-auto md:px-8 lg:px-20 pt-28 pb-16">
+          <div className="bg-white rounded-3xl border-2 border-stone-200 overflow-hidden">
+            <div className="grid lg:grid-cols-2 gap-0">
+              {/* Left Side - Images Gallery */}
+              <div className="p-8 lg:p-12 bg-stone-50">
+                {/* Flash Sale Badge */}
+                {product.flash_sale && (
+                  <div className="mb-6 inline-flex items-center gap-2 bg-red-600 text-white rounded-full py-2 px-6 font-bold shadow-lg">
+                    FLASH SALE
+                  </div>
+                )}
 
-          {/* Gambar thumbnail / list */}
-          <div className="flex my-4 w-full md:justify-center">
-            <div className="flex gap-3 w-full max-w-md">
-              <img
-                src={
-                  product.images[1] ||
-                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-                }
-                alt={product.name}
-                className="w-1/3 h-1/2 object-cover"
-              />
-              <img
-                src={
-                  product.images[2] ||
-                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-                }
-                alt={product.name}
-                className="w-1/3 h-1/2 object-cover"
-              />
-              <img
-                src={
-                  product.images[3] ||
-                  "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
-                }
-                alt={product.name}
-                className="w-1/3 h-1/2 object-cover"
-              />
+                {/* Main Image */}
+                <div className="relative mb-6 bg-white rounded-2xl overflow-hidden border-2 border-stone-200">
+                  <img
+                    src={
+                      product.images[activeImageIndex] ||
+                      "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                    }
+                    alt={product.name}
+                    className="w-full aspect-square object-cover"
+                  />
+                </div>
+
+                {/* Thumbnail Gallery */}
+                <div className="grid grid-cols-4 gap-3">
+                  {product.images.slice(0, 4).map((img, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative rounded-xl overflow-hidden border-2 ${
+                        activeImageIndex === idx
+                          ? "border-brand shadow-lg scale-105"
+                          : "border-stone-200 hover:border-brand"
+                      }`}
+                    >
+                      <img
+                        src={
+                          img ||
+                          "https://ralfvanveen.com/wp-content/uploads/2021/06/Placeholder-_-Begrippenlijst.svg"
+                        }
+                        alt={`${product.name} ${idx + 1}`}
+                        className="w-full aspect-square object-cover"
+                      />
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right Side - Product Info */}
+              <div className="p-8 lg:p-12 flex flex-col">
+                {/* Product Title */}
+                <h1 className="text-4xl lg:text-5xl font-bold text-stone-900 mb-4">
+                  {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
+                </h1>
+
+                {/* Rating & Reviews */}
+                <div className="flex items-center gap-6 mb-6 pb-6 border-b-2 border-stone-100">
+                  <div className="flex items-center gap-2">
+                    <Star
+                      className="fill-yellow-500 text-yellow-500"
+                      size={24}
+                    />
+                    <span className="text-2xl font-bold text-stone-900">
+                      {(Number(product.rating) || 0).toFixed(1)}
+                    </span>
+                  </div>
+                  <div className="h-6 w-px bg-stone-300"></div>
+                  <div className="flex items-center gap-2 text-stone-600">
+                    <span className="font-medium">200+ Reviews</span>
+                  </div>
+                  <div className="h-6 w-px bg-stone-300"></div>
+                  <div className="flex items-center gap-2 text-brand">
+                    <ThumbsUp size={20} />
+                    <span className="font-medium">Recommended</span>
+                  </div>
+                </div>
+
+                {/* Price */}
+                <div className="mb-6">
+                  <div className="flex items-baseline gap-3 mb-2">
+                    <span className="text-4xl font-bold text-brand">
+                      IDR{" "}
+                      {(product.price_discount > 0
+                        ? product.price_discount
+                        : product.price_original
+                      ).toLocaleString("id-ID")}
+                    </span>
+                    {product.price_discount > 0 && (
+                      <span className="text-xl line-through text-stone-400">
+                        IDR {product.price_original.toLocaleString("id-ID")}
+                      </span>
+                    )}
+                  </div>
+                  {product.price_discount > 0 && (
+                    <div className="inline-block bg-red-100 text-red-700 px-3 py-1 rounded-full text-sm font-bold">
+                      Save IDR{" "}
+                      {(
+                        product.price_original - product.price_discount
+                      ).toLocaleString("id-ID")}
+                    </div>
+                  )}
+                </div>
+
+                {/* Description */}
+                <p className="text-lg text-stone-600 leading-relaxed mb-6 pb-6 border-b-2 border-stone-100">
+                  {product.description}
+                </p>
+
+                {/* Stock Info */}
+                <div className="flex items-center gap-3 mb-6 bg-stone-50 rounded-xl p-4 border-2 border-stone-200">
+                  <Package className="text-brand" size={24} />
+                  <div>
+                    <p className="text-sm text-stone-500 font-medium">
+                      Available Stock
+                    </p>
+                    <p className="text-xl font-bold text-stone-900">
+                      {product.stock} units
+                    </p>
+                  </div>
+                </div>
+
+                {/* Quantity Selector */}
+                <div className="mb-6">
+                  <h3 className="font-semibold text-stone-800 mb-3">
+                    Quantity
+                  </h3>
+                  <div className="flex items-center gap-4">
+                    <button
+                      onClick={handleDecrease}
+                      className="cursor-pointer w-12 h-12 rounded-xl bg-stone-100 hover:bg-stone-200 border-2 border-stone-200 flex items-center justify-center disabled:opacity-50"
+                      disabled={quantity === min}
+                    >
+                      <Minus size={20} />
+                    </button>
+                    <span className="text-2xl font-bold text-stone-900 min-w-[60px] text-center">
+                      {quantity}
+                    </span>
+                    <button
+                      onClick={handleIncrease}
+                      className="cursor-pointer w-12 h-12 rounded-xl bg-brand text-white flex items-center justify-center disabled:opacity-50 shadow-md"
+                      disabled={quantity === max}
+                    >
+                      <Plus size={20} />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Size Options */}
+                <div className="mb-6">
+                  <OptionButton
+                    title="Choose Size"
+                    options={product.sizes}
+                    selected={selectedSize}
+                    onSelect={(size) => setSelectedSize(size)}
+                    emptyText="No size options available"
+                  />
+                </div>
+
+                {/* Variant Options */}
+                <div className="mb-8">
+                  <OptionButton
+                    title="Hot or Ice?"
+                    options={product.variants}
+                    selected={selectedVariant}
+                    onSelect={(variant) => setSelectedVariant(variant)}
+                    emptyText="No variant options available"
+                  />
+                </div>
+
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-auto">
+                  <button
+                    onClick={() => handleAddToCart(true)}
+                    className="cursor-pointer bg-brand hover:bg-brand text-white py-4 rounded-xl font-bold text-lg"
+                  >
+                    Buy Now
+                  </button>
+                  <button
+                    onClick={() => handleAddToCart(false)}
+                    className="cursor-pointer flex items-center justify-center gap-3 border-2 border-brand text-brand py-4 rounded-xl font-bold text-lg"
+                  >
+                    <ShoppingCart size={24} />
+                    Add To Cart
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* --- Description  --- */}
-        <div className="lg:w-1/2 md:mx-10 lg:mx-0 ">
-          {product.flash_sale && (
-            <button className="bg-red-700 text-white rounded-4xl py-2 px-5">
-              FLASH SALE
-            </button>
-          )}
-
-          <div className="flex flex-col gap-5 mt-5">
-            <h1 className="text-xl font-medium lg:text-3xl">
-              {product.name.charAt(0).toUpperCase() + product.name.slice(1)}
-            </h1>
-            <div className="flex gap-2">
-              {product.price_discount > 0 && (
-                <span className="line-through text-gray-400">
-                  IDR {product.price_original.toLocaleString("id-ID")}
-                </span>
-              )}
-
-              <h1 className="text-brand font-medium text-xl">
-                IDR{" "}
-                {(product.price_discount > 0
-                  ? product.price_discount
-                  : product.price_original
-                ).toLocaleString("id-ID")}
-              </h1>
-            </div>
-
-            <div className="flex items-center gap-2">
-              <p className="text-yellow-600 font-medium">
-                ⭐{(Number(product.rating) || 0).toFixed(1)}
-              </p>
-            </div>
-            <div className="flex gap-5 text-gray-500 text-xl">
-              <p>200+ Review</p>
-              <p>|</p>
-              <p>Recomendation</p>
-              <ThumbsUp />
-            </div>
-            <div>
-              <p className="text-gray-500 text-xl">{product.description}</p>
-            </div>
-            <p className="font-medium">
-              Stock {""}: {product.stock}
+        {/* Recommendations Section */}
+        <section className="container mx-auto px-4 md:px-8 lg:px-20 pb-20">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl font-bold text-stone-900 mb-3">
+              Recommendations <span className="text-brand">For You</span>
+            </h2>
+            <p className="text-stone-600 text-lg">
+              Discover similar products you might love
             </p>
-            <div className="flex items-center gap-2">
-              <button
-                onClick={handleDecrease}
-                className="cursor-pointer p-2 rounded bg-gray-100 hover:bg-gray-200 disabled:opacity-50 border"
-                disabled={quantity === min}
-              >
-                <Minus size={15} />
-              </button>
-
-              <span className="px-4 py-2 font-medium">{quantity}</span>
-              <button
-                onClick={handleIncrease}
-                className="cursor-pointer p-2 rounded bg-brand text-white hover:bg-brand disabled:opacity-50"
-                disabled={quantity === max}
-              >
-                <Plus size={15} />
-              </button>
-            </div>
-
-            {/* ---- Size --- */}
-            <OptionButton
-              title="Choose Size"
-              options={product.sizes}
-              selected={selectedSize}
-              onSelect={(size) => {
-                setSelectedSize(size);
-              }}
-              emptyText="Tidak ada Pilihan"
-            />
-
-            {/*---  Variant --- */}
-            <OptionButton
-              title="Hot/Ice?"
-              options={product.variants}
-              selected={selectedVariant}
-              onSelect={(variant) => {
-                setSelectedVariant(variant);
-              }}
-              emptyText="Tidak ada pilihan"
-            />
-
-            <div className="flex gap-4 flex-col md:flex-row lg:mt-10">
-              <Link
-                className="bg-brand w-full py-4 rounded-md cursor-pointer text-center"
-                onClick={() => handleAddToCart(true)}
-              >
-                Buy
-              </Link>
-              <button
-                className="flex border-brand text-brand w-full justify-center py-4 gap-2 rounded-md cursor-pointer"
-                onClick={() => handleAddToCart(false)}
-              >
-                <ShoppingCart />
-                Add To Cart
-              </button>
-            </div>
           </div>
-        </div>
-      </header>
-      <div className="mx-5 flex flex-col gap-5">
-        <h1 className="text-center text-2xl font-medium">
-          Recommendation <span className="text-brand">For You</span>
-        </h1>
-        <FavoriteProduct />
-        <div className="mb-10">
-          <div className="flex items-center justify-center gap-2 mt-10">
-            {[1, 2, 3, 4].map((num) => (
-              <button
-                key={num}
-                className="w-10 h-10 rounded-full bg-gray-200 text-gray-400 active:bg-brand"
-              >
-                {num}
-              </button>
-            ))}
-            <button className="w-8 h-8 rounded-full flex items-center justify-center bg-brand">
-              <MoveRight className="text-white" />
-            </button>
-          </div>
-        </div>
+          <FavoriteProduct />
+
+        </section>
       </div>
     </>
   );

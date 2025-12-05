@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Plus, PackageX, Loader2, Mail, User, Phone, Map, MapPin } from "lucide-react";
+import {
+  Plus,
+  PackageX,
+  Loader2,
+  Mail,
+  User,
+  Phone,
+  MapPin,
+  Truck,
+} from "lucide-react";
 import ItemOrder from "../../components/cardproduct/ItemOrder";
 import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -252,19 +261,24 @@ function Checkout() {
                 )}
               </div>
 
-              <div className="flex flex-col gap-4">
-                <h1 className="font-medium">Delivery</h1>
+              <div className="bg-white border-2 border-stone-200 rounded-2xl p-6">
+                <div className="flex items-center gap-3 mb-6">
+                  <Truck className="text-brand" size={28} />
+                  <h2 className="font-medium">
+                    Delivery Method
+                  </h2>
+                </div>
 
-                <div className="flex gap-2">
+                <div className="flex gap-3">
                   {deliveryOptions.map((opt) => (
                     <button
                       key={opt.id}
                       type="button"
                       onClick={() => setDelivery(opt.id)}
-                      className={`cursor-pointer hover:bg-gray-100 border rounded-md py-2 px-4 w-full ${
+                      className={`cursor-pointer py-4 px-4 w-full rounded-xl font-semibold border-2 ${
                         delivery === opt.id
-                          ? "bg-brand text-white"
-                          : "border-gray-300"
+                          ? "bg-brand text-white border-brand shadow-lg"
+                          : "bg-white text-stone-700 border-stone-200 hover:bg-stone-50"
                       }`}
                     >
                       {opt.label}
