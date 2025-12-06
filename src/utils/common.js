@@ -83,3 +83,21 @@ export const formatCategoryName = (name) => {
     .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
 };
+
+
+
+// ---- STATUS OPTION ---
+export const statusOptions = [
+    { id: 1, value: "on progres", label: "On Progress" },
+    { id: 2, value: "pending", label: "Pending" },
+    { id: 3, value: "done", label: "Done" },
+  ];
+
+
+
+
+  // --- Helper applyValidator ---
+export const applyValidator = (validatorFn) => (value) => {
+  const msg = validatorFn(value);
+  return msg === "" ? true : msg;
+};
