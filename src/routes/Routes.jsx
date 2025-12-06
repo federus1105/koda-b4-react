@@ -17,8 +17,9 @@ import { Slide } from "react-toastify";
 import AdminLayout from "../layouts/AdminLayout";
 import Dashboard from "../pages/dashboardAdmin/Dashboard";
 import ProductAdmin from "../pages/productAdmin/ProductAdmin";
-import ModalCreate from "../components/productAdmin/ModalCreate";
 import ResetPassword from "../pages/auth/ResetPassword";
+import OrderAdmin from "../pages/orderAdmin/OrderAdmin";
+import UserAdmin from "../pages/userAdmin/UserAdmin";
 
 function Router() {
   return (
@@ -84,7 +85,8 @@ function Router() {
           >
             <Route path="/admin/dashboard" element={<Dashboard />} />
             <Route path="/admin/product" element={<ProductAdmin />} />
-            <Route path="/admin/order" element={<ModalCreate />} />
+            <Route path="/admin/order" element={<OrderAdmin />} />
+            <Route path="/admin/user" element={<UserAdmin />} />
           </Route>
         </Routes>
       </BrowserRouter>
