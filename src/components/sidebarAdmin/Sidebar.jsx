@@ -48,18 +48,11 @@ function Sidebar() {
               className={({ isActive }) =>
                 isActive ? `${baseClass} ${activeClass}` : baseClass
               }
-              to="/summary"
+              to="/admin/user"
             >
               <Users size={28} />
               <h1 className="font-light">User</h1>
             </NavLink>
-            <button
-              className="flex gap-5 cursor-pointer text-red-600 items-center p-3 rounded-xl hover:bg-orange-400 hover:text-white"
-              //   onClick={openModal}
-            >
-              <LogOut className="rotate-180" />
-              <h3>Keluar</h3>
-            </button>
           </nav>
         </aside>
       )}
