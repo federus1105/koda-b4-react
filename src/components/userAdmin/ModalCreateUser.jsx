@@ -66,6 +66,14 @@ function ModalCreateUser({ onClose }) {
     input.click();
   };
 
+  // --- HANDLER REMOVE IMAGE ---
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setPhotoPreview(null);
+    setPhotoFile(null);
+    setValue("photos", null);
+  };
+
   // --- FormData ---
   const buildFormData = (data) => {
     const formData = new FormData();
@@ -113,33 +121,36 @@ function ModalCreateUser({ onClose }) {
               <label className="block text-sm font-medium mb-3">
                 Image User
               </label>
+
               <input
                 type="hidden"
                 {...register("photos", { validate: validateImage })}
               />
 
               <div
+                className="relative w-24 h-24 rounded-md bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200 overflow-hidden"
                 onClick={handleImageClick}
-                className="w-20 h-20 rounded-md bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200 overflow-hidden"
               >
                 {photoPreview ? (
-                  <img
-                    src={photoPreview}
-                    alt="User"
-                    className="w-full h-full object-cover"
-                  />
+                  <>
+                    <img
+                      src={photoPreview}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRemoveImage}
+                      className="absolute top-1 right-1 bg-black bg-opacity-50 text-white w-6 h-6 rounded-full flex items-center justify-center hover:bg-red-500"
+                    >
+                      <X className="cursor-pointer w-4 h-4" />
+                    </button>
+                  </>
                 ) : (
                   <Images className="w-8 h-8 text-gray-400" />
                 )}
               </div>
 
-              <button
-                type="button"
-                onClick={handleImageClick}
-                className="cursor-pointer mt-3 bg-brand text-white px-4 py-2 rounded-md hover:bg-[#8b6c46]"
-              >
-                Upload
-              </button>
               {errors.photos && (
                 <p className="text-red-500 text-sm mt-1">
                   {errors.photos.message}

@@ -45,7 +45,7 @@ function ModalUpdateUser({ onClose, user }) {
 
   const selectedRole = watch("role");
 
-  // === IMAGE UPLOAD ===
+  // --- HANDLER IMAGE UPLOAD ---
   const handleImageChange = (e) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -63,6 +63,14 @@ function ModalUpdateUser({ onClose, user }) {
     reader.readAsDataURL(file);
 
     setValue("photos", file, { shouldValidate: true });
+  };
+
+  // --- HANDLER REMOVE IMAGE ---
+  const handleRemoveImage = (e) => {
+    e.stopPropagation();
+    setPhotoPreview(null);
+    setValue("photos", null);
+    document.getElementById("photos").value = "";
   };
 
   // --- FORM UPDATE ---
@@ -116,23 +124,31 @@ function ModalUpdateUser({ onClose, user }) {
           {/* --- FORM --- */}
           <FormProvider {...methods}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
-
-              {/* Image */}
+              {/* --- Image --- */}
               <div>
                 <label className="block text-sm font-medium mb-2">
                   Image User
                 </label>
 
                 <div
-                  className="w-24 h-24 rounded-md bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200 overflow-hidden"
+                  className="relative w-24 h-24 rounded-md bg-gray-100 flex items-center justify-center cursor-pointer hover:bg-gray-200 overflow-hidden"
                   onClick={() => document.getElementById("photos").click()}
                 >
                   {photoPreview ? (
-                    <img
-                      src={photoPreview}
-                      alt="Preview"
-                      className="w-full h-full object-cover"
-                    />
+                    <>
+                      <img
+                        src={photoPreview}
+                        alt="Preview"
+                        className="w-full h-full object-cover"
+                      />
+                      <button
+                        type="button"
+                        onClick={handleRemoveImage}
+                        className="absolute top-1 right-1 bg-black bg-opacity-50 text-white w-5 h-5 rounded-full flex items-center justify-center hover:bg-red-500"
+                      >
+                        <X className="cursor-pointer w-3 h-3" />
+                      </button>
+                    </>
                   ) : (
                     <ImagesIcon className="w-8 h-8 text-gray-400" />
                   )}
