@@ -46,6 +46,45 @@ export const validateToken = (token) => {
 };
 
 
+// --- IMAGE VALIDATION ---
+export const validateImage = (file) => {
+  if (!file) return true;
+  const maxSize = 500 * 1024;
+
+  if (file.size > maxSize) {
+    return "Ukuran gambar maksimal 500 KB";
+  }
+
+  return true;
+};
+
+// --- PHONE VALIDATION  ---
+export const validatePhone = (phone) => {
+  if (!phone.trim()) return "Nomor telepon tidak boleh kosong";
+  const onlyNumber = /^[0-9]+$/;
+  if (!onlyNumber.test(phone)) {
+    return "Nomor telepon hanya boleh angka";
+  }
+  if (phone.length < 10) {
+    return "Nomor telepon minimal 10 digit";
+  }
+  if (phone.length > 13) {
+    return "Nomor telepon maksimal 13 digit";
+  }
+
+  return true;
+};
+
+// --- ADDRESS VALIDATION  ---
+export const validateAddress = (address) => {
+  if (!address.trim()) return "Alamat tidak boleh kosong";
+  if (address.length > 50) {
+    return "Alamat maksimal 50 karakter";
+  }
+  return true;
+};
+
+
 
 // --- HOOK REGISTER --
 export function useRegister() {
